@@ -107,28 +107,38 @@ body.nav-collapsed .profile .pname{display:none}
 .type-tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--color-text-soft);font-weight:500}
 .type-tag .ti{display:inline-flex}
 .type-tag .ti svg{width:17px;height:17px}
-.acard{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:18px 20px;cursor:pointer;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;min-height:0;display:flex;flex-direction:column}
+.acard{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);cursor:pointer;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;overflow:hidden}
 .acard:hover{border-color:var(--color-primary-border);box-shadow:0 2px 10px rgba(15,23,42,.06)}
-.ac-top{display:flex;align-items:center;gap:10px;padding-right:28px}
-.ac-badge{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700}
+.acard.next{border-color:var(--color-primary)}
+.ac-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 18px 0}
+.ac-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 18px 0}
+.ac-type{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:5px 11px;border-radius:var(--r-pill);color:var(--color-text-soft);background:var(--color-surface-subtle)}
+.ac-type svg{width:15px;height:15px}
+.ac-time{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--color-text-soft);margin-top:7px;font-variant-numeric:tabular-nums}
+.ac-time svg{width:15px;height:15px;flex:none}
+.ac-time .dash{color:var(--color-text-soft);margin:0 2px}
+.ac-badge{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;white-space:nowrap}
 .ac-badge svg{width:17px;height:17px}
 .ac-badge.done{color:var(--c-plan)}
 .ac-badge.next{color:var(--color-primary-text)}
 .ac-badge.soon{color:var(--color-text-soft)}
-.ac-time{margin-left:auto;font-size:13px;color:var(--color-text-soft);font-variant-numeric:tabular-nums}
-.ac-chev{position:absolute;right:18px;top:19px;color:var(--color-text-disabled)}
-.ac-chev svg{width:20px;height:20px}
-.ac-big{font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.05;margin-top:14px;font-variant-numeric:tabular-nums;color:var(--color-text)}
-.ac-big .end{font-size:20px;font-weight:600;color:var(--color-text-soft)}
-.ac-title{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-top:12px;line-height:1.15;color:var(--color-text)}
-.ac-loc{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--color-text-soft);margin-top:9px}
-.ac-loc .ti svg{width:16px;height:16px;display:block}
-.ac-detail{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600}
-.ac-detail svg{width:16px;height:16px}
-.ac-detail.vid{color:var(--color-primary-text)}
-.ac-detail.ready{color:var(--c-plan)}
-.ac-foot{margin-top:auto;padding-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.ac-link{display:inline-flex;align-items:center;gap:6px;color:var(--color-primary-text);font-size:14px;font-weight:700}
+.ac-body{padding:12px 18px 0}
+.ac-ico{flex:none;width:48px;height:48px;border-radius:12px;background:var(--color-surface-subtle);display:grid;place-items:center;color:var(--color-text-soft)}
+.ac-ico svg{width:24px;height:24px}
+.ac-info{min-width:0}
+.ac-title{font-size:21px;font-weight:700;letter-spacing:-.01em;line-height:1.1;color:var(--color-text)}
+.ac-loc{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--color-text-soft);margin-top:6px}
+.ac-loc svg{width:15px;height:15px;flex:none}
+.ac-foot{margin-top:auto;padding:13px 18px 15px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.ac-pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:5px 11px;border-radius:var(--r-pill)}
+.ac-pill svg{width:15px;height:15px}
+.ac-pill.ready{color:var(--c-plan);background:var(--c-plan-soft)}
+.ac-pill.vid{color:var(--color-text-soft);background:var(--color-surface-subtle)}
+.ac-pill.vid svg{animation:acProcessing 1.3s ease-in-out infinite}
+@keyframes acProcessing{0%,100%{opacity:1}50%{opacity:.3}}
+@media(prefers-reduced-motion:reduce){.ac-pill.vid svg{animation:none}}
+.ac-pill.needed{color:var(--c-partial);background:var(--c-partial-soft)}
+.ac-link{display:inline-flex;align-items:center;gap:6px;color:var(--color-primary-text);font-size:14px;font-weight:700;white-space:nowrap}
 .ac-link svg{width:16px;height:16px}
 .status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
 .status svg{width:16px;height:16px}
@@ -276,7 +286,7 @@ body.nav-collapsed .profile .pname{display:none}
         <div class="sec-title">Today&rsquo;s agenda</div>
         <div class="sec-aux" id="todayCount"></div>
       </div>
-      <div class="h-sub" id="todayDate" style="margin:0 0 14px">Tuesday, 8 September 2026</div>
+      <div id="todayDate" style="font-size:14px;font-weight:500;color:var(--color-text-soft);margin:0 0 14px">Tue, 8 Sep 2026</div>
       <div id="todayGrid"></div>
 
       <!-- This week -->
@@ -334,6 +344,8 @@ const CHECKCIRCLE_SVG='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" f
 const CLOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
 const VIDEO_SVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h8A1.5 1.5 0 0 1 15 6.5v11A1.5 1.5 0 0 1 13.5 19h-8A1.5 1.5 0 0 1 4 17.5zM16.5 9.6l3.3-2.2a.8.8 0 0 1 1.2.7v7.8a.8.8 0 0 1-1.2.7l-3.3-2.2z"/></svg>';
 function typeIcon(t){return t==='gym'?GYM_SVG:PITCH_SVG;}
+const DOT_SVG='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="currentColor"/></svg>';
+const PIN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.1"/></svg>';
 function typeLabel(t){return t==='gym'?'Gym':'Pitch';}
 
 /* ============ DATA ============ */
@@ -424,28 +436,26 @@ function toast(msg){const el=document.getElementById('toast');el.textContent=msg
 /* ============ TODAY'S AGENDA ============ */
 function renderToday(){
   const list=SESS[(TODAY.getDay()+6)%7];
-  let done=0,up=0,nextIdx=-1,earliest=1e9;
-  const info=list.map((s,i)=>{const [a,e]=parseT(s.t);const isDone=e<=NOW_MIN;if(isDone)done++;else{up++;if(a<earliest){earliest=a;nextIdx=i;}}return {s,a,e,isDone};});
+  let done=0,up=0,nextItem=null,earliest=1e9;
+  const info=list.map((s)=>{const [a,e]=parseT(s.t);return {s,a,e,isDone:e<=NOW_MIN};});
+  info.forEach(o=>{ if(o.isDone){done++;} else {up++; if(o.a<earliest){earliest=o.a;nextItem=o;}} });
   document.getElementById('todayCount').textContent=`${done} completed · ${up} upcoming`;
-  const cards=info.map((o,i)=>{
-    const s=o.s, isNext=(i===nextIdx), parts=s.t.split('–');
+  // Order: upcoming / up-next first (by time), completed sessions last.
+  const order=info.slice().sort((x,y)=>(x.isDone-y.isDone)||(x.a-y.a));
+  const cards=order.map((o)=>{
+    const s=o.s, isNext=(o===nextItem), parts=s.t.split('–');
     const badge=o.isDone
       ? '<span class="ac-badge done">'+CHECKCIRCLE_SVG+'Completed</span>'
-      : (isNext ? '<span class="ac-badge next">'+CLOCK_SVG+'Up next · '+fmtDur(o.a-NOW_MIN)+'</span>'
-                : '<span class="ac-badge soon">'+CLOCK_SVG+'Upcoming</span>');
-    const big=(!o.isDone&&isNext)?`<div class="ac-big">${parts[0].trim()} <span class="end">– ${parts[1].trim()}</span></div>`:'';
-    const detail=o.isDone
-      ? (s.vid?'<span class="ac-detail vid">'+VIDEO_SVG+'Video ready</span>':'')
-      : (s.status==='ready'?'<span class="ac-detail ready">'+CHECK_SVG+'Plan ready</span>'
-        : (s.status==='needed'?'<span class="ac-detail" style="color:var(--c-partial)">'+ALERT_SVG+'Plan needed</span>':''));
+      : (isNext ? '<span class="ac-badge next">'+DOT_SVG+'Up next</span>'
+                : '');
+    const pill=o.isDone
+      ? '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>'
+      : (s.status==='needed'?'<span class="ac-pill needed">'+ALERT_SVG+'Plan needed</span>':'');
     const link=o.isDone?'View session':'View plan';
-    return `<a class="acard" href="${hrefFor(s.type)}">
-      <div class="ac-top">${badge}<span class="ac-time">${s.t}</span></div>
-      ${big}
-      <div class="ac-title">${s.title}</div>
-      <div class="ac-loc"><span class="ti">${typeIcon(s.type)}</span>${s.loc}</div>
-      <div class="ac-foot">${detail||'<span></span>'}<span class="ac-link">${link} <i data-lucide="arrow-right"></i></span></div>
-      <span class="ac-chev"><i data-lucide="chevron-right"></i></span>
+    return `<a class="acard${isNext?' next':''}" href="${hrefFor(s.type)}">
+      <div class="ac-top"><span class="ac-type">${typeIcon(s.type)}${typeLabel(s.type)}</span>${badge}</div>
+      <div class="ac-body"><div class="ac-title">${s.title}</div><div class="ac-loc">${PIN_SVG}Bodymoor Heath Training Ground</div><div class="ac-time">${CLOCK_SVG}${parts[0].trim()} <span class="dash">–</span> ${parts[1].trim()}</div></div>
+      <div class="ac-foot">${pill||'<span></span>'}<span class="ac-link">${link} <i data-lucide="arrow-right"></i></span></div>
     </a>`;
   }).join('');
   const wrap=document.getElementById('todayGrid');
@@ -632,7 +642,7 @@ document.getElementById('dateBtn').onclick=e=>{e.stopPropagation();const p=docum
 document.addEventListener('click',e=>{if(!e.target.closest('.datewrap'))closePop();});
 
 document.getElementById('todayDate').textContent=
-  TODAY.toLocaleString('en-GB',{weekday:'long'})+', '+TODAY.getDate()+' '+TODAY.toLocaleString('en-GB',{month:'long'})+' '+TODAY.getFullYear();
+  TODAY.toLocaleString('en-US',{weekday:'short'})+', '+TODAY.getDate()+' '+TODAY.toLocaleString('en-US',{month:'short'})+' '+TODAY.getFullYear();
 
 renderToday(); renderWeek(); renderTabs(); renderReview(); icons();
 
