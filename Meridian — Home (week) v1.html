@@ -75,7 +75,7 @@ body.nav-collapsed .profile .pname{display:none}
 /* ---------- home layout ---------- */
 .home{max-width:1420px;margin:0 auto;padding:22px 28px 0}
 .home-main{min-width:0}
-.home-rail{margin-top:30px}
+.home-rail{margin-top:54px}
 
 .h-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .h-left{display:flex;align-items:stretch;gap:22px;flex-wrap:wrap}
@@ -146,7 +146,7 @@ body.nav-collapsed .profile .pname{display:none}
 .status.needed{color:var(--c-partial)}
 
 /* this week */
-.week-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin:38px 0 14px;flex-wrap:wrap}
+.week-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin:46px 0 14px;flex-wrap:wrap}
 .week-sub1{font-size:13px;color:var(--color-text-soft);margin-top:11px}
 .week-sub2{font-size:13px;color:var(--color-text-soft);margin-top:11px}
 .week-ctrls{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
@@ -187,15 +187,15 @@ body.nav-collapsed .profile .pname{display:none}
 .wc-dayh.hasadev{padding-bottom:0}
 .wc-adev{align-self:stretch;margin:2px 6px 0;background-color:var(--color-surface-subtle);border-radius:8px 8px 0 0;padding:4px 8px 7px;font-size:11.5px;color:var(--color-text-soft);display:flex;align-items:center;justify-content:center;gap:5px;line-height:1.3;overflow:hidden}
 .wc-adev svg{width:14px;height:14px;flex:none;color:var(--color-text-disabled)}
-.wc-ev{position:absolute;left:5px;right:5px;border-radius:7px;padding:6px 8px 6px 9px;overflow:hidden;border-left:3px solid;box-shadow:0 1px 2px rgba(15,23,42,.05);display:block;min-height:30px;text-decoration:none}
+.wc-ev{position:absolute;left:5px;right:5px;border-radius:7px 0 0 7px;padding:6px 8px 6px 9px;overflow:hidden;border-left:3px solid;box-shadow:0 1px 2px rgba(15,23,42,.05);display:block;min-height:30px;text-decoration:none}
 .wc-ev .ev-title{font-size:12.5px;font-weight:700;color:var(--color-text);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wc-ev .ev-time{font-size:11px;color:var(--color-text-soft);font-variant-numeric:tabular-nums;margin-top:1px}
 .wc-ev .ev-loc{font-size:11px;color:var(--color-text-soft)}
 .wc-ev .ev-ic{position:absolute;right:6px;bottom:6px;display:grid;place-items:center}
 .wc-ev .ev-ic svg{width:15px;height:15px;display:block}
-.ev-pitch{background:var(--c-plan-soft);border-left-color:var(--c-plan)}
-.ev-gym{background:var(--color-primary-soft);border-left-color:var(--color-primary)}
-.ev-match{background:var(--color-surface-muted);border-left-color:var(--color-text-disabled);cursor:default}
+.ev-pitch{background:#EDF4F1;border-left-color:#6F9588}
+.ev-gym{background:#EEF0F5;border-left-color:#7C879D}
+.ev-match{background:#FAF4E6;border-left-color:#AD9057;cursor:default}
 .ev-ic.vid{color:var(--color-primary-text)}
 .ev-ic.needed{color:var(--c-partial)}
 .wc-now{position:absolute;left:0;right:0;height:2px;background:var(--c-now);z-index:6}
@@ -330,8 +330,7 @@ body.nav-collapsed .profile .pname{display:none}
           <div class="rail-title">Needs review</div>
           <span class="rail-count" id="reviewCount">7</span>
         </div>
-        <div class="rail-sub" id="reviewSub"></div>
-        <div class="rtabs" id="reviewTabs"></div>
+        <div class="rail-sub" id="reviewSub" style="margin-bottom:18px"></div>
         <div id="reviewList"></div>
         <a class="rv-viewall" id="viewAll" href="Meridian%20%E2%80%94%20Needs%20review%20(all).html" style="display:none">View all <i data-lucide="arrow-right"></i></a>
       </section>
@@ -604,10 +603,6 @@ function revCardHTML(r){
 function undecided(){return REVIEW.filter(r=>!decided.has(r.num));}
 function renderTabs(){
   const u=undecided();
-  const counts={all:u.length,pitch:u.filter(r=>r.type==='pitch').length,gym:u.filter(r=>r.type==='gym').length};
-  const defs=[['all','All'],['pitch','Pitch'],['gym','Gym']];
-  document.getElementById('reviewTabs').innerHTML=defs.map(([k,l])=>
-    `<div class="rtab${rvFilter===k?' active':''}" data-t="${k}">${l}<span class="c">${counts[k]}</span></div>`).join('');
   const todayN=u.filter(r=>r.when==='Today').length;
   document.getElementById('reviewSub').textContent=`${todayN} today · ${u.length-todayN} from earlier sessions`;
   document.getElementById('reviewCount').textContent=u.length;
@@ -630,10 +625,6 @@ document.getElementById('weekFilters').addEventListener('click',e=>{
   wkFilter=b.dataset.f;
   document.querySelectorAll('#weekFilters .ptab').forEach(x=>x.classList.toggle('active',x===b));
   renderWeek();
-});
-document.getElementById('reviewTabs').addEventListener('click',e=>{
-  const t=e.target.closest('.rtab'); if(!t)return;
-  rvFilter=t.dataset.t; renderTabs(); renderReview();
 });
 document.getElementById('reviewList').addEventListener('click',e=>{
   const b=e.target.closest('.rv-vbtn'); if(!b)return;
