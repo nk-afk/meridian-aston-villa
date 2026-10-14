@@ -172,7 +172,7 @@ body.nav-collapsed .profile .pname{display:none}
 .wc-head{border-bottom:1px solid var(--color-separator)}
 .wc-dayh{border-left:1px solid var(--color-separator);display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 0 10px;text-align:center}
 .wc-dow{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600}
-.wc-date{font-size:16px;font-weight:700;color:var(--color-text);line-height:1;font-variant-numeric:tabular-nums}
+.wc-date{font-size:16px;font-weight:700;color:var(--color-text);line-height:1;font-variant-numeric:tabular-nums;height:30px;display:grid;place-items:center}
 .wc-date.today{background:var(--color-primary);color:#fff;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:13px}
 .wc-allday{border-bottom:1px solid var(--color-separator)}
 .wc-adl{font-size:11px;color:var(--color-text-soft);padding:0 8px;text-align:right;display:flex;align-items:center;justify-content:flex-end}
@@ -182,6 +182,9 @@ body.nav-collapsed .profile .pname{display:none}
 .wc-gutter{position:relative;height:var(--gridh)}
 .wc-hr{position:absolute;right:9px;font-size:11px;color:var(--color-text-soft);font-variant-numeric:tabular-nums;line-height:1}
 .wc-day{position:relative;height:var(--gridh);border-left:1px solid var(--color-separator);background-image:repeating-linear-gradient(to bottom,var(--color-border-subtle) 0,var(--color-border-subtle) 1px,transparent 1px,transparent var(--hourpx))}
+.wc-day.rest{background-color:rgba(241,245,249,.5);background-image:repeating-linear-gradient(45deg,rgba(100,116,139,.22) 0,rgba(100,116,139,.22) 1px,transparent 1px,transparent 8px)}
+.wc-adev{align-self:stretch;margin:2px 6px 0;background:var(--color-surface);border:1px solid var(--color-border);border-radius:6px;padding:3px 7px;font-size:11.5px;color:var(--color-text-soft);display:flex;align-items:center;gap:5px;line-height:1.3;overflow:hidden}
+.wc-adev svg{width:14px;height:14px;flex:none;color:var(--color-text-disabled)}
 .wc-ev{position:absolute;left:5px;right:5px;border-radius:7px;padding:6px 8px 6px 9px;overflow:hidden;border-left:4px solid;box-shadow:0 1px 2px rgba(15,23,42,.05);display:block;min-height:30px;text-decoration:none}
 .wc-ev .ev-title{font-size:12.5px;font-weight:700;color:var(--color-text);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wc-ev .ev-time{font-size:11px;color:var(--color-text-soft);font-variant-numeric:tabular-nums;margin-top:1px}
@@ -496,11 +499,11 @@ function renderWeek(){
   document.getElementById('cnt-match').textContent='('+match+')';
 
   const thisWeek=sameDay(baseMon,mondayOf(TODAY));
-  let head='<div></div>', allday='<div class="wc-adl">All-day</div>';
+  let head='<div></div>';
   for(let i=0;i<7;i++){
     const date=addDays(baseMon,i), isToday=sameDay(date,TODAY);
-    head+=`<div class="wc-dayh"><span class="wc-dow">${DOW[i]}</span><span class="wc-date${isToday?' today':''}">${date.getDate()}</span></div>`;
-    allday+= i===REST_IDX ? `<div class="wc-adc"><i data-lucide="bed"></i>Rest day</div>` : `<div class="wc-adc"></div>`;
+    const adev = i===REST_IDX ? `<div class="wc-adev"><i data-lucide="bed"></i>Rest day</div>` : '';
+    head+=`<div class="wc-dayh"><span class="wc-dow">${DOW[i]}</span><span class="wc-date${isToday?' today':''}">${date.getDate()}</span>${adev}</div>`;
   }
   let gut='';
   for(let h=9;h<=17;h++){ gut+=`<div class="wc-hr" style="top:${yFor(h*60)+2}px">${String(h).padStart(2,'0')}:00</div>`; }
@@ -517,11 +520,10 @@ function renderWeek(){
         +`<div class="ev-title">${s.title}</div><div class="ev-time">${s.t}</div><div class="ev-loc">${s.loc}</div>${ic}</${tag}>`;
     });
     const now=(thisWeek&&isToday)?`<div class="wc-now" style="top:${yFor(NOW_MIN)}px"></div>`:'';
-    cols+=`<div class="wc-day${isToday?' today':''}">${evs}${now}</div>`;
+    cols+=`<div class="wc-day${isToday?' today':''}${i===REST_IDX?' rest':''}">${evs}${now}</div>`;
   }
   document.getElementById('weekgrid').innerHTML=
     `<div class="wc-head wc-row">${head}</div>`
-    +`<div class="wc-allday wc-row">${allday}</div>`
     +`<div class="wc-body"><div class="wc-gutter">${gut}</div>${cols}</div>`;
   icons();
 }
