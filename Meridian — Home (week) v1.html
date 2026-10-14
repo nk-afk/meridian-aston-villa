@@ -87,7 +87,7 @@ body.nav-collapsed .profile .pname{display:none}
 .h-now-lbl{font-size:12px;color:var(--color-text-soft)}
 
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:22px 0 14px}
-.sec-title{font-size:21px;font-weight:700;letter-spacing:-.01em}
+.sec-title{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .sec-aux{font-size:13px;color:var(--color-text-soft)}
 
 /* today cards */
@@ -117,7 +117,7 @@ body.nav-collapsed .profile .pname{display:none}
 .ac-time{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--color-text-soft);margin-top:7px;font-variant-numeric:tabular-nums}
 .ac-time svg{width:15px;height:15px;flex:none}
 .ac-time .dash{color:var(--color-text-soft);margin:0 2px}
-.ac-badge{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;white-space:nowrap}
+.ac-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;white-space:nowrap}
 .ac-badge svg{width:17px;height:17px}
 .ac-badge.done{color:var(--c-plan)}
 .ac-badge.next{color:var(--color-primary-text)}
@@ -147,8 +147,8 @@ body.nav-collapsed .profile .pname{display:none}
 
 /* this week */
 .week-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin:26px 0 14px;flex-wrap:wrap}
-.week-sub1{font-size:14px;color:var(--color-text-muted);margin-top:5px}
-.week-sub2{font-size:13px;color:var(--color-text-soft);margin-top:3px}
+.week-sub1{font-size:13px;color:var(--color-text-soft);margin-top:11px}
+.week-sub2{font-size:13px;color:var(--color-text-soft);margin-top:8px}
 .week-ctrls{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
 .week-nav{display:flex;align-items:center;gap:8px}
 .ibtn{width:38px;height:38px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--r-lg);display:grid;place-items:center;cursor:pointer;color:var(--color-text-soft)}
@@ -282,11 +282,11 @@ body.nav-collapsed .profile .pname{display:none}
   <div class="home">
     <div class="home-main">
       <!-- Today's agenda -->
-      <div class="sec-head" style="margin:4px 0 2px">
+      <div class="sec-head" style="margin:4px 0 0">
         <div class="sec-title">Today&rsquo;s agenda</div>
         <div class="sec-aux" id="todayCount"></div>
       </div>
-      <div id="todayDate" style="font-size:14px;font-weight:500;color:var(--color-text-soft);margin:0 0 14px">Tue, 8 Sep 2026</div>
+      <div id="todayDate" style="font-size:13px;font-weight:400;color:var(--color-text-soft);margin:11px 0 14px">Tue, 8 Sep 2026</div>
       <div id="todayGrid"></div>
 
       <!-- This week -->
