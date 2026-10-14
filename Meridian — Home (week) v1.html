@@ -22,6 +22,7 @@
   --rail-inset:28px;
   --c-plan:#5CA423; --c-plan-soft:#EFFAE6;
   --c-partial:#E58600; --c-partial-soft:#FFEED6;
+  --c-review:#E50C00; --c-review-soft:#FFE7E5;
   --c-notobs:#9CA3AF; --c-notobs-soft:#EEF1F4;
   --c-now:#EF4444; --hourpx:58px; --gridh:522px;
 }
@@ -107,7 +108,7 @@ body.nav-collapsed .profile .pname{display:none}
 .type-tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--color-text-soft);font-weight:500}
 .type-tag .ti{display:inline-flex}
 .type-tag .ti svg{width:17px;height:17px}
-.acard{position:relative;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);cursor:pointer;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;overflow:hidden}
+.acard{position:relative;background:var(--color-surface);border:none;border-radius:var(--r-lg);cursor:pointer;box-shadow:var(--shadow-card);transition:border-color .15s,box-shadow .15s;display:flex;flex-direction:column;overflow:hidden}
 .acard:hover{border-color:var(--color-primary-border);box-shadow:0 2px 10px rgba(15,23,42,.06)}
 .acard.next{border-color:var(--color-primary)}
 .ac-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 18px 0}
@@ -165,7 +166,7 @@ body.nav-collapsed .profile .pname{display:none}
 .ptab.active{color:var(--color-text);border-bottom-color:var(--color-primary-text);font-weight:600}
 .ptab.active span{color:var(--color-text);font-weight:600}
 
-.weekcal{background:var(--color-surface);border:1px solid var(--color-separator);border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden}
+.weekcal{background:var(--color-surface);border:none;border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden}
 .wcscroll{overflow-x:auto}
 .wc-inner{min-width:900px}
 .wc-row{display:grid;grid-template-columns:58px repeat(7,1fr)}
@@ -238,7 +239,7 @@ body.nav-collapsed .profile .pname{display:none}
 .rtab .c{background:var(--color-surface-muted);color:var(--color-text-soft);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 7px}
 .rtab.active .c{background:var(--color-primary-tint);color:var(--color-primary-text)}
 #reviewList{display:flex;flex-direction:column;gap:16px}
-.revcard{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--shadow-card);margin-bottom:6px}
+.revcard{background:var(--color-surface);border:none;border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--shadow-card);margin-bottom:6px}
 .rv-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .rv-phead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .rv-pnum{width:34px;height:34px;border-radius:50%;background:var(--color-surface-muted);color:var(--color-text);font-size:13px;font-weight:700;display:grid;place-items:center;flex:none}
@@ -246,7 +247,7 @@ body.nav-collapsed .profile .pname{display:none}
 .rv-tpill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-text-soft);background:var(--color-surface-subtle);border-radius:var(--r-pill);padding:4px 11px}
 .rv-tpill svg{width:14px;height:14px}
 .rv-pctx{font-size:13px;color:var(--color-text-soft)}
-.rv-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--c-partial);background:var(--c-partial-soft);border-radius:var(--r-pill);padding:4px 12px}
+.rv-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--c-review);background:var(--c-review-soft);border-radius:var(--r-pill);padding:4px 12px}
 .rv-badge svg{width:15px;height:15px}
 .rv-cols{display:grid;grid-template-columns:300px minmax(0,1fr) 270px;gap:28px;align-items:start}
 .rv-video{position:relative;aspect-ratio:16/10;border-radius:var(--r-md);overflow:hidden;background:var(--color-surface-muted)}
@@ -390,7 +391,7 @@ function yFor(min){return (min-GSTART)/60*HOURPX;}
 function fmtDur(m){return m<60?('In '+m+' min'):('In '+Math.round(m/60)+' hour'+(Math.round(m/60)===1?'':'s'));}
 
 const REVIEW=[
-  {num:13,type:'pitch',when:'Today',ctx:'1v1 transition',title:'Braking above usual load',badge:'Context missing',
+  {num:13,type:'pitch',when:'Today',ctx:'1v1 transition',title:'Braking above usual load',badge:'Context missing',poster:'clips_zoomed/poster_13_chest_fly.jpg',
    meta:[['Observed','Stop from 23.7 km/h'],['Compared','Above his usual braking load'],['Drill','1v1 to goal'],['Clip window','00:18–00:31']],
    frames:[['Approach','00:21.40','00:18–00:31'],['Stop','00:24.80','00:18–00:31']],
    shows:'One braking action is visible. The clip does not show the sprint that led into it.',
@@ -591,12 +592,12 @@ function revCardHTML(r){
         <span class="rv-tpill">${typeIcon(r.type)}${typeLabel(r.type)}</span>
         <span class="rv-pctx">${r.when} · ${r.ctx}</span>
       </div>
-      <span class="rv-badge"><i data-lucide="alert-triangle"></i>${badge}</span>
+      <span class="rv-badge">${ALERT_SVG}${badge}</span>
     </div>
     <div class="rv-cols">
       <div class="rv-left">
         <div class="rv-video">
-          <img src="clips/placeholder_thumb.jpg" alt="">
+          <img src="${r.poster||'clips/placeholder_thumb.jpg'}" alt="">
           <span class="rv-vlabel">Sample footage</span>
           <button class="rv-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
