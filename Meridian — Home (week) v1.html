@@ -187,15 +187,16 @@ body.nav-collapsed .profile .pname{display:none}
 .wc-dayh.hasadev{padding-bottom:0}
 .wc-adev{align-self:stretch;margin:2px 6px 0;background-color:var(--color-surface-subtle);border-radius:8px 8px 0 0;padding:4px 8px 7px;font-size:11.5px;color:var(--color-text-soft);display:flex;align-items:center;justify-content:center;gap:5px;line-height:1.3;overflow:hidden}
 .wc-adev svg{width:14px;height:14px;flex:none;color:var(--color-text-disabled)}
-.wc-ev{position:absolute;left:5px;right:5px;border-radius:7px 0 0 7px;padding:6px 8px 6px 9px;overflow:hidden;border-left:3px solid;box-shadow:0 1px 2px rgba(15,23,42,.05);display:block;min-height:30px;text-decoration:none}
+.wc-ev{position:absolute;left:5px;right:5px;border-radius:7px 0 0 7px;padding:6px 8px 6px 11px;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.05);display:block;min-height:30px;text-decoration:none}
+.wc-ev::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ev-accent)}
 .wc-ev .ev-title{font-size:12.5px;font-weight:700;color:var(--color-text);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wc-ev .ev-time{font-size:11px;color:var(--color-text-soft);font-variant-numeric:tabular-nums;margin-top:1px}
 .wc-ev .ev-loc{font-size:11px;color:var(--color-text-soft)}
 .wc-ev .ev-ic{position:absolute;right:6px;bottom:6px;display:grid;place-items:center}
 .wc-ev .ev-ic svg{width:15px;height:15px;display:block}
-.ev-pitch{background:#EDF4F1;border-left-color:#6F9588}
-.ev-gym{background:#EEF0F5;border-left-color:#7C879D}
-.ev-match{background:#FAF4E6;border-left-color:#AD9057;cursor:default}
+.ev-pitch{background:#EDF4F1;--ev-accent:#6F9588}
+.ev-gym{background:#EEF0F5;--ev-accent:#7C879D}
+.ev-match{background:#FAF4E6;--ev-accent:#AD9057;cursor:default}
 .ev-ic.vid{color:var(--color-primary-text)}
 .ev-ic.needed{color:var(--c-partial)}
 .wc-now{position:absolute;left:0;right:0;height:2px;background:var(--c-now);z-index:6}
@@ -237,44 +238,50 @@ body.nav-collapsed .profile .pname{display:none}
 .rtab .c{background:var(--color-surface-muted);color:var(--color-text-soft);font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:1px 7px}
 .rtab.active .c{background:var(--color-primary-tint);color:var(--color-primary-text)}
 #reviewList{display:flex;flex-direction:column;gap:16px}
-.revcard{background:var(--color-surface-subtle);border:1px solid var(--color-border-subtle);border-radius:var(--r-lg);padding:18px 20px;display:grid;grid-template-columns:238px minmax(0,1fr) 300px;gap:24px;align-items:start}
-.rv-head{display:flex;gap:10px;align-items:center;margin-bottom:14px}
-.rv-ava{width:36px;height:36px;border-radius:50%;overflow:hidden;flex:none;background:var(--color-surface-muted)}
-.rv-ava img{width:100%;height:100%;object-fit:cover;display:block}
-.rv-title{font-size:15px;font-weight:700;line-height:1.15}
-.rv-sub{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-soft);margin-top:2px}
-.rv-sub .ti svg{width:14px;height:14px;display:block}
-.rv-meta{display:flex;flex-direction:column;gap:11px}
-.rv-row{display:flex;gap:12px;font-size:13px;line-height:1.35}
-.rv-row .k{color:var(--color-text-soft);width:82px;flex:none}
+.revcard{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--shadow-card);margin-bottom:12px}
+.rv-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.rv-phead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rv-pnum{width:34px;height:34px;border-radius:50%;background:var(--color-surface-muted);color:var(--color-text);font-size:13px;font-weight:700;display:grid;place-items:center;flex:none}
+.rv-pname{font-size:15.5px;font-weight:700}
+.rv-tpill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-text-soft);background:var(--color-surface-subtle);border-radius:var(--r-pill);padding:4px 11px}
+.rv-tpill svg{width:14px;height:14px}
+.rv-pctx{font-size:13px;color:var(--color-text-soft)}
+.rv-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--c-partial);background:var(--c-partial-soft);border-radius:var(--r-pill);padding:4px 12px}
+.rv-badge svg{width:15px;height:15px}
+.rv-cols{display:grid;grid-template-columns:300px minmax(0,1fr) 270px;gap:28px;align-items:start}
+.rv-video{position:relative;aspect-ratio:16/10;border-radius:var(--r-md);overflow:hidden;background:var(--color-surface-muted)}
+.rv-video img{width:100%;height:100%;object-fit:cover;display:block}
+.rv-vlabel{position:absolute;top:8px;left:8px;background:rgba(17,24,39,.72);color:#fff;font-size:11px;font-weight:600;border-radius:5px;padding:2px 7px}
+.rv-play{position:absolute;inset:0;margin:auto;width:46px;height:46px;border-radius:50%;background:rgba(17,24,39,.5);color:#fff;border:0;display:grid;place-items:center;cursor:pointer}
+.rv-play svg{width:20px;height:20px;margin-left:2px}
+.rv-scrub{margin-top:12px}
+.rv-track{position:relative;height:4px;border-radius:2px;background:var(--color-border);margin:6px 3px 0}
+.rv-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:var(--color-primary);border:2px solid var(--color-surface)}
+.rv-scrub-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-top:9px;font-size:12px}
+.rv-sl b{display:block;font-size:12.5px;font-weight:700;color:var(--color-text)}
+.rv-sl span{color:var(--color-text-soft)}
+.rv-sl.rt{text-align:right}
+.rv-sc{color:var(--color-text-soft);text-align:center;white-space:nowrap}
+.rv-mtitle{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.2;margin-bottom:14px}
+.rv-mid .rv-meta{display:flex;flex-direction:column;gap:11px}
+.rv-row{display:flex;gap:14px;font-size:13.5px;line-height:1.35}
+.rv-row .k{color:var(--color-text-soft);width:84px;flex:none}
 .rv-row .v{font-weight:600;color:var(--color-text)}
-.rv-frames{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.rv-img{position:relative;aspect-ratio:16/10;border-radius:var(--r-md);overflow:hidden;background:var(--color-surface-muted)}
-.rv-img img{width:100%;height:100%;object-fit:cover;display:block}
-.rv-cap{margin-top:8px}
-.rv-cap b{font-size:13.5px;font-weight:700;display:block;color:var(--color-text)}
-.rv-cap span{font-size:12px;color:var(--color-text-soft)}
-.rv-shows-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--color-text)}
-.rv-shows-h svg{width:17px;height:17px;color:var(--color-primary-text)}
-.rv-read p{font-size:13.5px;color:var(--color-text-muted);margin-top:8px;line-height:1.5}
-.rv-coach{margin-top:16px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-md);padding:14px 15px}
-.rv-coach-h{font-size:11px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--color-text-soft)}
-.rv-coach-b{font-size:14px;font-weight:700;margin-top:8px;line-height:1.35;color:var(--color-text)}
-.rv-verdict{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px}
-.rv-vbtn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--color-text-muted);cursor:pointer;border:0;background:none;padding:0;font-family:inherit}
-.rv-vbtn .box{width:16px;height:16px;border:1.5px solid var(--color-border);border-radius:5px;display:grid;place-items:center;color:#fff;transition:background .12s,border-color .12s}
-.rv-vbtn .box svg{width:11px;height:11px;opacity:0}
-.rv-vbtn:hover .box{border-color:var(--color-text-soft)}
-.rv-vbtn.confirm:hover{color:var(--color-primary-text)}
-.rv-vbtn.sel .box svg{opacity:1}
-.rv-vbtn.sel.confirm .box{background:var(--color-primary);border-color:var(--color-primary)}
-.rv-vbtn.sel.confirm{color:var(--color-primary-text)}
-.rv-vbtn.sel.other .box{background:var(--color-text-muted);border-color:var(--color-text-muted)}
+.rv-ev-label{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;margin:16px 0 7px;padding-top:15px;border-top:1px solid var(--color-separator)}
+.rv-ev{font-size:13.5px;color:var(--color-text-muted);line-height:1.5}
+.rv-dn-label{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;margin-bottom:8px}
+.rv-dn{font-size:16px;font-weight:700;line-height:1.3;color:var(--color-text);margin-bottom:16px}
+.rv-review{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;font-size:14px;font-weight:700;color:var(--color-primary-text);background:var(--color-surface);border:1px solid var(--color-primary-border);border-radius:var(--r-md);padding:10px 14px;cursor:pointer;font-family:inherit}
+.rv-review svg{width:17px;height:17px}
+.rv-actions{display:flex;align-items:center;gap:16px;margin-top:14px}
+.rv-act{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--color-text-muted);background:none;border:0;padding:0;cursor:pointer;font-family:inherit}
+.rv-act svg{width:16px;height:16px}
+.rv-act:hover{color:var(--color-text)}
+.rv-asep{width:1px;height:16px;background:var(--color-border)}
 .rv-viewall{display:inline-flex;align-items:center;gap:7px;color:var(--color-primary-text);font-size:14px;font-weight:700;margin-top:18px;cursor:pointer}
 .rv-viewall svg{width:16px;height:16px}
 .rempty{font-size:13px;color:var(--color-text-soft);padding:20px 2px}
-@media(max-width:1080px){.revcard{grid-template-columns:1fr}}
-@media(max-width:560px){.rv-frames{grid-template-columns:1fr}}
+@media(max-width:1080px){.rv-cols{grid-template-columns:1fr;gap:20px}}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:#111827;color:#fff;font-size:13px;font-weight:500;border-radius:var(--r-md);padding:11px 16px;box-shadow:var(--shadow-pop);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:80}
@@ -352,7 +359,7 @@ const CLOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 const VIDEO_SVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h8A1.5 1.5 0 0 1 15 6.5v11A1.5 1.5 0 0 1 13.5 19h-8A1.5 1.5 0 0 1 4 17.5zM16.5 9.6l3.3-2.2a.8.8 0 0 1 1.2.7v7.8a.8.8 0 0 1-1.2.7l-3.3-2.2z"/></svg>';
 function typeIcon(t){return t==='gym'?GYM_SVG:PITCH_SVG;}
 const DOT_SVG='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="currentColor"/></svg>';
-const PIN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.1"/></svg>';
+const PIN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
 function typeLabel(t){return t==='gym'?'Gym':'Pitch';}
 
 /* ============ DATA ============ */
@@ -383,12 +390,12 @@ function yFor(min){return (min-GSTART)/60*HOURPX;}
 function fmtDur(m){return m<60?('In '+m+' min'):('In '+Math.round(m/60)+' hour'+(Math.round(m/60)===1?'':'s'));}
 
 const REVIEW=[
-  {num:13,type:'pitch',when:'Today',ctx:'1v1 transition',
+  {num:13,type:'pitch',when:'Today',ctx:'1v1 transition',title:'Braking above usual load',badge:'Context missing',
    meta:[['Observed','Stop from 23.7 km/h'],['Compared','Above his usual braking load'],['Drill','1v1 to goal'],['Clip window','00:18–00:31']],
    frames:[['Approach','00:21.40','00:18–00:31'],['Stop','00:24.80','00:18–00:31']],
    shows:'One braking action is visible. The clip does not show the sprint that led into it.',
    coach:'Compare with his usual pattern before using.'},
-  {num:7,type:'gym',when:'Today',ctx:'Upper push',
+  {num:7,type:'gym',when:'Today',ctx:'Upper push',title:'Full set needs confirmation',badge:'Set unconfirmed',
    meta:[['Prescribed','3 × 5 reps'],['Load','92.5 kg top set'],['Recorded','2 / ? sets, unconfirmed'],['Clip window','00:24–00:43']],
    frames:[['Rep start','00:30.67','00:24–00:43'],['Movement','00:33.33','00:24–00:43']],
    shows:'One complete rep is visible. The clip does not show the full set.',
@@ -573,28 +580,49 @@ function frameFig(num,f,idx){
   </figure>`;
 }
 function revCardHTML(r){
+  const title=r.title||r.ctx, badge=r.badge||'Context missing';
+  const meta=r.meta.filter(x=>x[0]!=='Clip window'&&x[0]!=='Compared');
+  const f0=r.frames[0], f1=r.frames[1];
   return `<div class="revcard" data-num="${r.num}">
-    <div class="rv-info">
-      <div class="rv-head">
-        <div class="rv-ava"><img src="https://randomuser.me/api/portraits/men/${r.num}.jpg" alt=""></div>
-        <div>
-          <div class="rv-title">Player ${String(r.num).padStart(2,'0')}</div>
-          <div class="rv-sub"><span class="ti" style="color:var(--color-text-soft)">${typeIcon(r.type)}</span>${typeLabel(r.type)} · ${r.when} · ${r.ctx}</div>
+    <div class="rv-top">
+      <div class="rv-phead">
+        <div class="rv-pnum">${String(r.num).padStart(2,'0')}</div>
+        <div class="rv-pname">Player ${String(r.num).padStart(2,'0')}</div>
+        <span class="rv-tpill">${typeIcon(r.type)}${typeLabel(r.type)}</span>
+        <span class="rv-pctx">${r.when} · ${r.ctx}</span>
+      </div>
+      <span class="rv-badge"><i data-lucide="alert-triangle"></i>${badge}</span>
+    </div>
+    <div class="rv-cols">
+      <div class="rv-left">
+        <div class="rv-video">
+          <img src="clips/placeholder_thumb.jpg" alt="">
+          <span class="rv-vlabel">Sample footage</span>
+          <button class="rv-play"><i data-lucide="play"></i></button>
+        </div>
+        <div class="rv-scrub">
+          <div class="rv-track"><span class="rv-dot" style="left:32%"></span><span class="rv-dot" style="left:64%"></span></div>
+          <div class="rv-scrub-row">
+            <div class="rv-sl"><b>${f0[0]}</b><span>${f0[1]}</span></div>
+            <div class="rv-sc">Clip ${f0[2]}</div>
+            <div class="rv-sl rt"><b>${f1[0]}</b><span>${f1[1]}</span></div>
+          </div>
         </div>
       </div>
-      <div class="rv-meta">${metaRows(r.meta)}</div>
-    </div>
-    <div class="rv-frames">${frameFig(r.num,r.frames[0],'a')}${frameFig(r.num,r.frames[1],'b')}</div>
-    <div class="rv-read">
-      <div class="rv-shows-h">What the clip shows <i data-lucide="video"></i></div>
-      <p>${r.shows}</p>
-      <div class="rv-coach">
-        <div class="rv-coach-h">For the coach</div>
-        <div class="rv-coach-b">${r.coach}</div>
-        <div class="rv-verdict">
-          <button class="rv-vbtn confirm" data-v="Confirm"><span class="box">${CHECK_SVG}</span>Confirm</button>
-          <button class="rv-vbtn other" data-v="Correct"><span class="box">${CHECK_SVG}</span>Correct</button>
-          <button class="rv-vbtn other" data-v="Dismiss"><span class="box">${CHECK_SVG}</span>Dismiss</button>
+      <div class="rv-mid">
+        <div class="rv-mtitle">${title}</div>
+        <div class="rv-meta">${metaRows(meta)}</div>
+        <div class="rv-ev-label">Evidence</div>
+        <div class="rv-ev">${r.shows}</div>
+      </div>
+      <div class="rv-right">
+        <div class="rv-dn-label">Decision needed</div>
+        <div class="rv-dn">${r.coach}</div>
+        <button class="rv-review" data-v="Review"><i data-lucide="play"></i>Review clip</button>
+        <div class="rv-actions">
+          <button class="rv-act" data-v="Correct"><i data-lucide="pencil"></i>Correct</button>
+          <span class="rv-asep"></span>
+          <button class="rv-act" data-v="Dismiss"><i data-lucide="x"></i>Dismiss</button>
         </div>
       </div>
     </div>
@@ -627,9 +655,8 @@ document.getElementById('weekFilters').addEventListener('click',e=>{
   renderWeek();
 });
 document.getElementById('reviewList').addEventListener('click',e=>{
-  const b=e.target.closest('.rv-vbtn'); if(!b)return;
+  const b=e.target.closest('.rv-act'); if(!b)return;
   const card=b.closest('.revcard'); const num=parseInt(card.dataset.num,10); const v=b.dataset.v;
-  b.classList.add('sel');
   decided.add(num);
   toast('Logged · '+v+' · Player '+String(num).padStart(2,'0'));
   setTimeout(()=>{ renderTabs(); renderReview(); },260);
