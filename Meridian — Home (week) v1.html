@@ -242,7 +242,8 @@ body.nav-collapsed .profile .pname{display:none}
 .revcard{background:var(--color-surface);border:none;border-radius:var(--r-lg);padding:18px 20px;box-shadow:var(--shadow-card);margin-bottom:6px}
 .rv-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .rv-phead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.rv-pnum{width:34px;height:34px;border-radius:50%;background:var(--color-surface-muted);color:var(--color-text);font-size:13px;font-weight:700;display:grid;place-items:center;flex:none}
+.rv-pnum{width:34px;height:34px;border-radius:50%;corner-shape:round;background:var(--color-surface-muted);color:var(--color-text);font-size:13px;font-weight:700;display:grid;place-items:center;flex:none;overflow:hidden}
+.rv-pnum img{width:100%;height:100%;object-fit:cover;display:block}
 .rv-pname{font-size:15.5px;font-weight:700}
 .rv-tpill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--color-text-soft);background:var(--color-surface-subtle);border-radius:var(--r-pill);padding:4px 11px}
 .rv-tpill svg{width:14px;height:14px}
@@ -250,8 +251,9 @@ body.nav-collapsed .profile .pname{display:none}
 .rv-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--c-review);background:var(--c-review-soft);border-radius:var(--r-pill);padding:4px 12px}
 .rv-badge svg{width:15px;height:15px}
 .rv-cols{display:grid;grid-template-columns:300px minmax(0,1fr) 270px;gap:28px;align-items:start}
-.rv-video{position:relative;aspect-ratio:16/10;border-radius:var(--r-md);overflow:hidden;background:var(--color-surface-muted)}
-.rv-video img{width:100%;height:100%;object-fit:cover;display:block}
+.rv-video{position:relative;aspect-ratio:16/10;border-radius:var(--r-md);overflow:hidden;background:var(--color-surface-muted);cursor:pointer}
+.rv-video img,.rv-video video{width:100%;height:100%;object-fit:cover;display:block}
+.rv-video.playing .rv-play{display:none}
 .rv-vlabel{position:absolute;top:8px;left:8px;background:rgba(17,24,39,.72);color:#fff;font-size:11px;font-weight:600;border-radius:5px;padding:2px 7px}
 .rv-play{position:absolute;inset:0;margin:auto;width:44px;height:44px;border-radius:50%;corner-shape:round;background:rgba(17,24,39,.55);color:#fff;border:0;display:grid;place-items:center;cursor:pointer}
 .rv-play svg{width:26px;height:26px;margin-left:3px}
@@ -428,6 +430,18 @@ const REVIEW=[
    coach:'For a coach to confirm the run timing.'},
 ];
 
+/* Placeholder footage per card (prototype) — files live in clips_zoomed/ */
+const CLIPDIR='clips_zoomed/';
+const MEDIA={
+  13:['poster_13_chest_fly.jpg','player13_chest_fly_set1_108.0s-130.0s_14reps.mp4'],
+  7 :['poster_08_triceps_pushdown.jpg','player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4'],
+  18:['poster_03_squat.jpg','player03_squat_set1_000.0s-028.3s_6reps.mp4'],
+  4 :['poster_01_seated_row.jpg','player01_seated_row_set1_023.1s-042.1s_12reps.mp4'],
+  22:['poster_20_leg_curl.jpg','player20_leg_curl_set1_164.7s-167.9s_3reps.mp4'],
+  9 :['poster_20_leg_curl.jpg','player20_leg_curl_set1_164.7s-167.9s_3reps.mp4'],
+  16:['poster_01_seated_row.jpg','player01_seated_row_set1_023.1s-042.1s_12reps.mp4'],
+};
+
 let wkFilter='all', rvFilter='all', tcIndex=0;
 const decided=new Set();
 const VIEWALL="Meridian%20%E2%80%94%20Needs%20review%20(all).html";
@@ -582,12 +596,18 @@ function frameFig(num,f,idx){
 }
 function revCardHTML(r){
   const title=r.title||r.ctx, badge=r.badge||'Context missing';
+  const med=MEDIA[r.num];
+  const poster=med?CLIPDIR+med[0]:(r.poster||'clips/placeholder_thumb.jpg');
+  const clip=med?CLIPDIR+med[1]:'';
+  const media= clip
+    ? `<video poster="${poster}" preload="metadata" muted loop playsinline><source src="${clip}" type="video/mp4"></video>`
+    : `<img src="${poster}" alt="">`;
   const meta=r.meta.filter(x=>x[0]!=='Clip window'&&x[0]!=='Compared');
   const f0=r.frames[0], f1=r.frames[1];
   return `<div class="revcard" data-num="${r.num}">
     <div class="rv-top">
       <div class="rv-phead">
-        <div class="rv-pnum">${String(r.num).padStart(2,'0')}</div>
+        <div class="rv-pnum"><img src="https://randomuser.me/api/portraits/men/${r.num}.jpg" alt="" loading="lazy"></div>
         <div class="rv-pname">Player ${String(r.num).padStart(2,'0')}</div>
         <span class="rv-tpill">${typeIcon(r.type)}${typeLabel(r.type)}</span>
         <span class="rv-pctx">${r.when} · ${r.ctx}</span>
@@ -597,8 +617,7 @@ function revCardHTML(r){
     <div class="rv-cols">
       <div class="rv-left">
         <div class="rv-video">
-          <img src="${r.poster||'clips/placeholder_thumb.jpg'}" alt="">
-          <span class="rv-vlabel">Sample footage</span>
+          ${media}
           <button class="rv-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
         </div>
         <div class="rv-scrub">
@@ -653,6 +672,8 @@ document.getElementById('weekFilters').addEventListener('click',e=>{
   renderWeek();
 });
 document.getElementById('reviewList').addEventListener('click',e=>{
+  const vbox=e.target.closest('.rv-video');
+  if(vbox){ const v=vbox.querySelector('video'); if(v){ if(v.paused){v.play();vbox.classList.add('playing');} else {v.pause();vbox.classList.remove('playing');} v.onended=()=>vbox.classList.remove('playing'); } return; }
   const b=e.target.closest('.rv-act'); if(!b)return;
   const card=b.closest('.revcard'); const num=parseInt(card.dataset.num,10); const v=b.dataset.v;
   decided.add(num);
