@@ -221,18 +221,12 @@ body.nav-collapsed .profile .pname{display:none}
 <main class="main">
   <div class="players">
 
-    <div class="crumb">
-      <div class="crumb-path"><a href="Meridian%20%E2%80%94%20Home%20(week)%20v1.html">Home</a><span class="sep">/</span><span class="here">Players</span></div>
-      <div class="crumb-sample">Sample data</div>
-    </div>
-
     <div class="phead">
       <div class="phead-l">
         <div class="ptitle-row"><div class="ptitle">Players</div><div class="pcount" id="pcount">3</div></div>
         <div class="psub">First team</div>
       </div>
       <div class="pctrls">
-        <div class="psearch"><i data-lucide="search"></i><input id="pq" type="text" placeholder="Find player"></div>
         <div class="pdd" id="ddPos"><button class="pdd-btn"><span class="lab">All positions</span><i data-lucide="chevron-down"></i></button><div class="pdd-menu"></div></div>
         <div class="pdd" id="ddRev"><button class="pdd-btn"><span class="lab">All review states</span><i data-lucide="chevron-down"></i></button><div class="pdd-menu"></div></div>
       </div>
@@ -249,11 +243,6 @@ body.nav-collapsed .profile .pname{display:none}
 
     <div class="pfoot">
       <div id="showCount">Showing 3 players</div>
-      <div class="ppage">
-        <button class="pbtn" disabled aria-label="Previous page"><i data-lucide="chevron-left"></i></button>
-        <span class="plabel">Page 1</span>
-        <button class="pbtn" disabled aria-label="Next page"><i data-lucide="chevron-right"></i></button>
-      </div>
     </div>
 
   </div>
@@ -328,7 +317,7 @@ function setupDD(id, opts, getVal, setVal){
 setupDD('ddPos', POSITIONS, ()=>fPos, v=>fPos=v);
 setupDD('ddRev', REVIEWS, ()=>fRev, v=>fRev=v);
 document.addEventListener('click',()=>document.querySelectorAll('.pdd').forEach(x=>x.classList.remove('open')));
-document.getElementById('pq').addEventListener('input',e=>{ fQ=e.target.value.trim(); render(); });
+var _pq=document.getElementById('pq'); if(_pq) _pq.addEventListener('input',e=>{ fQ=e.target.value.trim(); render(); });
 
 render();
 
