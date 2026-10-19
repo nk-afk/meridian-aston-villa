@@ -346,6 +346,7 @@ document.getElementById('reviewList').addEventListener('click',e=>{
   setTimeout(()=>{ renderTabs(); renderReview(); },260);
 });
 renderTabs(); renderReview(); icons();
+(function(){ var b=document.querySelector('.va-back'); if(b) b.addEventListener('click',function(){ try{ sessionStorage.setItem('mh-restore','1'); }catch(e){} }); })();
 
 /* ============ PLAN-A-SESSION METHOD PICKER ============ */
 const PLAN_METHODS=[

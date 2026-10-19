@@ -999,15 +999,20 @@ const MONTHS_FULL=['January','February','March','April','May','June','July','Aug
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DOW1=['S','M','T','W','T','F','S'];
 const SESSION_DAYS={'2026-09-08':true,'2026-09-09':true,'2026-09-10':true};
-const TODAY=new Date(2026,8,10); TODAY.setHours(0,0,0,0);
+const TODAY=new Date(2026,8,8); TODAY.setHours(0,0,0,0);
 let selected=new Date(2026,8,8);
 /* sessions for the day; supports any count (2, 3, 4…) */
-const SESSIONS=[
-  {name:'Strength',start:'09:00',end:'10:05',cams:4},
-  {name:'Rehab',start:'12:30',end:'13:20',cams:4,processing:true},
-  {name:'Mobility',start:'15:00',end:'16:05',cams:4,upcoming:true},
-];
-let sessIdx=2;
+/* Gym schedule per day — matches the Home page. Days not listed have no gym sessions. */
+const GYM_SCHEDULE={
+  '2026-09-07':[{name:'Lower body',start:'15:00',end:'16:10',cams:4}],
+  '2026-09-08':[{name:'Strength',start:'09:00',end:'10:05',cams:4},{name:'Rehab',start:'12:30',end:'13:20',cams:4,processing:true},{name:'Mobility',start:'15:00',end:'16:05',cams:4,upcoming:true}],
+  '2026-09-09':[{name:'Mobility',start:'15:00',end:'16:00',cams:4,upcoming:true}]
+};
+let SESSIONS=[];
+let sessIdx=0;
+function setSessionsForDate(){ SESSIONS=GYM_SCHEDULE[isoDay(selected)]||[]; if(sessIdx>=SESSIONS.length) sessIdx=0; }
+var gymReady=false;
+function saveGymState(){ if(!gymReady) return; try{ sessionStorage.setItem('gym-sess', String(sessIdx)); sessionStorage.setItem('gym-date', isoDay(selected)); }catch(e){} }
 function weekStartSun(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x;} /* Monday-first */
 let viewStart=weekStartSun(selected);
 function isoDay(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -1030,22 +1035,41 @@ function renderSessPop(){
   icons();
 }
 function applySessionState(){
-  var s=SESSIONS[sessIdx];
-  var state = s.processing ? 'processing' : (s.upcoming ? 'upcoming' : '');
+  var noSess=!SESSIONS.length;
+  var s=noSess?null:SESSIONS[sessIdx];
+  var state = noSess ? 'none' : (s.processing ? 'processing' : (s.upcoming ? 'upcoming' : ''));
   var empty = !!state;
   var cols=document.querySelector('.cols'); if(cols) cols.style.display=empty?'none':'';
   var ha=document.querySelector('.headacts'); if(ha) ha.style.display=empty?'none':'';
   var ps=document.getElementById('procState'); if(!ps) return;
   ps.hidden=!empty;
   if(empty){
-    var cfg = state==='processing'
-      ? {icon:'loader', nospin:'', title:'Session video is still processing', sub:'This usually takes a little while after the session ends.'}
-      : {icon:'clock', nospin:' nospin', title:"This session hasn't started yet", sub:"It's scheduled for "+s.start+"–"+s.end+"."};
+    var cfg;
+    if(state==='none') cfg={icon:'calendar-x', nospin:' nospin', title:'No gym sessions scheduled', sub:'There are no gym sessions on this day.'};
+    else if(state==='processing') cfg={icon:'loader', nospin:'', title:'Session video is still processing', sub:'This usually takes a little while after the session ends.'};
+    else cfg={icon:'clock', nospin:' nospin', title:"This session hasn't started yet", sub:"It's scheduled for "+s.start+"–"+s.end+"."};
     ps.innerHTML='<div class="proc-ic'+cfg.nospin+'"><i data-lucide="'+cfg.icon+'"></i></div><div class="proc-title">'+cfg.title+'</div><div class="proc-sub">'+cfg.sub+'</div>';
     icons();
   }
 }
 function updateTitle(){
+  setSessionsForDate();
+  var titleBtn=document.getElementById('sessTitleBtn'), chev=titleBtn&&titleBtn.querySelector('.st-chev');
+  if(!SESSIONS.length){
+    document.getElementById('sessTitle').textContent='No gym sessions';
+    document.getElementById('subline').textContent=fmtLong(selected)+' · No sessions scheduled';
+    document.getElementById('sessCount').textContent='';
+    document.getElementById('sessPrev').disabled=true;
+    document.getElementById('sessNext').disabled=true;
+    if(titleBtn) titleBtn.style.pointerEvents='none';
+    if(chev) chev.style.display='none';
+    closeSessPop();
+    applySessionState();
+    saveGymState();
+    return;
+  }
+  if(titleBtn) titleBtn.style.pointerEvents='';
+  if(chev) chev.style.display='';
   const s=SESSIONS[sessIdx];
   document.getElementById('sessTitle').textContent=s.name;
   document.getElementById('subline').textContent=fmtLong(selected)+' · '+s.start+'–'+s.end+' · '+s.cams+' ceiling cameras';
@@ -1054,6 +1078,7 @@ function updateTitle(){
   document.getElementById('sessNext').disabled=sessIdx===SESSIONS.length-1;
   renderSessPop();
   applySessionState();
+  saveGymState();
 }
 function closeSessPop(){ document.getElementById('sessPop').hidden=true; }
 document.getElementById('sessTitleBtn').onclick=function(e){ e.stopPropagation(); const p=document.getElementById('sessPop'); if(p.hidden) p.hidden=false; else p.hidden=true; };
@@ -1090,7 +1115,7 @@ document.getElementById('dpNext').onclick=function(e){ e.stopPropagation(); popM
 document.getElementById('dpToday').onclick=function(e){ e.stopPropagation(); pickDate(new Date(TODAY)); };
 document.getElementById('dpGrid').addEventListener('click',function(e){ var c=e.target.closest('.dp-cell'); if(!c||c.classList.contains('disabled'))return; var p=c.dataset.iso.split('-'); pickDate(new Date(+p[0],+p[1]-1,+p[2])); });
 document.addEventListener('click',function(e){ var pop=document.getElementById('datePop'); if(pop && !pop.hidden && !e.target.closest('.dp-anchor')) closeDatePop(); });
-document.getElementById('days').addEventListener('click',function(e){const el=e.target.closest('.day');if(!el||el.classList.contains('future'))return;const d=new Date(viewStart);d.setDate(viewStart.getDate()+(+el.dataset.i));selected=d;renderWeek();updateTitle();icons();});
+document.getElementById('days').addEventListener('click',function(e){const el=e.target.closest('.day');if(!el)return;const d=new Date(viewStart);d.setDate(viewStart.getDate()+(+el.dataset.i));selected=d;renderWeek();updateTitle();icons();});
 
 /* ============ TABLE/FILTER WIRING ============ */
 document.getElementById('ptabs').addEventListener('click',e=>{const b=e.target.closest('.ptab');if(!b)return;tab=b.dataset.tab;page=1;renderTabs();renderTable();});
@@ -1175,7 +1200,19 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeExCli
 
 /* ============ INIT ============ */
 renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
-(function(){ try{ var q=new URLSearchParams(location.search); var dt=q.get('date'); if(dt){ var d=new Date(dt+'T00:00:00'); if(!isNaN(d.getTime())){ selected=d; viewStart=weekStartSun(selected); renderWeek(); } } var sp=q.get('session'); if(sp){ var i=SESSIONS.findIndex(function(s){return s.name.toLowerCase()===sp.toLowerCase();}); if(i>=0){ sessIdx=i; } } updateTitle(); }catch(e){} icons(); })();
+(function(){ try{
+  var q=new URLSearchParams(location.search), dt=q.get('date'), sp=q.get('session');
+  if(sp||dt){
+    if(dt){ var d=new Date(dt+'T00:00:00'); if(!isNaN(d.getTime())){ selected=d; viewStart=weekStartSun(selected); renderWeek(); } }
+    setSessionsForDate();
+    if(sp){ var i=SESSIONS.findIndex(function(s){return s.name.toLowerCase()===sp.toLowerCase();}); if(i>=0) sessIdx=i; }
+  } else {
+    var ld=sessionStorage.getItem('gym-date'); if(ld){ var d2=new Date(ld+'T00:00:00'); if(!isNaN(d2.getTime())){ selected=d2; viewStart=weekStartSun(selected); renderWeek(); } }
+    setSessionsForDate();
+    var ls=sessionStorage.getItem('gym-sess'); if(ls!==null){ var li=parseInt(ls,10); if(li>=0&&li<SESSIONS.length) sessIdx=li; }
+  }
+  gymReady=true; updateTitle();
+}catch(e){ gymReady=true; } icons(); })();
 
 /* ============ MERIDIAN SHELL ============ */
 (function(){
