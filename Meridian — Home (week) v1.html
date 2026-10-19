@@ -759,7 +759,7 @@ document.getElementById('reviewList').addEventListener('click',e=>{
   toast('Logged · '+v+' · Player '+String(num).padStart(2,'0'));
   setTimeout(()=>{ renderTabs(); renderReview(); },260);
 });
-document.getElementById('weekgrid').addEventListener('click',function(e){ const f=e.target.closest('.ev-flag'); if(f){ e.preventDefault(); e.stopPropagation(); openPlanModal(); } });
+document.getElementById('weekgrid').addEventListener('click',function(e){ const f=e.target.closest('.ev-flag'); if(f){ e.preventDefault(); e.stopPropagation(); openPlanModal(); return; } const pe=e.target.closest('.wc-ev.ev-pitch'); if(pe){ e.preventDefault(); toast('This demo covers gym sessions only — pitch sessions are shown for context.'); } });
 document.getElementById('prevWk').onclick=()=>{baseMon=addDays(baseMon,-7);renderWeek();};
 document.getElementById('nextWk').onclick=()=>{baseMon=addDays(baseMon,7);renderWeek();};
 document.getElementById('todayWk').onclick=()=>{baseMon=mondayOf(TODAY);renderWeek();};
