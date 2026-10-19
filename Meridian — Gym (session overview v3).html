@@ -447,6 +447,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 @media(max-width:920px){:root{--side:0px}.side{display:none}}
 @media(max-width:720px){.weekstrip{overflow-x:auto}.statsrow{gap:22px}}
 .proc-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;min-height:60vh;padding:24px}
+.proc-state.full{min-height:calc(100vh - 140px)}
 .proc-ic{width:64px;height:64px;border-radius:50%;corner-shape:round;background:var(--color-surface-muted);color:var(--color-text-soft);display:grid;place-items:center}
 .proc-ic svg{width:28px;height:28px;animation:procspin 1.4s linear infinite}
 .proc-ic.nospin svg{animation:none}
@@ -1040,9 +1041,11 @@ function applySessionState(){
   var state = noSess ? 'none' : (s.processing ? 'processing' : (s.upcoming ? 'upcoming' : ''));
   var empty = !!state;
   var cols=document.querySelector('.cols'); if(cols) cols.style.display=empty?'none':'';
+  var phead=document.querySelector('.phead'); if(phead) phead.style.display=(state==='none')?'none':'';
   var ha=document.querySelector('.headacts'); if(ha) ha.style.display=empty?'none':'';
   var ps=document.getElementById('procState'); if(!ps) return;
   ps.hidden=!empty;
+  ps.classList.toggle('full', state==='none');
   if(empty){
     var cfg;
     if(state==='none') cfg={icon:'calendar-x', nospin:' nospin', title:'No gym sessions scheduled', sub:'There are no gym sessions on this day.'};
