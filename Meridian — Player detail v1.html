@@ -80,19 +80,15 @@ body.nav-collapsed .profile .pname{display:none}
 
 /* ---------- player detail ---------- */
 .players{max-width:1420px;margin:0 auto;padding:20px 28px 0}
-.crumb{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--color-text-soft);margin-bottom:14px}
-.crumb-path{display:flex;align-items:center;gap:8px}
-.crumb-path a:hover{color:var(--color-text)}
-.crumb-path .sep{color:var(--color-text-disabled)}
-.crumb-path .here{color:var(--color-text);font-weight:500}
-.crumb-sample{color:var(--color-text-soft)}
+.pd-card{background:var(--color-surface);border-radius:var(--r-lg);box-shadow:var(--shadow-card);padding:24px 26px;margin-bottom:16px}
+#perfBody .metric,#perfBody .bodycomp{margin-top:0}
 
 .pd-switchrow{display:flex;justify-content:flex-end;margin-bottom:12px}
-.pd-switch{display:inline-flex;background:var(--color-surface-muted);border-radius:var(--r-lg);padding:4px;gap:2px}
-.pd-switch button{border:0;background:none;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--color-text-soft);padding:7px 17px;border-radius:var(--r-md);cursor:pointer}
-.pd-switch button.on{background:var(--color-surface);color:var(--color-primary-text);box-shadow:var(--shadow-card)}
+.pd-switch{display:inline-flex;background:var(--color-surface-muted);border-radius:var(--r-md);padding:3px;gap:2px}
+.pd-switch button{border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--color-text-soft);padding:6px 13px;border-radius:7px;cursor:pointer}
+.pd-switch button.on{background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-card)}
 
-.pd-hero{display:flex;justify-content:space-between;align-items:center;padding:2px 0 26px;border-bottom:1px solid var(--color-separator)}
+.pd-hero{display:flex;justify-content:space-between;align-items:center;padding:0}
 .pd-hero-l{display:flex;align-items:center;gap:22px}
 .pd-ava{width:112px;height:112px;border-radius:var(--r-lg);overflow:hidden;background:var(--color-surface-muted);flex:none}
 .pd-ava img{width:100%;height:100%;object-fit:cover;display:block}
@@ -107,19 +103,21 @@ body.nav-collapsed .profile .pname{display:none}
 .pd-share:hover{background:var(--color-surface-subtle)}
 .pd-share svg{width:18px;height:18px}
 
-.perf-head{display:flex;align-items:center;justify-content:space-between;margin:26px 0 0}
-.perf-title{font-size:20px;font-weight:700}
+.perf-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:4px 2px 14px;flex-wrap:wrap}
+.perf-title{font-size:24px;line-height:30px;font-weight:700;letter-spacing:-.01em}
 .range{display:flex;align-items:center;gap:8px}
-.rnav{width:36px;height:36px;border:1px solid var(--color-border);border-radius:var(--r-md);background:var(--color-surface);display:grid;place-items:center;color:var(--color-text-soft);cursor:pointer}
-.rnav:hover{background:var(--color-surface-subtle)}
-.rnav svg{width:16px;height:16px}
-.rpill{display:inline-flex;align-items:center;gap:10px;height:36px;border:1px solid var(--color-border);border-radius:var(--r-md);padding:0 12px;font-size:13.5px;font-weight:500;color:var(--color-text);background:var(--color-surface)}
-.rpill svg{width:15px;height:15px;color:var(--color-text-soft)}
+.rnav{width:28px;height:40px;border:0;background:none;border-radius:var(--r-md);display:grid;place-items:center;color:var(--color-text-soft);cursor:pointer}
+.rnav:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.rnav svg{width:18px;height:18px}
+.rpill{display:inline-flex;align-items:center;gap:9px;font-family:inherit;font-size:13px;font-weight:600;color:var(--color-text);white-space:nowrap;cursor:pointer;padding:6px 8px;border-radius:var(--r-md);border:0;background:none}
+.rpill:hover{background:var(--color-surface-subtle)}
+.rpill svg{width:16px;height:16px;color:var(--color-text-soft)}
+.rpill .dl-chev{width:14px;height:14px;margin-left:-3px}
 
-.ptabs2{display:flex;gap:28px;border-bottom:1px solid var(--color-separator);margin-top:16px}
-.ptab2{padding:10px 2px 12px;font-size:14px;font-weight:600;color:var(--color-text-soft);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.ptabs2{display:flex;gap:4px;border-bottom:1px solid var(--color-border);margin-top:12px}
+.ptab2{padding:8px 12px 12px;font-size:13px;font-weight:500;color:var(--color-text-soft);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
 .ptab2:hover{color:var(--color-text)}
-.ptab2.on{color:var(--color-primary-text);border-bottom-color:var(--color-primary-text)}
+.ptab2.on{color:var(--color-text);font-weight:600;border-bottom-color:var(--color-primary-text)}
 
 .metric{margin-top:20px}
 .m-label{font-size:13px;color:var(--color-text-soft)}
@@ -173,7 +171,7 @@ body.nav-collapsed .profile .pname{display:none}
 .bc-note{display:flex;align-items:center;gap:9px;background:var(--color-surface-subtle);border-radius:var(--r-md);padding:12px 14px;margin-top:22px;font-size:13px;color:var(--color-text-soft)}
 .bc-note svg{width:16px;height:16px;color:var(--color-text-disabled);flex:none}
 
-.perf2{display:grid;grid-template-columns:1fr 372px;margin-top:30px;padding-top:26px;border-top:1px solid var(--color-separator)}
+.perf2{display:grid;grid-template-columns:1fr 372px;margin:0}
 .attwrap{padding-right:40px}
 .aiwrap{padding-left:40px;border-left:1px solid var(--color-separator)}
 .sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -203,7 +201,7 @@ body.nav-collapsed .profile .pname{display:none}
 .ai-list p{font-size:14px;line-height:20px;color:var(--color-text-muted);margin-bottom:12px}
 .ai-upd{font-size:12px;color:var(--color-text-disabled);margin-top:6px}
 
-.lgs{display:flex;align-items:flex-start;justify-content:space-between;margin-top:30px;padding-top:24px;border-top:1px solid var(--color-separator)}
+.lgs{display:flex;align-items:flex-start;justify-content:space-between;margin:0}
 .lgs-l{display:flex;gap:34px}
 .lgs-title{font-size:18px;font-weight:700;white-space:nowrap}
 .lgs-body{display:flex;flex-direction:column;gap:8px;padding-top:1px}
@@ -284,37 +282,38 @@ body.nav-collapsed .profile .pname{display:none}
 <main class="main">
   <div class="players">
 
-    <div class="crumb">
-      <div class="crumb-path"><a href="Meridian%20%E2%80%94%20Home%20(week)%20v1.html">Home</a><span class="sep">/</span><a href="Meridian%20%E2%80%94%20Players%20v1.html">Players</a><span class="sep">/</span><span class="here" id="crName">Player 07</span></div>
-      <div class="crumb-sample">Sample data</div>
-    </div>
-
     <div class="pd-switchrow"><div class="pd-switch" id="pdSwitch"></div></div>
-    <div class="pd-hero" id="pdHero"></div>
+
+    <div class="pd-card"><div class="pd-hero" id="pdHero"></div></div>
 
     <div class="perf-head">
-      <div class="perf-title">Performance over time</div>
+      <div class="perf-headl">
+        <div class="perf-title">Performance over time</div>
+        <div class="ptabs2" id="perfTabs">
+          <div class="ptab2 on" data-m="load">Total load</div>
+          <div class="ptab2" data-m="reps">Total reps</div>
+          <div class="ptab2" data-m="volume">Total volume</div>
+          <div class="ptab2" data-m="body">Body composition</div>
+        </div>
+      </div>
       <div class="range">
         <button class="rnav" aria-label="Previous range"><i data-lucide="chevron-left"></i></button>
-        <div class="rpill"><i data-lucide="chevron-left"></i><span id="rangeLbl">12 Aug – 08 Sep 2026</span><i data-lucide="calendar"></i></div>
+        <button class="rpill"><i data-lucide="calendar"></i><span id="rangeLbl">12 Aug – 08 Sep 2026</span><i data-lucide="chevron-down" class="dl-chev"></i></button>
         <button class="rnav" aria-label="Next range"><i data-lucide="chevron-right"></i></button>
       </div>
     </div>
-
-    <div class="ptabs2" id="perfTabs">
-      <div class="ptab2 on" data-m="load">Total load</div>
-      <div class="ptab2" data-m="reps">Total reps</div>
-      <div class="ptab2" data-m="volume">Total volume</div>
-      <div class="ptab2" data-m="body">Body composition</div>
-    </div>
-    <div id="perfBody"></div>
-
-    <div class="perf2">
-      <div class="attwrap" id="attBody"></div>
-      <div class="aiwrap" id="aiBody"></div>
+    <div class="pd-card">
+      <div id="perfBody"></div>
     </div>
 
-    <div class="lgs" id="lgsBody"></div>
+    <div class="pd-card">
+      <div class="perf2">
+        <div class="attwrap" id="attBody"></div>
+        <div class="aiwrap" id="aiBody"></div>
+      </div>
+    </div>
+
+    <div class="pd-card"><div class="lgs" id="lgsBody"></div></div>
 
   </div>
 </main>
@@ -413,7 +412,6 @@ function renderSwitch(){
 }
 function renderHero(){
   const p=PLAYERS[cur];
-  document.getElementById('crName').textContent='Player '+pad(p.num);
   document.getElementById('rangeLbl').textContent=p.range;
   document.getElementById('pdHero').innerHTML=`
     <div class="pd-hero-l">
