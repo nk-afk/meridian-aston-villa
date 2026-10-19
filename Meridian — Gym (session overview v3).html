@@ -446,6 +446,13 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 @media(max-width:1020px){.cols{flex-direction:column}.col-rail{width:100%}}
 @media(max-width:920px){:root{--side:0px}.side{display:none}}
 @media(max-width:720px){.weekstrip{overflow-x:auto}.statsrow{gap:22px}}
+.proc-state{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;min-height:60vh;padding:24px}
+.proc-ic{width:64px;height:64px;border-radius:50%;corner-shape:round;background:var(--color-surface-muted);color:var(--color-text-soft);display:grid;place-items:center}
+.proc-ic svg{width:28px;height:28px;animation:procspin 1.4s linear infinite}
+.proc-ic.nospin svg{animation:none}
+@keyframes procspin{to{transform:rotate(360deg)}}
+.proc-title{font-size:19px;font-weight:700;color:var(--color-text)}
+.proc-sub{font-size:14px;color:var(--color-text-soft);line-height:1.6;max-width:420px}
 </style>
 </head>
 <body>
@@ -547,6 +554,11 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
     <!-- right rail -->
     <aside class="col-rail" id="rail"></aside>
+  </div>
+  <div class="proc-state" id="procState" hidden>
+    <div class="proc-ic"><i data-lucide="loader"></i></div>
+    <div class="proc-title">Session video is still processing</div>
+    <div class="proc-sub">Attendance, completion and session highlights will appear here once the capture has finished processing. This usually takes a little while after the session ends.</div>
   </div>
 </div>
 </main>
@@ -992,8 +1004,8 @@ let selected=new Date(2026,8,8);
 /* sessions for the day; supports any count (2, 3, 4…) */
 const SESSIONS=[
   {name:'Strength',start:'09:00',end:'10:05',cams:4},
-  {name:'Rehab',start:'12:30',end:'13:20',cams:4},
-  {name:'Mobility',start:'15:00',end:'16:05',cams:4},
+  {name:'Rehab',start:'12:30',end:'13:20',cams:4,processing:true},
+  {name:'Mobility',start:'15:00',end:'16:05',cams:4,upcoming:true},
 ];
 let sessIdx=2;
 function weekStartSun(d){const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x;} /* Monday-first */
@@ -1017,6 +1029,22 @@ function renderSessPop(){
     `<button class="sessrow${i===sessIdx?' active':''}" data-i="${i}"><span class="sr-time num">${s.start}</span><span class="sr-name">${s.name}</span><span class="sr-check"><i data-lucide="check"></i></span></button>`).join('');
   icons();
 }
+function applySessionState(){
+  var s=SESSIONS[sessIdx];
+  var state = s.processing ? 'processing' : (s.upcoming ? 'upcoming' : '');
+  var empty = !!state;
+  var cols=document.querySelector('.cols'); if(cols) cols.style.display=empty?'none':'';
+  var ha=document.querySelector('.headacts'); if(ha) ha.style.display=empty?'none':'';
+  var ps=document.getElementById('procState'); if(!ps) return;
+  ps.hidden=!empty;
+  if(empty){
+    var cfg = state==='processing'
+      ? {icon:'loader', nospin:'', title:'Session video is still processing', sub:'This usually takes a little while after the session ends.'}
+      : {icon:'clock', nospin:' nospin', title:"This session hasn't started yet", sub:"It's scheduled for "+s.start+"–"+s.end+"."};
+    ps.innerHTML='<div class="proc-ic'+cfg.nospin+'"><i data-lucide="'+cfg.icon+'"></i></div><div class="proc-title">'+cfg.title+'</div><div class="proc-sub">'+cfg.sub+'</div>';
+    icons();
+  }
+}
 function updateTitle(){
   const s=SESSIONS[sessIdx];
   document.getElementById('sessTitle').textContent=s.name;
@@ -1025,6 +1053,7 @@ function updateTitle(){
   document.getElementById('sessPrev').disabled=sessIdx===0;
   document.getElementById('sessNext').disabled=sessIdx===SESSIONS.length-1;
   renderSessPop();
+  applySessionState();
 }
 function closeSessPop(){ document.getElementById('sessPop').hidden=true; }
 document.getElementById('sessTitleBtn').onclick=function(e){ e.stopPropagation(); const p=document.getElementById('sessPop'); if(p.hidden) p.hidden=false; else p.hidden=true; };
@@ -1146,6 +1175,7 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeExCli
 
 /* ============ INIT ============ */
 renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
+(function(){ try{ var sp=new URLSearchParams(location.search).get('session'); if(sp){ var i=SESSIONS.findIndex(function(s){return s.name.toLowerCase()===sp.toLowerCase();}); if(i>=0){ sessIdx=i; updateTitle(); } } }catch(e){} icons(); })();
 
 /* ============ MERIDIAN SHELL ============ */
 (function(){

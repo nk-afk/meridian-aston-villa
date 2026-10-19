@@ -314,6 +314,41 @@ body.nav-collapsed .profile .pname{display:none}
 .pm-close:hover{background:var(--color-surface-subtle);color:var(--color-text)}
 .pm-close svg{width:16px;height:16px}
 @media(max-width:560px){.pm-grid{grid-template-columns:1fr}}
+.num{font-variant-numeric:tabular-nums}
+.sp-scrim{position:fixed;inset:0;background:rgba(17,24,39,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:64}
+.sp-scrim.open{opacity:1;pointer-events:auto}
+.sp-drawer{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:94vw;background:var(--color-surface);box-shadow:var(--shadow-pop);transform:translateX(100%);transition:transform .22s ease;z-index:65;display:flex;flex-direction:column;overflow:auto}
+.sp-drawer.open{transform:none}
+.dw-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--color-separator)}
+.dw-close{margin-left:auto;width:32px;height:32px;border:1px solid var(--color-border);background:none;border-radius:var(--r-md);cursor:pointer;display:grid;place-items:center;color:var(--color-text-soft)}
+.dw-close svg{width:16px;height:16px}
+.dw-body{padding:18px 20px;display:flex;flex-direction:column;gap:28px}
+.dw-sec .l{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;margin-bottom:6px}
+.dw-sec p{font-size:13.5px;line-height:1.5;color:var(--color-text)}
+.forcoach{border-left:3px solid var(--color-primary-border);background:var(--color-primary-tint);padding:10px 12px;border-radius:0 var(--r-md) var(--r-md) 0}
+.dw-plan-name{font-size:18px;font-weight:700;color:var(--color-text);margin-top:3px}
+.plan-meta{display:flex;flex-direction:column;gap:11px;background:var(--color-surface-subtle);border:1px solid var(--color-border);border-radius:var(--r-md);padding:14px 16px}
+.pm-item{display:flex;align-items:center;gap:11px;font-size:13px;color:var(--color-text-muted)}
+.pm-item svg{width:16px;height:16px;color:var(--color-text-soft);flex:none}
+.pm-item b{color:var(--color-text);font-weight:600}
+.timeline{display:flex;flex-direction:column}
+.tl-row{display:flex;align-items:flex-start;gap:14px;padding:11px 0;border-bottom:1px solid var(--color-border-subtle)}
+.tl-row:last-child{border-bottom:0;padding-bottom:0}
+.tl-time{font-size:13px;font-weight:600;color:var(--color-text);width:46px;flex:none}
+.tl-main{flex:1;min-width:0}
+.tl-name{font-size:13.5px;font-weight:600;color:var(--color-text)}
+.tl-note{font-size:12.5px;color:var(--color-text-soft);margin-top:2px}
+.tl-dur{font-size:12px;color:var(--color-text-soft);flex:none;padding-top:1px}
+.plan-prog{border:1px solid var(--color-border);border-radius:var(--r-md);padding:12px 14px;margin-bottom:10px}
+.plan-prog:last-child{margin-bottom:0}
+.pp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.pp-name{font-size:13.5px;font-weight:700;color:var(--color-text)}
+.pp-count{font-size:11.5px;color:var(--color-text-soft);background:var(--color-surface-muted);border-radius:var(--r-pill);padding:2px 9px;font-weight:600}
+.pp-ex{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid var(--color-border-subtle)}
+.pp-ex:first-of-type{border-top:0}
+.pp-ex-name{font-size:13px;color:var(--color-text)}
+.pp-ex-rx{font-size:12.5px;color:var(--color-text-muted);white-space:nowrap}
+.plan-foot{font-size:11.5px;color:var(--color-text-disabled);padding-top:2px}
 </style>
 </head>
 <body>
@@ -367,6 +402,8 @@ body.nav-collapsed .profile .pname{display:none}
     </div>
   </div>
 </main>
+<div class="sp-scrim" id="spScrim"></div>
+<aside class="sp-drawer" id="spDrawer"></aside>
 
 <div class="modal-scrim" id="planScrim"></div>
 <div class="planmodal" id="planModal" role="dialog" aria-modal="true" aria-label="Plan a session">
@@ -510,7 +547,11 @@ function renderToday(){
       ? (s.title==='Strength' ? '' : '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>')
       : (s.status==='needed'?'<span class="ac-pill needed">'+ALERT_SVG+'Plan needed</span>':'');
     const link=o.isDone?'View session':'View plan';
-    return `<a class="acard${isNext?' next':''}" href="${hrefFor(s.type)}">
+    const planMode = !o.isDone && s.type==='gym';
+    const _pt = s.t.split('–').map(x=>x.trim());
+    const cardHref = planMode ? '#' : (s.type==='gym' ? GYM_HREF+'?session='+encodeURIComponent(s.title) : hrefFor(s.type));
+    const cardAttrs = planMode ? ` data-plan="1" data-name="${s.title}" data-start="${_pt[0]}" data-end="${_pt[1]}"` : '';
+    return `<a class="acard${isNext?' next':''}" href="${cardHref}"${cardAttrs}>
       <div class="ac-top"><span class="ac-type">${typeIcon(s.type)}${typeLabel(s.type)}</span>${badge}</div>
       <div class="ac-body"><div class="ac-title">${s.title}</div><div class="ac-loc">${PIN_SVG}Bodymoor Heath Training Ground</div><div class="ac-time">${CLOCK_SVG}${parts[0].trim()} <span class="dash">–</span> ${parts[1].trim()}</div></div>
       <div class="ac-foot">${pill||'<span></span>'}<span class="ac-link">${link} <i data-lucide="arrow-right"></i></span></div>
@@ -739,6 +780,96 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') closePlanM
 document.getElementById('pmGrid').addEventListener('click',function(e){ const c=e.target.closest('.pm-card'); if(!c)return; const m=PLAN_METHODS[+c.dataset.i]; closePlanModal(); pmToast(m.label+' \u00b7 coming soon'); });
 document.addEventListener('click',function(e){ if(e.target.closest('.sidecta')) openPlanModal(); });
 renderPlanModal();
+
+/* ============ SESSION PLAN DRAWER (ported from gym) ============ */
+const EXPLAYERS=[
+ {n:'01',prog:'Upper push',ex:[['Seated row',2,2]]}, {n:'03',prog:'Lower body',ex:[['Squat',2,2]]},
+ {n:'04',prog:'Lower body',ex:[['Goblet squat',3,2],['Rear-foot split squat',3,0]]},
+ {n:'05',prog:'Rehab block',ex:[['Spanish squat',3,3],['Calf isometric',4,4],['Band walk',3,2]]},
+ {n:'06',prog:'Upper push',ex:[['Bench press',3,3],['Cable row',3,3]]},
+ {n:'07',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Incline dumbbell press',3,3]]},
+ {n:'08',prog:'Upper push',ex:[['Triceps pushdown',1,1]]},
+ {n:'09',prog:'Posterior chain',ex:[['Hip thrust',3,3],['Nordic curl',3,3],['Copenhagen hold',3,3]]},
+ {n:'10',prog:'Posterior chain',ex:[['Romanian deadlift',4,4],['Hip thrust',3,3]]},
+ {n:'11',prog:'Posterior chain',ex:[['Nordic curl',3,3],['Copenhagen hold',3,3],['Hip thrust',3,3]]}, {n:'13',prog:'Upper push',ex:[['Chest fly',1,1]]},
+ {n:'14',prog:'Lower body',ex:[['Rear-foot split squat',3,3],['Hamstring curl',3,3],['Step-up',3,3]]},
+ {n:'15',prog:'Lower body',ex:[['Trap-bar deadlift',3,3],['Hamstring curl',3,2]]},
+ {n:'16',prog:'Upper push',ex:[['Bench press',3,0],['Overhead press',3,0]]},
+ {n:'17',prog:'Upper push',ex:[['Cable row',3,3],['Incline dumbbell press',3,3]]},
+ {n:'18',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,3]]},
+ {n:'19',prog:'Posterior chain',ex:[['Copenhagen hold',3,3],['Nordic curl',3,1]]},
+ {n:'20',prog:'Posterior chain',ex:[['Leg curl',1,1]]},
+ {n:'21',prog:'Posterior chain',ex:[['Nordic curl',3,0],['Copenhagen hold',3,0],['Hip thrust',3,0]]},
+ {n:'22',prog:'Upper push',ex:[['Bench press',3,3],['Overhead press',3,3],['Cable row',3,3]]},
+];
+const PLAN_FOCUS="Primary emphasis on upper-body pushing strength with posterior-chain resilience. Keep main-lift RPE at or below 8. Cut a set if bar speed drops. Rehab-block players work to their individual return-to-play loads.";
+const PLAN_BLOCKS=[
+  {label:'Arrival & screening',mins:10,note:'Wellness check-in · load readiness'},
+  {label:'Movement prep',mins:10,note:'Activation + mobility flow'},
+  {label:'Main strength',mins:30,note:'Programmed lifts by group'},
+  {label:'Accessory & rehab',mins:10,note:'Prehab · unilateral work'},
+  {label:'Cool-down & mobility',mins:5,note:'Decompress · breathing'},
+];
+const PLAN_PROGRAMMES=[
+  {prog:'Lower body',ex:[
+    {name:'Trap-bar deadlift',sets:3,reps:'5',load:'80% 1RM'},
+    {name:'Rear-foot split squat',sets:3,reps:'8 / leg'},
+    {name:'Hamstring curl',sets:3,reps:'10'},
+  ]},
+  {prog:'Upper push',ex:[
+    {name:'Bench press',sets:3,reps:'5',load:'82.5% 1RM'},
+    {name:'Overhead press',sets:3,reps:'6'},
+    {name:'Cable row',sets:3,reps:'10'},
+    {name:'Incline dumbbell press',sets:3,reps:'8'},
+  ]},
+  {prog:'Posterior chain',ex:[
+    {name:'Hip thrust',sets:3,reps:'8'},
+    {name:'Romanian deadlift',sets:4,reps:'6',load:'70% 1RM'},
+    {name:'Nordic curl',sets:3,reps:'6'},
+    {name:'Copenhagen hold',sets:3,reps:'30s / side'},
+  ]},
+  {prog:'Rehab block',ex:[
+    {name:'Spanish squat',sets:3,reps:'30s hold'},
+    {name:'Calf isometric',sets:4,reps:'30s hold'},
+    {name:'Band walk',sets:3,reps:'12 / side'},
+  ]},
+];
+function openSessionPlan(sess){
+  const [sh,sm]=sess.start.split(':').map(Number), [eh,em]=sess.end.split(':').map(Number);
+  const dur=(eh*60+em)-(sh*60+sm);
+  const dateLabel=TODAY.toLocaleString('en-US',{weekday:'short'})+' '+TODAY.getDate()+' '+TODAY.toLocaleString('en-US',{month:'short'})+' '+TODAY.getFullYear();
+  let t=sh*60+sm;
+  const tl=PLAN_BLOCKS.map(b=>{ const hh=String(Math.floor(t/60)).padStart(2,'0'), mm=String(t%60).padStart(2,'0'); t+=b.mins; return `<div class="tl-row"><span class="tl-time num">${hh}:${mm}</span><div class="tl-main"><div class="tl-name">${b.label}</div><div class="tl-note">${b.note}</div></div><span class="tl-dur">${b.mins}m</span></div>`; }).join('');
+  const progs=PLAN_PROGRAMMES.map(pp=>{ const cnt=EXPLAYERS.filter(p=>p.prog===pp.prog).length; if(!cnt) return ''; const rows=pp.ex.map(e=>`<div class="pp-ex"><span class="pp-ex-name">${e.name}</span><span class="pp-ex-rx num">${e.sets} × ${e.reps}${e.load?' · '+e.load:''}</span></div>`).join(''); return `<div class="plan-prog"><div class="pp-head"><span class="pp-name">${pp.prog}</span><span class="pp-count num">${cnt} player${cnt===1?'':'s'}</span></div>${rows}</div>`; }).join('');
+  const dw=document.getElementById('spDrawer');
+  dw.innerHTML=`
+    <div class="dw-head"><div><div class="eyebrow">Session plan</div><div class="dw-plan-name">${sess.name}</div></div><button class="dw-close" id="spClose"><i data-lucide="x"></i></button></div>
+    <div class="dw-body">
+      <div class="plan-meta">
+        <div class="pm-item"><i data-lucide="calendar"></i><span>${dateLabel}</span></div>
+        <div class="pm-item"><i data-lucide="clock"></i><span><b>${sess.start}–${sess.end}</b> · ${dur} min</span></div>
+        <div class="pm-item"><i data-lucide="map-pin"></i><span>Bodymoor Heath Training Ground</span></div>
+        <div class="pm-item"><i data-lucide="users"></i><span><b>${EXPLAYERS.length}</b> players expected</span></div>
+        <div class="pm-item"><i data-lucide="video"></i><span>${sess.cams||4} ceiling cameras</span></div>
+      </div>
+      <div class="dw-sec forcoach"><div class="l">Session focus</div><p>${PLAN_FOCUS}</p></div>
+      <div class="dw-sec"><div class="l">Session structure</div><div class="timeline">${tl}</div></div>
+      <div class="dw-sec"><div class="l">Prescribed work</div>${progs}</div>
+      <div class="plan-foot">Illustrative plan. Meridian records what the cameras capture against this plan. It never changes the prescription.</div>
+    </div>`;
+  document.getElementById('spScrim').classList.add('open');
+  dw.classList.add('open');
+  document.getElementById('spClose').onclick=closeSessionPlan;
+  icons();
+}
+function closeSessionPlan(){ document.getElementById('spScrim').classList.remove('open'); document.getElementById('spDrawer').classList.remove('open'); }
+document.getElementById('spScrim').onclick=closeSessionPlan;
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeSessionPlan(); });
+document.getElementById('todayGrid').addEventListener('click',function(e){
+  const card=e.target.closest('[data-plan]'); if(!card) return;
+  e.preventDefault();
+  openSessionPlan({name:card.dataset.name,start:card.dataset.start,end:card.dataset.end,cams:4});
+});
 
 /* ============ MERIDIAN SHELL ============ */
 (function(){
