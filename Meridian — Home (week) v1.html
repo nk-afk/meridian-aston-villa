@@ -122,6 +122,10 @@ body.nav-collapsed .profile .pname{display:none}
 .ac-badge svg{width:17px;height:17px}
 .ac-badge.done{color:var(--c-plan)}
 .ac-badge.next{color:var(--color-primary-text)}
+.ac-dot{position:relative;width:8px;height:8px;border-radius:50%;corner-shape:round;background:var(--color-primary);flex:none}
+.ac-dot::before,.ac-dot::after{content:"";position:absolute;inset:0;border-radius:50%;corner-shape:round;background:var(--color-primary);animation:acripple 1.8s ease-out infinite}
+.ac-dot::after{animation-delay:.9s}
+@keyframes acripple{0%{transform:scale(1);opacity:.4}100%{transform:scale(3);opacity:0}}
 .ac-badge.soon{color:var(--color-text-soft)}
 .ac-body{padding:12px 18px 0}
 .ac-ico{flex:none;width:48px;height:48px;border-radius:12px;background:var(--color-surface-subtle);display:grid;place-items:center;color:var(--color-text-soft)}
@@ -189,6 +193,9 @@ body.nav-collapsed .profile .pname{display:none}
 .wc-adev{align-self:stretch;margin:2px 6px 0;background-color:var(--color-surface-subtle);border-radius:8px 8px 0 0;padding:4px 8px 7px;font-size:11.5px;color:var(--color-text-soft);display:flex;align-items:center;justify-content:center;gap:5px;line-height:1.3;overflow:hidden}
 .wc-adev svg{width:14px;height:14px;flex:none;color:var(--color-text-disabled)}
 .wc-ev{position:absolute;left:5px;right:5px;border-radius:7px 0 0 7px;padding:6px 8px 6px 11px;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.05);display:block;min-height:30px;text-decoration:none}
+.wc-ev.past{background-image:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5))}
+.wc-ev.past::before{opacity:.4}
+.wc-ev.past .ev-title{opacity:.5}
 .wc-ev::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--ev-accent)}
 .wc-ev .ev-title{font-size:12.5px;font-weight:700;color:var(--color-text);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wc-ev .ev-time{font-size:11px;color:var(--color-text-soft);font-variant-numeric:tabular-nums;margin-top:1px}
@@ -200,6 +207,7 @@ body.nav-collapsed .profile .pname{display:none}
 .ev-match{background:#FAF4E6;--ev-accent:#AD9057;cursor:default}
 .ev-ic.vid{color:var(--color-primary-text)}
 .ev-ic.needed{color:var(--c-partial)}
+.ev-ic.ev-flag{cursor:pointer}
 .wc-now{position:absolute;left:0;right:0;height:2px;background:var(--c-now);z-index:6}
 .wc-now::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--c-now)}
 .tbi{width:36px;height:36px;border-radius:var(--r-md);border:0;background:none;color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;position:relative}
@@ -439,15 +447,15 @@ const TODAY=new Date(2026,8,8); // Tue 8 Sep 2026 (matches Gym session page week
 
 // sessions by weekday index (0=Mon ... 6=Sun); repeats each displayed week
 const SESS=[
-  [ {t:'10:30 – 11:45',type:'pitch',title:'AM pitch',loc:'Training pitch 1',status:'ready',vid:true},
+  [ {t:'10:30 – 11:45',type:'pitch',title:'AM pitch',loc:'Training pitch 1',status:'ready'},
     {t:'15:00 – 16:10',type:'gym',title:'Lower body',loc:'Gym 2',status:'ready'} ],
   [ {t:'09:00 – 10:05',type:'gym',title:'Strength',loc:'Gym 1',status:'ready'},
     {t:'12:30 – 13:20',type:'gym',title:'Rehab',loc:'Gym 1',status:'ready'},
     {t:'15:00 – 16:05',type:'gym',title:'Mobility',loc:'Gym 1',status:'ready'} ],
   [ {t:'10:30 – 11:45',type:'pitch',title:'AM pitch',loc:'Training pitch 1',status:'ready'},
     {t:'15:00 – 16:00',type:'gym',title:'Mobility',loc:'Gym 1',status:'ready'} ],
-  [ {t:'10:30 – 11:45',type:'pitch',title:'Team shape',loc:'Training pitch 1',status:'needed'} ],
-  [ {t:'10:00 – 11:15',type:'pitch',title:'Match prep',loc:'Training pitch 1',status:'needed'} ],
+  [ {t:'10:30 – 11:45',type:'pitch',title:'Team shape',loc:'Training pitch 1',status:'needed',planFlag:true} ],
+  [ {t:'10:00 – 11:15',type:'pitch',title:'Match prep',loc:'Training pitch 1',status:null} ],
   [], // Sat = rest
   [ {t:'15:00 – 17:00',type:'match',title:'Home match',loc:'Main pitch',status:null} ],
 ];
@@ -541,7 +549,7 @@ function renderToday(){
     const s=o.s, isNext=(o===nextItem), parts=s.t.split('–');
     const badge=o.isDone
       ? '<span class="ac-badge done">'+CHECKCIRCLE_SVG+'</span>'
-      : (isNext ? '<span class="ac-badge next">'+DOT_SVG+'Up next</span>'
+      : (isNext ? '<span class="ac-badge next"><span class="ac-dot"></span>Up next</span>'
                 : '');
     const pill=o.isDone
       ? (s.title==='Strength' ? '' : '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>')
@@ -584,6 +592,7 @@ function fmtRange(mon){
   if(mon.getMonth()===sun.getMonth()) return `${mon.getDate()} – ${sun.getDate()} ${sLong} ${y}`;
   return `${mon.getDate()} ${mon.toLocaleString('en-GB',{month:'short'})} – ${sun.getDate()} ${sLong} ${y}`;
 }
+function evPast(date,endMin){ const td=new Date(TODAY); td.setHours(0,0,0,0); const dd=new Date(date); dd.setHours(0,0,0,0); if(dd<td) return true; if(dd.getTime()===td.getTime() && endMin<=NOW_MIN) return true; return false; }
 function renderWeek(){
   const thisWeek=sameDay(baseMon,mondayOf(TODAY));
   let total=0,pitch=0,gym=0,match=0;
@@ -608,8 +617,8 @@ function renderWeek(){
       const [a,e]=parseT(s.t), top=yFor(a), hgt=Math.max((e-a)/60*HOURPX,30);
       const cls=s.type==='gym'?'ev-gym':(s.type==='match'?'ev-match':'ev-pitch');
       const tag=s.type==='match'?'div':'a', href=s.type==='match'?'':` href="${hrefFor(s.type)}"`;
-      let ic=''; if(s.vid) ic='<span class="ev-ic vid">'+VIDEO_SVG+'</span>'; else if(s.status==='needed') ic='<span class="ev-ic needed">'+ALERT_SVG+'</span>';
-      evs+=`<${tag} class="wc-ev ${cls}"${href} style="top:${top}px;height:${hgt}px">`
+      let ic=''; if(s.vid) ic='<span class="ev-ic vid">'+VIDEO_SVG+'</span>'; else if(s.status==='needed') ic='<span class="ev-ic needed'+(s.planFlag?' ev-flag':'')+'">'+ALERT_SVG+'</span>';
+      evs+=`<${tag} class="wc-ev ${cls}${evPast(date,e)?' past':''}"${href} style="top:${top}px;height:${hgt}px">`
         +`<div class="ev-title">${s.title}</div><div class="ev-time">${s.t}</div><div class="ev-loc">${s.loc}</div>${ic}</${tag}>`;
     });
     const now=(thisWeek&&isToday)?`<div class="wc-now" style="top:${yFor(NOW_MIN)}px"></div>`:'';
@@ -750,6 +759,7 @@ document.getElementById('reviewList').addEventListener('click',e=>{
   toast('Logged · '+v+' · Player '+String(num).padStart(2,'0'));
   setTimeout(()=>{ renderTabs(); renderReview(); },260);
 });
+document.getElementById('weekgrid').addEventListener('click',function(e){ const f=e.target.closest('.ev-flag'); if(f){ e.preventDefault(); e.stopPropagation(); openPlanModal(); } });
 document.getElementById('prevWk').onclick=()=>{baseMon=addDays(baseMon,-7);renderWeek();};
 document.getElementById('nextWk').onclick=()=>{baseMon=addDays(baseMon,7);renderWeek();};
 document.getElementById('todayWk').onclick=()=>{baseMon=mondayOf(TODAY);renderWeek();};
