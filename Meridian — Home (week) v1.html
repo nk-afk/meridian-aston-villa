@@ -616,7 +616,8 @@ function renderWeek(){
     if(thisWeek) SESS[i].filter(s=>wkFilter==='all'||s.type===wkFilter).forEach(s=>{
       const [a,e]=parseT(s.t), top=yFor(a), hgt=Math.max((e-a)/60*HOURPX,30);
       const cls=s.type==='gym'?'ev-gym':(s.type==='match'?'ev-match':'ev-pitch');
-      const tag=s.type==='match'?'div':'a', href=s.type==='match'?'':` href="${hrefFor(s.type)}"`;
+      const _iso=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');
+      const tag=s.type==='match'?'div':'a', href=s.type==='match'?'':(s.type==='gym'?` href="${GYM_HREF}?session=${encodeURIComponent(s.title)}&date=${_iso}"`:` href="${hrefFor(s.type)}"`);
       let ic=''; if(s.vid) ic='<span class="ev-ic vid">'+VIDEO_SVG+'</span>'; else if(s.status==='needed') ic='<span class="ev-ic needed'+(s.planFlag?' ev-flag':'')+'">'+ALERT_SVG+'</span>';
       evs+=`<${tag} class="wc-ev ${cls}${evPast(date,e)?' past':''}"${href} style="top:${top}px;height:${hgt}px">`
         +`<div class="ev-title">${s.title}</div><div class="ev-time">${s.t}</div><div class="ev-loc">${s.loc}</div>${ic}</${tag}>`;

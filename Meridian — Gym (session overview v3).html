@@ -1175,7 +1175,7 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeExCli
 
 /* ============ INIT ============ */
 renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
-(function(){ try{ var sp=new URLSearchParams(location.search).get('session'); if(sp){ var i=SESSIONS.findIndex(function(s){return s.name.toLowerCase()===sp.toLowerCase();}); if(i>=0){ sessIdx=i; updateTitle(); } } }catch(e){} icons(); })();
+(function(){ try{ var q=new URLSearchParams(location.search); var dt=q.get('date'); if(dt){ var d=new Date(dt+'T00:00:00'); if(!isNaN(d.getTime())){ selected=d; viewStart=weekStartSun(selected); renderWeek(); } } var sp=q.get('session'); if(sp){ var i=SESSIONS.findIndex(function(s){return s.name.toLowerCase()===sp.toLowerCase();}); if(i>=0){ sessIdx=i; } } updateTitle(); }catch(e){} icons(); })();
 
 /* ============ MERIDIAN SHELL ============ */
 (function(){
