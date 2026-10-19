@@ -153,6 +153,26 @@ body.nav-collapsed .profile .pname{display:none}
 .ppage .pbtn:disabled{color:var(--color-text-disabled);cursor:default;opacity:.55}
 .ppage .pbtn svg{width:16px;height:16px}
 .pempty{padding:52px 26px;text-align:center;color:var(--color-text-soft);font-size:14px}
+.modal-scrim{position:fixed;inset:0;background:rgba(17,24,39,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:62}
+.modal-scrim.open{opacity:1;pointer-events:auto}
+.planmodal{position:fixed;top:50%;left:50%;transform:translate(-50%,-48%);width:560px;max-width:94vw;max-height:90vh;overflow:auto;background:var(--color-surface);border-radius:var(--r-xl);box-shadow:var(--shadow-pop);z-index:63;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.planmodal.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.pm-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px 0}
+.pm-title{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.pm-sub{font-size:13px;color:var(--color-text-soft);margin-top:3px}
+.pm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 24px 24px}
+.pm-card{display:flex;gap:13px;align-items:flex-start;text-align:left;border:1px solid var(--color-border);border-radius:var(--r-lg);padding:15px;background:var(--color-surface);cursor:pointer;font-family:inherit}
+.pm-card:hover{border-color:var(--color-primary-border);background:var(--color-primary-tint)}
+.pm-ic{width:38px;height:38px;border-radius:var(--r-md);background:var(--color-primary-tint);color:var(--color-primary-text);display:grid;place-items:center;flex:none}
+.pm-card:hover .pm-ic{background:var(--color-surface)}
+.pm-ic svg{width:19px;height:19px}
+.pm-ct{display:flex;flex-direction:column;min-width:0}
+.pm-cl{font-size:14px;font-weight:600;color:var(--color-text)}
+.pm-cd{font-size:12.5px;color:var(--color-text-soft);margin-top:3px;line-height:1.4}
+.pm-close{margin-left:auto;width:32px;height:32px;border:1px solid var(--color-border);background:none;border-radius:var(--r-md);cursor:pointer;display:grid;place-items:center;color:var(--color-text-soft)}
+.pm-close:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.pm-close svg{width:16px;height:16px}
+@media(max-width:560px){.pm-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -200,6 +220,16 @@ body.nav-collapsed .profile .pname{display:none}
 
   </div>
 </main>
+
+<div class="modal-scrim" id="planScrim"></div>
+<div class="planmodal" id="planModal" role="dialog" aria-modal="true" aria-label="Plan a session">
+  <div class="pm-head">
+    <div><div class="pm-title">Plan a session</div><div class="pm-sub">Choose how you'd like to build the plan</div></div>
+    <button class="pm-close" id="planClose" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div class="pm-grid" id="pmGrid"></div>
+</div>
+
 
 <script>
 /* ============ DATA ============ */
@@ -263,6 +293,26 @@ document.addEventListener('click',()=>document.querySelectorAll('.pdd').forEach(
 document.getElementById('pq').addEventListener('input',e=>{ fQ=e.target.value.trim(); render(); });
 
 render();
+
+/* ============ PLAN-A-SESSION METHOD PICKER ============ */
+const PLAN_METHODS=[
+  {icon:'mic',label:'Voice record',desc:'Talk through the session. We transcribe and structure it.'},
+  {icon:'keyboard',label:'Type it out',desc:'Build the plan by hand with exercises, sets and reps.'},
+  {icon:'link',label:'Connect your AMS',desc:'Pull the plan from your athlete management system.'},
+  {icon:'upload',label:'Upload a plan',desc:'Import a file: PDF, spreadsheet or document.'},
+  {icon:'camera',label:'Take a photo',desc:'Snap a handwritten plan and we digitise it.'},
+  {icon:'layout-template',label:'Start from a template',desc:'Begin from a saved preset or an existing programme.'},
+];
+function pmToast(msg){ var t=document.getElementById('m-toast'); if(!t){t=document.createElement('div');t.id='m-toast';t.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#111827;color:#fff;font-weight:600;font-size:13px;padding:11px 16px;border-radius:10px;box-shadow:0 10px 30px rgba(15,23,42,.25);z-index:9999;opacity:0;transition:opacity .18s;pointer-events:none';document.body.appendChild(t);} t.textContent=msg; requestAnimationFrame(function(){t.style.opacity='1';}); clearTimeout(t._h); t._h=setTimeout(function(){t.style.opacity='0';},2200); }
+function renderPlanModal(){ document.getElementById('pmGrid').innerHTML=PLAN_METHODS.map((m,i)=>`<button class="pm-card" data-i="${i}"><span class="pm-ic"><i data-lucide="${m.icon}"></i></span><span class="pm-ct"><span class="pm-cl">${m.label}</span><span class="pm-cd">${m.desc}</span></span></button>`).join(''); icons(); }
+function openPlanModal(){ document.getElementById('planScrim').classList.add('open'); document.getElementById('planModal').classList.add('open'); }
+function closePlanModal(){ document.getElementById('planScrim').classList.remove('open'); document.getElementById('planModal').classList.remove('open'); }
+document.getElementById('planScrim').onclick=closePlanModal;
+document.getElementById('planClose').onclick=closePlanModal;
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closePlanModal(); });
+document.getElementById('pmGrid').addEventListener('click',function(e){ const c=e.target.closest('.pm-card'); if(!c)return; const m=PLAN_METHODS[+c.dataset.i]; closePlanModal(); pmToast(m.label+' \u00b7 coming soon'); });
+document.addEventListener('click',function(e){ if(e.target.closest('.sidecta')) openPlanModal(); });
+renderPlanModal();
 
 /* ============ MERIDIAN SHELL ============ */
 (function(){
