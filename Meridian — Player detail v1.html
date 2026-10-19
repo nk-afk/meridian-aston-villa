@@ -350,7 +350,7 @@ const PLAYERS={
           measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
-      ai:['Volume increased 12.7% across six gym sessions.','Two session-to-session dips interrupt the upward trend.','10 of 11 scheduled sessions were attended.','Body composition has two recorded measurements.'],
+      ai:['Volume increased 12.7% across six gym sessions.','Two session-to-session dips interrupt the upward trend.','5 gym sessions attended in this period.','Body composition has two recorded measurements.'],
       aiUpd:'Updated 08 Sep 2026',
       session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Bench press / Overhead press / Cable row', reviews:1}
   },
@@ -367,7 +367,7 @@ const PLAYERS={
           measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
-      ai:['Total load rose 8.5% across six gym sessions.','Progression is steady with no session-to-session dips.','11 of 11 scheduled sessions were attended.','Body composition has two recorded measurements.'],
+      ai:['Total load rose 8.5% across six gym sessions.','Progression is steady with no session-to-session dips.','6 gym sessions attended in this period.','Body composition has two recorded measurements.'],
       aiUpd:'Updated 08 Sep 2026',
       session:{name:'Lower body', date:'06 Sep', loc:'Gym 2', ex:'Back squat / RDL / Leg press', reviews:1}
   },
@@ -384,7 +384,7 @@ const PLAYERS={
           measurements:2, latestDate:'07 Sep 2026', xlabels:D2, note:'Insufficient readings to establish a trend.'
         }
       },
-      ai:['Total load improved 12.0% across six gym sessions.','One mid-block dip then recovery to a new session high.','9 of 11 scheduled sessions were attended.','Body composition has two recorded measurements.'],
+      ai:['Total load improved 12.0% across six gym sessions.','One mid-block dip then recovery to a new session high.','5 gym sessions attended in this period.','Body composition has two recorded measurements.'],
       aiUpd:'Updated 07 Sep 2026',
       session:{name:'Lower body', date:'07 Sep', loc:'Gym 2', ex:'Back squat / Hip thrust / Calf raise', reviews:0}
   }
@@ -521,18 +521,16 @@ function attCell(s){
 }
 function renderAtt(){
   const p=PLAYERS[cur];
+  const gymN=p.gym.filter(x=>x==='g').length;
   document.getElementById('attBody').innerHTML=`
     <div class="sec-row"><div class="sec-h">Attendance</div><div class="sec-sub">Last 14 days</div></div>
-    <div class="att-count"><b>${p.att}</b> / 11 scheduled sessions attended</div>
+    <div class="att-count"><b>${gymN}</b> gym sessions attended</div>
     <div class="attgrid">
       <div class="attrow head"><div class="attlab"></div>${DAYS.map(d=>`<div class="attday">${d}</div>`).join('')}</div>
       <div class="attrow"><div class="attlab">Gym</div>${p.gym.map(attCell).join('')}</div>
-      <div class="attrow"><div class="attlab">Pitch</div>${p.pitch.map(attCell).join('')}</div>
     </div>
     <div class="attlegend">
       <div class="lg"><span class="sq gym"></span>Gym</div>
-      <div class="lg"><span class="sq pitch"></span>Pitch</div>
-      <div class="lg"><span class="sq miss"></span>Missed</div>
       <div class="lg"><span class="dash">&ndash;</span>Not scheduled</div>
     </div>`;
 }

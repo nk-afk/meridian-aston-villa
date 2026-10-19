@@ -115,7 +115,7 @@ body.nav-collapsed .profile .pname{display:none}
 .pattend-label{font-size:13px;color:var(--color-text-soft);margin:4px 0 12px}
 
 .ptable{background:var(--color-surface);border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden}
-.pt-head,.pt-row{display:grid;grid-template-columns:minmax(230px,1.7fr) 1fr 1.5fr 1.2fr .95fr 48px;align-items:center;gap:20px;padding:0 26px}
+.pt-head,.pt-row{display:grid;grid-template-columns:minmax(190px,220px) minmax(100px,140px) minmax(150px,200px) 220px 1fr minmax(120px,150px) 44px;align-items:center;gap:24px;padding:0 24px}
 .pt-head{height:46px;border-bottom:1px solid var(--color-separator)}
 .pt-head span{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-soft)}
 .pt-row{min-height:94px;border-bottom:1px solid var(--color-border-subtle);cursor:pointer;color:inherit;transition:background .12s}
@@ -232,11 +232,10 @@ body.nav-collapsed .profile .pname{display:none}
       </div>
     </div>
 
-    <div class="pattend-label">Attendance · Last 14 days</div>
 
     <div class="ptable">
       <div class="pt-head">
-        <span>Player</span><span>Position</span><span>Latest session</span><span>Attendance (14D)</span><span>Needs review</span><span></span>
+        <span>Player</span><span>Position</span><span>Latest session</span><span>Attendance (14D)</span><span></span><span>Needs review</span><span></span>
       </div>
       <div id="ptBody"></div>
     </div>
@@ -262,7 +261,7 @@ body.nav-collapsed .profile .pname{display:none}
 /* ============ DATA ============ */
 const PLAYERS=[
   {num:7,  pos:'Midfielder', session:'Upper push',     date:'08 Sep 2026', loc:'Gym 1',            att:10, total:11, pending:1},
-  {num:13, pos:'Defender',   session:'1v1 transition', date:'08 Sep 2026', loc:'Training pitch 1', att:11, total:11, pending:1},
+  {num:13, pos:'Defender',   session:'Lower body', date:'06 Sep 2026', loc:'Gym 2', att:11, total:11, pending:1},
   {num:22, pos:'Forward',    session:'Lower body',     date:'07 Sep 2026', loc:'Gym 2',            att:9,  total:11, pending:0},
 ];
 const POSITIONS=['All positions','Goalkeeper','Defender','Midfielder','Forward'];
@@ -285,8 +284,9 @@ function rowHTML(p){
     <div class="pt-pos">${p.pos}</div>
     <div><div class="pt-sess-t">${p.session}</div><div class="pt-sess-m">${p.date} &middot; ${p.loc}</div></div>
     <div><div class="pt-att-n">${p.att} / ${p.total}</div><div class="pt-att-bar">${segBar(p.att,p.total)}</div></div>
+    <div></div>
     <div class="pt-review">${review}</div>
-    <div class="pt-arrow"><i data-lucide="arrow-right"></i></div>
+    <div class="pt-arrow"><i data-lucide="chevron-right"></i></div>
   </a>`;
 }
 function filtered(){
