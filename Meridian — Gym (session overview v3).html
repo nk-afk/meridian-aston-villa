@@ -381,6 +381,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .rv2-pdot{width:6px;height:6px;border-radius:50%;background:currentColor}
 .rv2-body{gap:16px}
 .rv2-body>.thumb{margin:0}
+.rv2-body>.dw-sec{margin-top:20px} /* +20px gap between the review card and the assigned-exercises list */
 .rv2-nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .rv2-title{display:flex;align-items:center;gap:11px;min-width:0}
 .rv2-title b{font-size:16px;font-weight:600;color:var(--color-text)}
@@ -395,6 +396,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .rv2-issue{display:flex;gap:10px;align-items:flex-start}
 .rv2-issue-ic{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--c-review-soft);color:var(--c-review);font-size:14px;font-weight:800;line-height:1;margin-top:1px} /* same as the "Needs attention" red chip (.rc-ic) */
 .rv2-issue.is-partial .rv2-issue-ic{background:var(--c-partial-soft);color:var(--c-partial-ink)}
+.rv2-issue.is-notobs .rv2-issue-ic{background:var(--c-notobs-soft);color:var(--color-text-soft)}
 .rv2-issue-ic svg{width:15px;height:15px}
 .rv2-issue-t{font-size:14px;font-weight:600;color:var(--color-text)}
 .rv2-issue-d{font-size:13px;color:var(--color-text-soft);line-height:1.45;margin-top:1px}
@@ -409,13 +411,14 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .rv2-amber{display:flex;align-items:center;gap:7px;color:var(--c-partial-ink)}
 .rv2-dot{width:9px;height:9px;border-radius:50%;background:var(--c-partial)}
 .rv2-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rv2-actions-gap{margin-top:14px}
 .rv2-actions .btn{height:40px;width:100%;justify-content:center} /* match the session-planner buttons */
 .rv2-actions .btn.rv2-confirm{background:var(--color-primary-tint);border-color:var(--color-primary-text);color:var(--color-primary-text);font-weight:700} /* tint secondary CTA, like "Plan a session" (.sidecta), without its click handler */
 .rv2-actions .btn.rv2-confirm:hover{background:#DCEAFF}
 .rv2-actions .btn.rv2-confirm svg{stroke-width:2.2} /* thicker tick */
 .rv2-actions .btn:not(.rv2-confirm) svg{width:14px;height:14px} /* smaller pencil */
 .rv2-dismiss-wrap{text-align:right;margin-top:12px}
-.rv2-dismiss{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--color-text-soft);background:none;border:0;padding:0;cursor:pointer;font-family:inherit}
+.rv2-dismiss{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--color-text-soft);background:none;border:0;padding:0;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:2px}
 .rv2-dismiss:hover{color:var(--color-text-muted)}
 .rv2-dismiss svg{width:15px;height:15px}
 .dw-note{font-size:12px;color:var(--color-text-soft);text-align:center}
@@ -1041,6 +1044,7 @@ function exerciseSection(n,notObserved){
 function openClip(n){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
   if(p.st==='review'||p.st==='partial'){ openReview(n); return; }
+  if(p.st==='notobs'){ openNotObs(n); return; }
   const isRev=p.st==='review', isNot=p.st==='notobs';
   const dw=document.getElementById('drawer');
   const obs = isRev ? (p.clip?p.clip.note:'Clip needs review')
@@ -1136,6 +1140,28 @@ function renderReviewSet(){
   if(prev) prev.onclick=()=>{ if(RVSTATE.i>0){RVSTATE.i--; renderReviewSet();} };
   if(next) next.onclick=()=>{ if(RVSTATE.i<total-1){RVSTATE.i++; renderReviewSet();} };
   body.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{ if(b.dataset.v==='Modified') openModify(n); else decide(n,b.dataset.v); });
+  icons();
+}
+/* ===== Not-observed drawer: same design language as the review/partial reviewer ===== */
+function openNotObs(n){
+  const p=PLAYERS.find(x=>x.n===n); if(!p) return;
+  const dw=document.getElementById('drawer');
+  dw.innerHTML=`
+    <div class="dw-head">${pAvatar(p.n)}
+      <div class="rv2-head-txt"><div class="cc-name">Player ${+p.n}</div><div class="cc-prog">${p.prog}</div></div>
+      <button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
+    <div class="dw-body rv2-body">
+      <div class="rv2-issue is-notobs"><span class="rv2-issue-ic">${VIDEOFF_SVG}</span><div><div class="rv2-issue-t">No footage captured</div><div class="rv2-issue-d">No activity was recorded by the ceiling cameras. This isn't proof of absence — it can be a camera gap or a blind spot.</div></div></div>
+      <div class="rv2-card">
+        <div class="rv2-rtitle">Did this player train?</div>
+        <div class="rv2-actions rv2-actions-gap"><button class="btn rv2-confirm" data-pres="present"><i data-lucide="user-check"></i>Player was present</button><button class="btn" data-pres="absent"><i data-lucide="user-x"></i>Confirm absent</button></div>
+      </div>
+      ${exerciseSection(n,true)}
+    </div>`;
+  document.getElementById('scrim').classList.add('open');
+  dw.classList.add('open');
+  document.getElementById('dwClose').onclick=closeDrawer;
+  dw.querySelectorAll('[data-pres]').forEach(b=>b.onclick=()=>{ if(b.dataset.pres==='present') openAttest(n); else markPresence(n,false); });
   icons();
 }
 function openSessionPlan(){
