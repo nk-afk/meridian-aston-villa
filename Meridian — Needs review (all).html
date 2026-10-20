@@ -274,7 +274,7 @@ function revCardHTML(r){
     <div class="rv-top">
       <div class="rv-phead">
         <div class="rv-pnum"><img src="https://randomuser.me/api/portraits/men/${r.num}.jpg" alt="" loading="lazy"></div>
-        <div class="rv-pname">Player ${String(r.num).padStart(2,'0')}</div>
+        <div class="rv-pname">Player ${r.num}</div>
         <span class="rv-tpill">${typeIcon(r.type)}${typeLabel(r.type)}</span>
         <span class="rv-pctx">${r.when} · ${r.ctx}</span>
       </div>
@@ -342,7 +342,7 @@ document.getElementById('reviewList').addEventListener('click',e=>{
   const b=e.target.closest('.rv-act'); if(!b)return;
   const card=b.closest('.revcard'); const num=parseInt(card.dataset.num,10); const v=b.dataset.v;
   decided.add(num);
-  toast('Logged · '+v+' · Player '+String(num).padStart(2,'0'));
+  toast('Logged · '+v+' · Player '+num);
   setTimeout(()=>{ renderTabs(); renderReview(); },260);
 });
 renderTabs(); renderReview(); icons();

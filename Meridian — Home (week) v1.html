@@ -690,7 +690,7 @@ function revCardHTML(r){
     <div class="rv-top">
       <div class="rv-phead">
         <div class="rv-pnum"><img src="https://randomuser.me/api/portraits/men/${r.num}.jpg" alt="" loading="lazy"></div>
-        <div class="rv-pname">Player ${String(r.num).padStart(2,'0')}</div>
+        <div class="rv-pname">Player ${r.num}</div>
         <span class="rv-tpill">${typeIcon(r.type)}${typeLabel(r.type)}</span>
         <span class="rv-pctx">${r.when} · ${r.ctx}</span>
       </div>
@@ -759,7 +759,7 @@ document.getElementById('reviewList').addEventListener('click',e=>{
   const b=e.target.closest('.rv-act'); if(!b)return;
   const card=b.closest('.revcard'); const num=parseInt(card.dataset.num,10); const v=b.dataset.v;
   decided.add(num);
-  toast('Logged · '+v+' · Player '+String(num).padStart(2,'0'));
+  toast('Logged · '+v+' · Player '+num);
   setTimeout(()=>{ renderTabs(); renderReview(); },260);
 });
 document.getElementById('weekgrid').addEventListener('click',function(e){ const f=e.target.closest('.ev-flag'); if(f){ e.preventDefault(); e.stopPropagation(); openPlanModal(); return; } const pe=e.target.closest('.wc-ev.ev-pitch, .wc-ev.ev-match'); if(pe){ e.preventDefault(); toast('This demo covers gym sessions only — pitch sessions are shown for context.'); } });
@@ -969,7 +969,7 @@ MeridianShell({active:'home',badge:7,club:'Northbank FC',actions:[{label:'Plan a
 /* ============ TOP SEARCH BAR ============ */
 (function(){
   var SP=[{num:1,pos:'Midfielder'},{num:2,pos:'Forward'},{num:3,pos:'Defender'},{num:8,pos:'Forward'},{num:12,pos:'Midfielder'},{num:13,pos:'Defender'},{num:16,pos:'Midfielder'},{num:20,pos:'Defender'},{num:24,pos:'Defender'}];
-  function pad(n){return String(n).padStart(2,'0');}
+  function pad(n){return String(n);}
   function href(n){return 'Meridian%20%E2%80%94%20Player%20detail%20v1.html?p='+n;}
   var tb=document.querySelector('.topbar'); if(!tb || tb.querySelector('.topsearch')) return;
   var box=document.createElement('div'); box.className='topsearch';

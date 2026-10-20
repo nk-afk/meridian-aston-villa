@@ -732,7 +732,7 @@ function renderTable(){
   if(!rows.length) h+=`<tr><td colspan="5" style="text-align:center;color:var(--color-text-soft);padding:30px">No players match.</td></tr>`;
   rows.forEach(p=>{
     h+=`<tr class="prow" data-n="${p.n}">
-      <td><div class="pcell"><span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+p.n}.jpg" alt="" loading="lazy"></span><span class="pname">Player ${p.n}</span></div></td>
+      <td><div class="pcell"><span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+p.n}.jpg" alt="" loading="lazy"></span><span class="pname">Player ${+p.n}</span></div></td>
       <td>${p.prog}</td>
       <td class="exc-col">${exOne(p.st)}</td>
       <td>${p.st==='plan'?`<span class="stag plan">${LABEL.plan}</span>`:`<span class="stag ${p.st}"><span class="sd" style="background:${COL[p.st]}"></span>${LABEL[p.st]}</span>`}</td>
@@ -799,7 +799,7 @@ function renderExercises(host,foot){
     const col=exCollapsed.has(p.n);
     const ss=setStats(p.n);
     const ssLabel=ss.confirmed+' of '+ss.prescribed+' sets'+(ss.review?' · '+ss.review+' to review':'');
-    h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i>${pAvatar(p.n)}<span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${ssLabel}</span></div></td></tr>`;
+    h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i>${pAvatar(p.n)}<span class="exg-name">Player ${+p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${ssLabel}</span></div></td></tr>`;
     p.ex.forEach((e,i)=>{
       const playable = typeof CLIPS!=='undefined' && !!CLIPS[p.n+'|'+e[0]];
       const attr = playable ? ` data-exp="${p.n}" data-exn="${e[0]}" title="Play clip"` : '';
@@ -818,7 +818,7 @@ function renderRail(){
   const clips=PLAYERS.filter(p=>p.st==='review');
   let cc=clips.map(p=>`
     <div class="clipcard">
-      <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog}</div></div></div>
+      <div class="cc-top">${pAvatar(p.n)}<div><div class="cc-name">Player ${+p.n}</div><div class="cc-prog">${p.prog}</div></div></div>
       <div class="thumb${p.clip.poster?'':' blank'}" data-clip="${p.n}">${p.clip.poster?`<img src="${p.clip.poster}" alt="" loading="lazy"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span>`:''}</div>
       <div class="cc-title">${p.clip.title}</div><div class="cc-note">${p.clip.note}</div>
       <a class="cc-cta" data-clip="${p.n}">Review clip →</a>
@@ -918,7 +918,7 @@ function openClip(n){
     tail=`<div class="dw-sec"><div class="l">Details</div><p>${p.det}</p></div>`+exSec;
   }
   dw.innerHTML=`
-    <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
+    <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${+p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
     <div class="dw-body">
       ${isRev&&p.clip&&p.clip.poster?`<div class="thumb"${p.clip.exn?` data-exp="${p.n}" data-exn="${p.clip.exn}" style="cursor:pointer"`:''}><img src="${p.clip.poster}" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
       <div class="dw-sec"><div class="l">What the capture shows</div><p>${obs}</p></div>
@@ -976,7 +976,7 @@ function decide(n,action){
   else { p.det='Dismissed · stays unverified'; }
   closeDrawer();
   renderStats(); renderTable(); renderRail();
-  toast(`Logged · ${action} · Player ${n}`, ()=>{ /* undo */ });
+  toast(`Logged · ${action} · Player ${+n}`, ()=>{ /* undo */ });
 }
 
 function markPresence(n,present){
@@ -984,7 +984,7 @@ function markPresence(n,present){
   if(present){ p.st='partial'; p.ex=p.ex.map((e,i)=>i===0?'p':'n'); p.det='Present · logged by staff · camera gap'; }
   else { p.det='Confirmed absent by staff'; }
   closeDrawer(); renderStats(); renderTable(); renderRail();
-  toast(present?`Logged · Player ${n} marked present`:`Confirmed · Player ${n} not present`);
+  toast(present?`Logged · Player ${+n} marked present`:`Confirmed · Player ${+n} not present`);
 }
 
 /* ============ TOAST ============ */
@@ -1007,7 +1007,6 @@ let selected=new Date(2026,8,8);
 /* sessions for the day; supports any count (2, 3, 4…) */
 /* Gym schedule per day — matches the Home page. Days not listed have no gym sessions. */
 const GYM_SCHEDULE={
-  '2026-09-07':[{name:'Lower body',start:'15:00',end:'16:10',cams:4}],
   '2026-09-08':[{name:'Strength',start:'09:00',end:'10:05',cams:4},{name:'Rehab',start:'12:30',end:'13:20',cams:4,processing:true},{name:'Mobility',start:'15:00',end:'16:05',cams:4,upcoming:true}],
   '2026-09-09':[{name:'Mobility',start:'15:00',end:'16:00',cams:4,upcoming:true}]
 };
@@ -1212,7 +1211,7 @@ function lbPlayVideo(src,note){ const e=lbEls(); e.img.style.display='none'; e.p
 function lbShowStill(seed){ const e=lbEls(); e.v.pause(); e.v.removeAttribute('src'); e.v.load(); e.v.style.display='none'; e.img.style.display='none'; e.img.removeAttribute('src'); e.play.style.display='none'; e.note.textContent='No clip available for this exercise.'; }
 function openExClip(p,name,setIdx){
   setIdx=parseInt(setIdx,10)||0;
-  lbEls().cap.textContent='Player '+p+' · '+name;
+  lbEls().cap.textContent='Player '+(+p)+' · '+name;
   const arr=CLIPS[p+'|'+name], c=arr&&arr[setIdx];
   if(c) lbPlayVideo(c.src,c.note); else lbShowStill('gymex'+p+(name||'').replace(/\s+/g,''));
   document.getElementById('exLightbox').classList.add('open');
