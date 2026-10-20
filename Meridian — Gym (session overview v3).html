@@ -763,20 +763,6 @@ function setStats(n){
   ep.ex.forEach(e=>{ const i=exSetInfo(n,e); confirmed+=i.done; prescribed+=i.prescribed; review+=i.review; });
   return {confirmed,prescribed,review};
 }
-/* one row per prescribed set (captured sets carry reps + clip; uncaptured show not started) */
-function exSetRows(n){
-  const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return [];
-  const rows=[];
-  ep.ex.forEach(e=>{
-    const arr=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+e[0]]:null;
-    for(let i=0;i<e[1];i++){
-      const c=arr&&arr[i];
-      if(c){ rows.push({name:e[0], set:(c.label||('Set '+(i+1))), reps:(c.reps!=null?c.reps+' reps':'—'), status:(c.status||'complete'), exn:e[0], clipSet:i}); }
-      else { rows.push({name:e[0], set:('Set '+(i+1)), reps:'—', status:((!arr&&i<e[2])?'complete':'notstarted'), exn:e[0], clipSet:null}); }
-    }
-  });
-  return rows;
-}
 function stIcon(s){
   if(s==='complete') return '<span class="sti"><svg viewBox="0 0 20 20"><path d="M4.5 10.6l3.3 3.3 7.7-7.8" fill="none" stroke="#5CA423" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
   if(s==='partial') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#E58600" stroke-width="2"/><path d="M10 2.2a7.8 7.8 0 0 0 0 15.6z" fill="#E58600"/></svg></span>';
@@ -806,7 +792,7 @@ function renderExercises(host,foot){
   const rows=all.slice((page-1)*PER_EX,(page-1)*PER_EX+PER_EX);
   const sets=n=>n+' set'+(n===1?'':'s');
   let h=`<table class="ptable extable"><colgroup><col class="c-ex"><col class="c-presc"><col class="c-done"><col class="c-status"></colgroup><thead><tr>
-    <th>Assigned exercise</th><th class="ex-c">Set</th><th class="ex-c">Reps</th><th class="ex-c">Status</th>
+    <th>Assigned exercise</th><th class="ex-c">Prescribed</th><th class="ex-c">Done</th><th class="ex-c">Status</th>
     </tr></thead><tbody>`;
   if(!rows.length) h+=`<tr><td colspan="4" style="text-align:center;color:var(--color-text-soft);padding:30px">No players match.</td></tr>`;
   rows.forEach(p=>{
@@ -814,10 +800,11 @@ function renderExercises(host,foot){
     const ss=setStats(p.n);
     const ssLabel=ss.confirmed+' of '+ss.prescribed+' sets'+(ss.review?' · '+ss.review+' to review':'');
     h+=`<tr class="exgroup${col?' collapsed':''}" data-g="${p.n}"><td colspan="4"><div class="exg-inner"><i data-lucide="chevron-down" class="exg-chev"></i>${pAvatar(p.n)}<span class="exg-name">Player ${p.n}</span><span class="exg-bar"></span><span class="exg-prog">${p.prog}</span><span class="exg-count num">${ssLabel}</span></div></td></tr>`;
-    exSetRows(p.n).forEach(r=>{
-      const play = r.clipSet!=null;
-      const attr = play ? ` data-exp="${p.n}" data-exn="${r.exn}" data-set="${r.clipSet}" title="Play clip"` : '';
-      h+=`<tr class="exitem${play?' playable':''}" data-gi="${p.n}"${attr}${col?' style="display:none"':''}><td class="ex-name">${r.name}</td><td class="ex-c">${r.set}</td><td class="ex-c num">${r.reps}</td><td class="ex-c">${stIcon(r.status)}</td></tr>`;
+    p.ex.forEach((e,i)=>{
+      const playable = typeof CLIPS!=='undefined' && !!CLIPS[p.n+'|'+e[0]];
+      const attr = playable ? ` data-exp="${p.n}" data-exn="${e[0]}" title="Play clip"` : '';
+      const info = exSetInfo(p.n,e);
+      h+=`<tr class="exitem${playable?' playable':''}" data-gi="${p.n}"${attr}${col?' style="display:none"':''}><td class="ex-name">${e[0]}</td><td class="ex-c num">${sets(e[1])}</td><td class="ex-c num">${sets(info.done)}</td><td class="ex-c">${stIcon(info.status)}</td></tr>`;
     });
   });
   h+='</tbody></table>';
