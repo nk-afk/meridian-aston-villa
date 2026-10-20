@@ -67,7 +67,7 @@ button{font-family:var(--ff)}
 .navtoggle{width:34px;height:34px;border-radius:var(--r-md);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-soft);display:grid;place-items:center;cursor:pointer;flex:none}
 .navtoggle:hover{background:var(--color-surface-subtle);color:var(--color-text)}
 .navtoggle svg{width:18px;height:18px}
-.side-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--color-separator);display:flex;flex-direction:column;gap:10px}
+.side-foot{margin-top:auto;padding-top:12px;display:flex;flex-direction:column;gap:10px}
 .sidecta{width:100%;justify-content:center;background:var(--color-primary-tint);border-color:var(--color-primary-text);color:var(--color-primary-text);font-weight:700}
 .sidecta:hover{background:#DCEAFF}
 .profile{display:flex;align-items:center;gap:10px;padding:2px}
@@ -212,7 +212,12 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 /* player completion */
 .tablepanel{padding:18px 20px 8px}
 .tphead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-.tphead .search{margin-left:auto}
+.tphead .selectwrap{margin-left:auto}
+.topsearch-gym{display:flex;align-items:center;gap:7px;height:34px;width:190px;border:1px solid var(--color-border);border-radius:var(--r-md);background:var(--color-surface-subtle);padding:0 11px}
+.topsearch-gym:focus-within{background:var(--color-surface);border-color:var(--color-primary-border);box-shadow:0 0 0 3px var(--color-primary-soft)}
+.topsearch-gym>svg{width:15px;height:15px;color:var(--color-text-soft);flex:none}
+.topsearch-gym input{flex:1;border:0;background:none;outline:none;font-family:inherit;font-size:13px;color:var(--color-text);min-width:0}
+.topsearch-gym input::placeholder{color:var(--color-text-soft)}
 .seg{display:inline-flex;background:var(--color-surface-muted);border-radius:var(--r-md);padding:3px}
 .segb{border:0;background:none;font-size:12.5px;font-weight:600;color:var(--color-text-soft);padding:6px 13px;border-radius:7px;cursor:pointer}
 .segb.active{background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-card)}
@@ -234,6 +239,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .ptable th.sortable{cursor:pointer;user-select:none}
 .ptable th .sico{width:13px;height:13px;vertical-align:-2px;margin-left:3px;color:var(--color-text-disabled)}
 .ptable td{padding:10px 12px;border-bottom:1px solid var(--color-border-subtle);font-size:13.5px;vertical-align:middle}
+.ptable tbody tr:last-child td{border-bottom:0}
 .prow{cursor:pointer}
 .prow:hover td{background:var(--color-surface-subtle)}
 .pcell{display:flex;align-items:center;gap:10px}
@@ -288,7 +294,8 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .sti{display:inline-grid;place-items:center;width:20px;height:20px;vertical-align:middle}
 .sti svg{width:20px;height:20px}
 
-.tfoot{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;font-size:13px;color:var(--color-text-soft)}
+.tfoot{display:flex;align-items:center;justify-content:flex-end;padding:14px 4px;font-size:13px;color:var(--color-text-soft)}
+.tfoot:empty{display:none}
 .pager{display:flex;gap:4px;align-items:center}
 .pgb{min-width:30px;height:30px;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--r-md);font-size:13px;font-weight:600;color:var(--color-text-muted);cursor:pointer;display:grid;place-items:center;padding:0 7px}
 .pgb:hover{background:var(--color-surface-subtle)}
@@ -298,7 +305,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 /* right rail */
 .railcard{padding:16px 18px;margin-bottom:16px}
-.rc-head{display:flex;align-items:center;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:12px}
+.rc-head{display:flex;align-items:baseline;justify-content:space-between;font-size:15px;font-weight:700;margin-bottom:12px}
 .rc-count{font-size:12px;color:var(--color-text-soft);font-weight:500}
 .rc-title{display:inline-flex;align-items:center;gap:8px}
 .rc-ic{width:22px;height:22px;border-radius:50%;background:var(--c-review-soft);color:var(--c-review);display:inline-grid;place-items:center;flex:none;font-size:14px;font-weight:800;line-height:1}
@@ -478,6 +485,13 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .ae-save{background:var(--color-primary);color:#fff;border:0;border-radius:var(--r-md);padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 .ae-cancel{background:none;border:0;color:var(--color-text-soft);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;padding:7px 4px}
 .ae-cancel:hover{color:var(--color-text)}
+.attest-repinput{width:78px;text-align:center;border:1px solid var(--color-border);border-radius:var(--r-md);padding:8px 9px;font-family:inherit;font-size:14px;background:var(--color-surface);color:var(--color-text);outline:none;flex:none}
+.attest-repinput:focus{border-color:var(--color-primary-border);box-shadow:0 0 0 3px var(--color-primary-soft)}
+.attest-repinput.need{border-color:var(--c-review)}
+.attest-done-ic{flex:none;display:grid;place-items:center}
+.attest-done-ic svg{width:18px;height:18px}
+.dw-cta{width:100%;background:var(--color-primary-tint);border:1px solid var(--color-primary-text);border-radius:var(--r-md);padding:10px;font-size:13.5px;font-weight:700;color:var(--color-primary-text);cursor:pointer;font-family:inherit}
+.dw-cta:hover{background:#DCEAFF}
 .attest-add{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--color-primary-text);background:none;border:0;cursor:pointer;padding:10px 0 2px;font-family:inherit}
 .attest-add svg{width:16px;height:16px}
 .attest-form{display:none;gap:8px;align-items:center;flex-wrap:wrap;background:var(--color-surface-subtle);border-radius:var(--r-md);padding:12px;margin:8px 0 4px}
@@ -587,7 +601,6 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
             <button class="segb active" data-view="players">Players</button>
             <button class="segb" data-view="exercises">Exercises</button>
           </div>
-          <div class="search"><i data-lucide="search"></i><input id="search" placeholder="Find player"></div>
           <div class="selectwrap">
             <select id="progSel">
               <option value="all">All programmes</option>
@@ -718,13 +731,14 @@ const PER=10, PER_EX=6;
 const exCollapsed=new Set();
 function icons(){ if(window.lucide) lucide.createIcons(); }
 function pAvatar(n){ return `<span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+n}.jpg" alt="" loading="lazy"></span>`; }
-function counts(){ const c={expected:PLAYERS.length,plan:0,partial:0,review:0,notobs:0}; PLAYERS.forEach(p=>c[p.st]++); c.observed=c.plan+c.partial+c.review; return c; }
+function counts(){ const c={expected:PLAYERS.length,plan:0,partial:0,review:0,notobs:0,absent:0}; PLAYERS.forEach(p=>{ c[p.st]++; if(p.st==='notobs'&&p.absent) c.absent++; }); c.observed=c.plan+c.partial+c.review; return c; }
 
 /* ============ STATS + COMPOSITION ============ */
 function renderStats(){
   const c=counts();
   const max=c.expected||1;
-  const att=[['Expected',c.expected,'var(--sb-steel)'],['Observed',c.observed,'var(--sb-steel2)'],['Not observed',c.notobs,'var(--sb-grey)']];
+  const att=[['Expected',c.expected,'var(--sb-steel)'],['Observed',c.observed,'var(--sb-steel2)'],['Not observed',c.notobs-c.absent,'var(--sb-grey)']];
+  if(c.absent>0) att.push(['Absent',c.absent,'var(--sb-grey)']);
   const comp=[['Plan met',c.plan,'var(--sb-green)'],['Partial',c.partial,'var(--sb-gold)'],['Requires review',c.review,'var(--sb-clay)']];
   const row=r=>`<div class="sgrow"><span class="sg-lab">${r[0]}</span><div class="sg-track"><i style="width:${Math.round(r[1]/max*100)}%;background:${r[2]}"></i></div><span class="sg-val num">${r[1]}</span></div>`;
   document.getElementById('attRows').innerHTML=att.map(row).join('');
@@ -736,14 +750,18 @@ function renderTabs(){
   if(view==='exercises'){
     const inc=EXPLAYERS.filter(p=>exComplete(p)<p.ex.length).length;
     const nr=EXPLAYERS.filter(p=>p.flag).length;
-    const t=[['all','All players',EXPLAYERS.length],['incomplete','Incomplete',inc],['needsreview','Needs review',nr]];
+    let t=[['all','All players',EXPLAYERS.length],['incomplete','Incomplete',inc],['needsreview','Needs review',nr]];
+    t=t.filter(x=>x[0]==='all'||x[2]>0);
+    if(!t.some(x=>x[0]===tab)) tab='all';
     host.innerHTML=t.map(x=>
       `<button class="ptab${tab===x[0]?' active':''}" data-tab="${x[0]}">${x[1]} <span>(${x[2]})</span></button>`).join('')+exLegend();
     icons();
     return;
   }
   const c=counts();
-  const t=[['all','All',c.expected],['review','Needs review',c.review],['partial','Partial',c.partial],['notobs','Not observed',c.notobs]];
+  let t=[['all','All',c.expected],['review','Needs review',c.review],['partial','Partial',c.partial],['notobs','Not observed',c.notobs-c.absent]];
+  t=t.filter(x=>x[0]==='all'||x[2]>0);
+  if(!t.some(x=>x[0]===tab)) tab='all';
   const DOTC={review:'var(--c-review)',partial:'var(--c-partial)',notobs:'var(--c-notobs)'};
   host.innerHTML=t.map(x=>{
     const dot=DOTC[x[0]]?`<span class="ptab-dot" style="background:${DOTC[x[0]]}"></span>`:'';
@@ -766,11 +784,11 @@ function excMark(e){
   return '<span class="exc n"></span>';
 }
 function exDots(ex){ return '<div class="exrow">'+ex.map(excMark).join('')+'</div>'; }
-function exOne(st){ const m={plan:'o',partial:'p',review:'f',notobs:'n'}; return '<div class="exrow">'+excMark(m[st])+'</div>'; }
+function exOne(st,absent){ if(st==='notobs'&&absent) return ''; const m={plan:'o',partial:'p',review:'f',notobs:'n'}; return '<div class="exrow">'+excMark(m[st])+'</div>'; }
 
 function filteredPlayers(){
   let rows=PLAYERS.slice();
-  if(tab!=='all') rows=rows.filter(p=>p.st===tab);
+  if(tab!=='all') rows=rows.filter(p=>p.st===tab && (tab!=='notobs' || !p.absent));
   if(prog!=='all') rows=rows.filter(p=>p.prog===prog);
   if(search){ const q=search.toLowerCase(); rows=rows.filter(p=>('player '+p.n).includes(q)||p.n.includes(q)); }
   rows.sort((a,b)=>{
@@ -794,13 +812,13 @@ function renderTable(){
     h+=`<tr class="prow" data-n="${p.n}">
       <td><div class="pcell"><span class="pnum pphoto"><img src="https://randomuser.me/api/portraits/men/${+p.n}.jpg" alt="" loading="lazy"></span><span class="pname">Player ${+p.n}</span></div></td>
       <td>${p.prog}</td>
-      <td class="exc-col">${exOne(p.st)}</td>
-      <td>${p.st==='plan'?`<span class="stag plan">${LABEL.plan}</span>`:`<span class="stag ${p.st}"><span class="sd" style="background:${COL[p.st]}"></span>${LABEL[p.st]}</span>`}</td>
+      <td class="exc-col">${exOne(p.st,p.absent)}</td>
+      <td>${p.st==='plan'?`<span class="stag plan">${LABEL.plan}</span>`:(p.st==='notobs'&&p.absent?`<span class="stag notobs">Absent</span>`:`<span class="stag ${p.st}"><span class="sd" style="background:${COL[p.st]}"></span>${LABEL[p.st]}</span>`)}</td>
       <td class="chev"><i data-lucide="chevron-right"></i></td></tr>`;
   });
   h+='</tbody></table>';
   host.innerHTML=h;
-  foot.innerHTML=`<span>Showing ${rows.length} of ${PLAYERS.length} players</span>`;
+  foot.innerHTML='';
   icons();
 }
 function exStatus(e){ const pr=e[1], dn=e[2]; return dn>=pr?'complete':(dn>0?'partial':'notstarted'); }
@@ -809,10 +827,11 @@ function exComplete(p){ return p.ex.map(exStatus).filter(s=>s==='complete').leng
 function exSetInfo(n,e){
   const arr=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+e[0]]:null;
   if(arr&&arr.length){
-    const complete=arr.filter(c=>(c.status||'complete')==='complete').length;
     const hasReview=arr.some(c=>c.status==='review');
-    const status=hasReview?'review':(complete>=e[1]?'complete':(complete>0?'partial':'notstarted'));
-    return {done:complete, prescribed:e[1], review:hasReview?arr.filter(c=>c.status==='review').length:0, status};
+    // with a review set, confirmed = complete clips; otherwise trust the logged done count (captured + staff-entered)
+    const done=hasReview?arr.filter(c=>(c.status||'complete')==='complete').length:e[2];
+    const status=hasReview?'review':(done>=e[1]?'complete':(done>0?'partial':'notstarted'));
+    return {done, prescribed:e[1], review:hasReview?arr.filter(c=>c.status==='review').length:0, status};
   }
   return {done:e[2], prescribed:e[1], review:0, status:exStatus(e)};
 }
@@ -869,7 +888,7 @@ function renderExercises(host,foot){
   });
   h+='</tbody></table>';
   host.innerHTML=h;
-  foot.innerHTML=`<span>Showing ${rows.length} of ${all.length} players</span><div class="pager">${pagerHTML(pages)}</div>`;
+  foot.innerHTML=`<div class="pager">${pagerHTML(pages)}</div>`;
 }
 
 /* ============ RIGHT RAIL ============ */
@@ -975,7 +994,8 @@ function openClip(n){
       </div>`+exerciseSection(p.n,true);
   } else {
     const exSec=exerciseSection(p.n) || `<div class="dw-sec"><div class="l">Exercise checks</div>${exDots(p.ex)}</div>`;
-    tail=`<div class="dw-sec"><div class="l">Details</div><p>${p.det}</p></div>`+exSec;
+    const partAction = p.st==='partial' ? `<div class="dw-sec"><button class="dw-cta" data-partialrev="1">Review detected counts</button></div>` : '';
+    tail=`<div class="dw-sec"><div class="l">Details</div><p>${p.det}</p></div>`+partAction+exSec;
   }
   dw.innerHTML=`
     <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${+p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
@@ -987,7 +1007,8 @@ function openClip(n){
   document.getElementById('scrim').classList.add('open');
   dw.classList.add('open');
   document.getElementById('dwClose').onclick=closeDrawer;
-  dw.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>decide(p.n,b.dataset.v));
+  dw.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{ if(b.dataset.v==='Modified') openModify(p.n); else decide(p.n,b.dataset.v); });
+  const prb=dw.querySelector('[data-partialrev]'); if(prb) prb.onclick=()=>openPartial(p.n);
   dw.querySelectorAll('[data-pres]').forEach(b=>b.onclick=()=>{ if(b.dataset.pres==='present') openAttest(p.n); else markPresence(p.n,false); });
   icons();
 }
@@ -1042,9 +1063,9 @@ function decide(n,action){
 function markPresence(n,present){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
   if(present){ p.st='partial'; p.ex=p.ex.map((e,i)=>i===0?'p':'n'); p.det='Present · logged by staff · camera gap'; }
-  else { p.det='Confirmed absent by staff'; }
+  else { p.absent=true; p.ex=p.ex.map(()=>'n'); p.det='Confirmed absent by staff'; }
   closeDrawer(); renderStats(); renderTable(); renderRail();
-  toast(present?`Logged · Player ${+n} marked present`:`Confirmed · Player ${+n} not present`);
+  toast(present?`Logged · Player ${+n} marked present`:`Confirmed · Player ${+n} absent`);
 }
 
 /* ===== manual attendance attestation (not-observed players) ===== */
@@ -1100,6 +1121,7 @@ function openAttest(n){
   attestEditIdx=-1;
   attestEx=ep.ex.map(e=>{ const sr=planSR(ep.prog,e[0]); return {name:e[0], sets:e[1], reps:(sr?sr.reps:''), checked:true, added:false}; });
   document.getElementById('attestTitle').textContent='Log attendance · Player '+(+n);
+  document.querySelector('#attestModal .pm-sub').textContent='Select each prescribed exercise the player completed, and add exercise if needed.';
   renderAttestBody(n);
   document.getElementById('attestScrim').classList.add('open');
   document.getElementById('attestModal').classList.add('open');
@@ -1118,6 +1140,80 @@ function confirmAttest(n){
   closeAttest(); closeDrawer();
   renderStats(); renderTable(); renderRail();
   toast('Logged · Player '+(+n)+(allDone?' · plan met':' · partial'));
+}
+
+/* ===== Modify (Requires review): manually enter reps for the flagged exercise ===== */
+function reviewExOf(n){ const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return []; return ep.ex.filter(e=>{ const arr=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+e[0]]:null; return arr&&arr.some(c=>c.status==='review'); }).map(e=>e[0]); }
+function openModify(n){
+  const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return;
+  const flagged=reviewExOf(n);
+  let list='';
+  flagged.forEach(exn=>{
+    const arr=CLIPS[n+'|'+exn]||[];
+    arr.forEach((c,si)=>{
+      const label=c.label||('Set '+(si+1));
+      if(c.status==='review'){
+        list+=`<div class="attest-row"><div class="attest-main"><div class="attest-name">${exn}</div><div class="attest-rx">${label} · enter the reps you counted</div></div><input class="attest-repinput need mod-reps" data-exn="${escAttr(exn)}" data-set="${si}" type="number" min="0" placeholder="reps"></div>`;
+      } else {
+        list+=`<div class="attest-row"><div class="attest-main"><div class="attest-name">${exn}</div><div class="attest-rx">${label} · ${c.reps} reps</div></div><span class="attest-done-ic">${legIcon()}</span></div>`;
+      }
+    });
+  });
+  document.getElementById('attestTitle').textContent='Modify · Player '+(+n);
+  document.querySelector('#attestModal .pm-sub').textContent='The capture could not be read. Enter the reps you counted, then save.';
+  document.getElementById('attestBody').innerHTML=`
+    <div class="attest-l">Needs review · ${ep.prog}</div>
+    <div class="attest-list">${list}</div>
+    <div class="attest-foot"><button class="attest-cancel" id="modCancel">Cancel</button><button class="attest-confirm" id="modSave">Save</button></div>`;
+  document.getElementById('modCancel').onclick=closeAttest;
+  document.getElementById('modSave').onclick=function(){ confirmModify(n); };
+  document.getElementById('attestScrim').classList.add('open');
+  document.getElementById('attestModal').classList.add('open');
+  icons();
+}
+function confirmModify(n){
+  const p=PLAYERS.find(x=>x.n===n), ep=EXPLAYERS.find(x=>x.n===n); if(!p||!ep) return;
+  const inputs=[...document.querySelectorAll('#attestBody .mod-reps')];
+  for(const inp of inputs){ if(inp.value.trim()===''){ inp.classList.add('need'); inp.focus(); return; } }
+  inputs.forEach(inp=>{ const arr=CLIPS[n+'|'+inp.dataset.exn]; const si=+inp.dataset.set; if(arr&&arr[si]){ arr[si].status='complete'; arr[si].reps=Math.max(0,parseInt(inp.value,10)||0); } });
+  ep.ex.forEach(e=>{ e[2]=e[1]; }); delete ep.flag;
+  p.st='plan'; p.ex=ep.ex.map(()=>'o'); p.det='Reps entered by staff · confirmed'; delete p.clip;
+  closeAttest(); closeDrawer();
+  renderStats(); renderTable(); renderRail();
+  toast('Logged · Player '+(+n)+' · plan met');
+}
+
+/* ===== Partial: review auto-detected counts, accept or deny ===== */
+function openPartial(n){
+  const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return;
+  let list='';
+  ep.ex.forEach(e=>{
+    const exn=e[0], presc=e[1], arr=CLIPS[n+'|'+exn]||[];
+    for(let si=0; si<presc; si++){
+      const c=arr[si], label=(c&&c.label)||('Set '+(si+1)), reps=(c&&c.reps!=null)?c.reps:'', missing=!c;
+      list+=`<div class="attest-row"><div class="attest-main"><div class="attest-name">${exn}</div><div class="attest-rx">${label}${missing?' · not captured':''}</div></div><input class="attest-repinput par-reps${missing?' need':''}" data-exn="${escAttr(exn)}" data-set="${si}" type="number" min="0" value="${reps}" placeholder="reps"></div>`;
+    }
+  });
+  document.getElementById('attestTitle').textContent='Review counts · Player '+(+n);
+  document.querySelector('#attestModal .pm-sub').textContent='These sets and reps were detected automatically. Accept to confirm, or deny to leave it partial.';
+  document.getElementById('attestBody').innerHTML=`
+    <div class="attest-l">Detected counts · ${ep.prog}</div>
+    <div class="attest-list">${list}</div>
+    <div class="attest-foot"><button class="attest-cancel" id="parDeny">Deny</button><button class="attest-confirm" id="parAccept">Accept</button></div>`;
+  document.getElementById('parDeny').onclick=function(){ closeAttest(); toast('Counts denied · Player '+(+n)+' stays partial'); };
+  document.getElementById('parAccept').onclick=function(){ confirmPartial(n); };
+  document.getElementById('attestScrim').classList.add('open');
+  document.getElementById('attestModal').classList.add('open');
+  icons();
+}
+function confirmPartial(n){
+  const p=PLAYERS.find(x=>x.n===n), ep=EXPLAYERS.find(x=>x.n===n); if(!p||!ep) return;
+  [...document.querySelectorAll('#attestBody .par-reps')].forEach(inp=>{ const arr=CLIPS[n+'|'+inp.dataset.exn]; const si=+inp.dataset.set, v=Math.max(0,parseInt(inp.value,10)||0); if(arr&&arr[si]){ arr[si].status='complete'; arr[si].reps=v; } });
+  ep.ex.forEach(e=>{ e[2]=e[1]; }); delete ep.flag;
+  p.st='plan'; p.ex=ep.ex.map(()=>'o'); p.det='Counts accepted by staff · confirmed';
+  closeAttest(); closeDrawer();
+  renderStats(); renderTable(); renderRail();
+  toast('Accepted · Player '+(+n)+' · plan met');
 }
 
 /* ============ TOAST ============ */
@@ -1257,7 +1353,6 @@ document.getElementById('days').addEventListener('click',function(e){const el=e.
 /* ============ TABLE/FILTER WIRING ============ */
 document.getElementById('ptabs').addEventListener('click',e=>{const b=e.target.closest('.ptab');if(!b)return;tab=b.dataset.tab;page=1;renderTabs();renderTable();});
 document.getElementById('viewSeg').addEventListener('click',e=>{const b=e.target.closest('.segb');if(!b)return;view=b.dataset.view;document.querySelectorAll('#viewSeg .segb').forEach(x=>x.classList.toggle('active',x===b));tab='all';page=1;renderTabs();renderTable();});
-document.getElementById('search').addEventListener('input',e=>{search=e.target.value.trim();page=1;renderTable();});
 document.getElementById('progSel').addEventListener('change',e=>{prog=e.target.value;page=1;renderTable();});
 document.getElementById('tableHost').addEventListener('click',e=>{
   const g=e.target.closest('.exgroup');
@@ -1415,6 +1510,15 @@ renderStats(); renderTable(); renderRail(); renderWeek(); updateTitle();
   };
 })();
 MeridianShell({active:'gym',badge:7,club:'Northbank FC',actions:[{label:'Export',icon:'download'},{label:'Plan a session',icon:'plus',primary:true}]});
+(function(){
+  var tb=document.querySelector('.topbar'); if(!tb) return;
+  var club=tb.querySelector('.topclub'); if(!club) return;
+  var box=document.createElement('div'); box.className='topsearch-gym';
+  box.innerHTML='<i data-lucide="search"></i><input type="text" id="search" placeholder="Search players" aria-label="Search players">';
+  club.insertAdjacentElement('afterend', box);
+  box.querySelector('input').addEventListener('input', function(e){ search=e.target.value.trim(); page=1; renderTable(); });
+  if(window.lucide) lucide.createIcons();
+})();
 </script>
 </body>
 </html>
