@@ -1136,6 +1136,12 @@ document.getElementById('tableHost').addEventListener('click',e=>{
   if(th){ const k=th.dataset.sort; if(sortKey===k) sortDir=-sortDir; else {sortKey=k; sortDir=1;} renderTable(); return; }
   const row=e.target.closest('.prow'); if(row) openClip(row.dataset.n);
 });
+document.getElementById('tfoot').addEventListener('click',e=>{
+  const pg=e.target.closest('.pgb'); if(!pg) return;
+  const v=pg.dataset.pg; const list=view==='exercises'?filteredEx():filteredPlayers(); const per=view==='exercises'?PER_EX:PER; const pages=Math.max(1,Math.ceil(list.length/per));
+  if(v==='prev')page=Math.max(1,page-1); else if(v==='next')page=Math.min(pages,page+1); else page=+v;
+  renderTable();
+});
 document.getElementById('reviewBtn').onclick=function(){ tab='review'; page=1; renderTabs(); renderTable(); document.querySelector('.tablepanel').scrollIntoView({behavior:'smooth',block:'start'}); };
 document.getElementById('planBtn').onclick=openSessionPlan;
 document.getElementById('scrim').onclick=closeDrawer;
