@@ -441,6 +441,57 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .pm-cl{font-size:14px;font-weight:600;color:var(--color-text)}
 .pm-cd{font-size:12.5px;color:var(--color-text-soft);margin-top:3px;line-height:1.4}
 @media(max-width:560px){.pm-grid{grid-template-columns:1fr}}
+/* attendance attestation modal */
+#attestModal{width:500px}
+#attestModal .pm-head>div{flex:1;min-width:0}
+#attestModal .pm-title{font-size:18px}
+#attestModal .pm-sub{margin-top:5px;font-size:14px}
+#attestBody{padding:18px 24px 22px}
+.attest-intro{font-size:13px;color:var(--color-text-soft);line-height:1.5;margin-bottom:14px}
+.attest-l{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600;margin-bottom:4px}
+.attest-list{display:flex;flex-direction:column;margin-bottom:4px}
+.attest-row{display:flex;align-items:center;gap:13px;padding:12px 2px;border-bottom:1px solid var(--color-border-subtle)}
+.attest-cb{width:19px;height:19px;flex:none;accent-color:var(--color-primary);cursor:pointer}
+.attest-main{flex:1;min-width:0}
+.attest-name{font-size:14px;font-weight:600;color:var(--color-text)}
+.attest-rx{font-size:13px;color:var(--color-text);margin-top:2px}
+.attest-extra{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c-plan);background:var(--c-plan-soft);border-radius:var(--r-pill);padding:2px 8px;margin-left:8px;vertical-align:middle}
+.attest-del{border:0;background:none;color:var(--color-text-disabled);cursor:pointer;padding:5px;display:grid;place-items:center;flex:none}
+.attest-del:hover{color:var(--c-review)}
+.attest-del svg{width:16px;height:16px}
+.attest-confirm-del{display:inline-flex;align-items:center;gap:8px;flex:none}
+.attest-confirm-del>span{font-size:12.5px;color:var(--color-text-soft);white-space:nowrap}
+.acd-yes{font-size:12.5px;font-weight:700;color:var(--c-review);background:var(--c-review-soft);border:0;border-radius:var(--r-md);padding:5px 11px;cursor:pointer;font-family:inherit}
+.acd-yes:hover{background:#FFD9D6}
+.acd-no{font-size:12.5px;font-weight:600;color:var(--color-text-soft);background:none;border:0;cursor:pointer;font-family:inherit;padding:5px 4px}
+.acd-no:hover{color:var(--color-text)}
+.attest-acts{display:inline-flex;align-items:center;gap:9px;flex:none}
+.attest-edit{border:0;background:none;color:var(--color-text-disabled);cursor:pointer;padding:5px;display:grid;place-items:center}
+.attest-edit:hover{color:var(--color-primary-text)}
+.attest-edit svg{width:16px;height:16px}
+.attest-sep{width:1px;height:18px;background:var(--color-separator);flex:none}
+.attest-editwrap{flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.attest-editwrap input{border:1px solid var(--color-border);border-radius:var(--r-md);padding:7px 9px;font-family:inherit;font-size:14px;background:var(--color-surface);color:var(--color-text);outline:none}
+.attest-editwrap input:focus{border-color:var(--color-primary-border);box-shadow:0 0 0 3px var(--color-primary-soft)}
+.attest-editwrap .ae-name{flex:1;min-width:110px}
+.attest-editwrap .ae-num{width:50px;text-align:center}
+.ae-save{background:var(--color-primary);color:#fff;border:0;border-radius:var(--r-md);padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.ae-cancel{background:none;border:0;color:var(--color-text-soft);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;padding:7px 4px}
+.ae-cancel:hover{color:var(--color-text)}
+.attest-add{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--color-primary-text);background:none;border:0;cursor:pointer;padding:10px 0 2px;font-family:inherit}
+.attest-add svg{width:16px;height:16px}
+.attest-form{display:none;gap:8px;align-items:center;flex-wrap:wrap;background:var(--color-surface-subtle);border-radius:var(--r-md);padding:12px;margin:8px 0 4px}
+.attest-form.open{display:flex}
+.attest-form input{border:1px solid var(--color-border);border-radius:var(--r-md);padding:8px 10px;font-family:inherit;font-size:14px;background:var(--color-surface);color:var(--color-text);outline:none}
+.attest-form input:focus{border-color:var(--color-primary-border);box-shadow:0 0 0 3px var(--color-primary-soft)}
+.attest-form .af-name{flex:1;min-width:150px}
+.attest-form .af-num{width:58px;text-align:center}
+.attest-form .af-x{font-size:13px;color:var(--color-text-soft)}
+.attest-addbtn{background:var(--color-primary);color:#fff;border:0;border-radius:var(--r-md);padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.attest-foot{display:flex;gap:10px;margin-top:20px}
+.attest-confirm{flex:1;background:var(--color-primary-tint);border:1px solid var(--color-primary-text);border-radius:var(--r-md);padding:11px;font-size:13.5px;font-weight:700;color:var(--color-primary-text);cursor:pointer;font-family:inherit}
+.attest-confirm:hover{background:#DCEAFF}
+.attest-cancel{flex:1;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-md);padding:11px;font-size:13.5px;font-weight:600;color:var(--color-text-muted);cursor:pointer;font-family:inherit}
 
 @media(max-width:1180px){.col-rail{width:280px}}
 @media(max-width:1020px){.cols{flex-direction:column}.col-rail{width:100%}}
@@ -588,6 +639,15 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
     <button class="dw-close" id="planClose" aria-label="Close"><i data-lucide="x"></i></button>
   </div>
   <div class="pm-grid" id="pmGrid"></div>
+</div>
+
+<div class="modal-scrim" id="attestScrim"></div>
+<div class="planmodal" id="attestModal" role="dialog" aria-modal="true" aria-label="Log attendance">
+  <div class="pm-head">
+    <div><div class="pm-title" id="attestTitle">Log attendance</div><div class="pm-sub">Select each prescribed exercise the player completed, and add exercise if needed.</div></div>
+    <button class="dw-close" id="attestClose" aria-label="Close"><i data-lucide="x"></i></button>
+  </div>
+  <div id="attestBody"></div>
 </div>
 
 <script>
@@ -928,7 +988,7 @@ function openClip(n){
   dw.classList.add('open');
   document.getElementById('dwClose').onclick=closeDrawer;
   dw.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>decide(p.n,b.dataset.v));
-  dw.querySelectorAll('[data-pres]').forEach(b=>b.onclick=()=>markPresence(p.n,b.dataset.pres==='present'));
+  dw.querySelectorAll('[data-pres]').forEach(b=>b.onclick=()=>{ if(b.dataset.pres==='present') openAttest(p.n); else markPresence(p.n,false); });
   icons();
 }
 function closeDrawer(){ document.getElementById('scrim').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
@@ -985,6 +1045,79 @@ function markPresence(n,present){
   else { p.det='Confirmed absent by staff'; }
   closeDrawer(); renderStats(); renderTable(); renderRail();
   toast(present?`Logged · Player ${+n} marked present`:`Confirmed · Player ${+n} not present`);
+}
+
+/* ===== manual attendance attestation (not-observed players) ===== */
+let attestEx=[], attestEditIdx=-1;
+function planSR(prog,name){ const pp=PLAN_PROGRAMMES.find(x=>x.prog===prog); if(pp){ const e=pp.ex.find(x=>x.name===name); if(e) return {sets:e.sets, reps:e.reps}; } return null; }
+function rxOf(it){ return (it.reps!=null && it.reps!=='') ? (it.sets+' × '+it.reps) : (it.sets+' set'+(it.sets===1?'':'s')); }
+function escAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function syncAttestChecks(){ document.querySelectorAll('#attestBody .attest-cb:not([disabled])').forEach(c=>{ const j=+c.dataset.j; if(attestEx[j]) attestEx[j].checked=c.checked; }); }
+function renderAttestBody(n){
+  const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return;
+  const rows=attestEx.map((it,j)=>{
+    if(j===attestEditIdx){
+      return `<div class="attest-row"><input type="checkbox" class="attest-cb" data-j="${j}" ${it.checked?'checked':''} disabled>
+        <div class="attest-editwrap">
+          <input class="ae-name" type="text" value="${escAttr(it.name)}" placeholder="Exercise name">
+          <input class="ae-num ae-sets" type="number" min="1" value="${it.sets}" aria-label="Sets"><span class="af-x">×</span><input class="ae-num ae-reps" type="text" value="${escAttr(it.reps)}" placeholder="reps" aria-label="Reps">
+          <button class="ae-save" data-save="${j}">Save</button><button class="ae-cancel">Cancel</button>
+        </div></div>`;
+    }
+    return `<div class="attest-row"><input type="checkbox" class="attest-cb" data-j="${j}" ${it.checked?'checked':''}><div class="attest-main"><div class="attest-name">${it.name}${it.added?'<span class="attest-extra">Added</span>':''}</div><div class="attest-rx">${rxOf(it)}</div></div><div class="attest-acts"><button class="attest-edit" data-edit="${j}" aria-label="Edit exercise"><i data-lucide="pencil"></i></button><span class="attest-sep"></span><button class="attest-del" data-del="${j}" aria-label="Remove exercise"><i data-lucide="trash-2"></i></button></div></div>`;
+  }).join('');
+  document.getElementById('attestBody').innerHTML=`
+    <div class="attest-l">Prescribed · ${ep.prog}</div>
+    <div class="attest-list">${rows}</div>
+    <button class="attest-add" id="attestAddBtn"><i data-lucide="plus"></i>Add exercise</button>
+    <div class="attest-form" id="attestForm">
+      <input class="af-name" id="afName" type="text" placeholder="Exercise name" aria-label="Exercise name">
+      <input class="af-num" id="afSets" type="number" min="1" value="3" aria-label="Sets"><span class="af-x">×</span><input class="af-num" id="afReps" type="number" min="1" value="10" aria-label="Reps">
+      <button class="attest-addbtn" id="afAdd">Add</button>
+    </div>
+    <div class="attest-foot"><button class="attest-cancel" id="attestCancel">Cancel</button><button class="attest-confirm" id="attestConfirm">Confirm present</button></div>`;
+  document.getElementById('attestAddBtn').onclick=function(){ const f=document.getElementById('attestForm'); f.classList.toggle('open'); if(f.classList.contains('open')) document.getElementById('afName').focus(); };
+  document.getElementById('afAdd').onclick=function(){ const nm=document.getElementById('afName').value.trim(); if(!nm){document.getElementById('afName').focus();return;} const st=Math.max(1,parseInt(document.getElementById('afSets').value,10)||1), rp=Math.max(1,parseInt(document.getElementById('afReps').value,10)||1); syncAttestChecks(); attestEx.push({name:nm,sets:st,reps:rp,checked:true,added:true}); renderAttestBody(n); };
+  document.getElementById('attestForm').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); document.getElementById('afAdd').click(); } });
+  document.querySelectorAll('#attestBody [data-edit]').forEach(b=>b.onclick=function(){ syncAttestChecks(); attestEditIdx=+b.dataset.edit; renderAttestBody(n); setTimeout(function(){ var el=document.querySelector('#attestBody .ae-name'); if(el){ el.focus(); if(el.select) el.select(); } },0); });
+  document.querySelectorAll('#attestBody [data-save]').forEach(b=>b.onclick=function(){ const j=+b.dataset.save, row=b.closest('.attest-row'); const nm=row.querySelector('.ae-name').value.trim(); if(!nm){ row.querySelector('.ae-name').focus(); return; } const st=Math.max(1,parseInt(row.querySelector('.ae-sets').value,10)||1); const rp=row.querySelector('.ae-reps').value.trim(); if(attestEx[j]){ attestEx[j].name=nm; attestEx[j].sets=st; attestEx[j].reps=rp; } attestEditIdx=-1; renderAttestBody(n); });
+  document.querySelectorAll('#attestBody .ae-cancel').forEach(b=>b.onclick=function(){ attestEditIdx=-1; renderAttestBody(n); });
+  document.querySelectorAll('#attestBody .attest-editwrap').forEach(w=>w.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); const s=w.querySelector('.ae-save'); if(s) s.click(); } else if(e.key==='Escape'){ e.preventDefault(); attestEditIdx=-1; renderAttestBody(n); } }));
+  document.querySelectorAll('#attestBody [data-del]').forEach(b=>b.onclick=function(){
+    const j=+b.dataset.del, row=b.closest('.attest-row'), acts=b.closest('.attest-acts');
+    if(row.querySelector('.attest-confirm-del')) return;
+    acts.style.display='none';
+    acts.insertAdjacentHTML('afterend','<div class="attest-confirm-del"><span>Remove?</span><button class="acd-yes">Remove</button><button class="acd-no">Cancel</button></div>');
+    row.querySelector('.acd-yes').onclick=function(){ syncAttestChecks(); attestEx.splice(j,1); renderAttestBody(n); };
+    row.querySelector('.acd-no').onclick=function(){ syncAttestChecks(); renderAttestBody(n); };
+  });
+  document.getElementById('attestCancel').onclick=closeAttest;
+  document.getElementById('attestConfirm').onclick=function(){ confirmAttest(n); };
+  icons();
+}
+function openAttest(n){
+  const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return;
+  attestEditIdx=-1;
+  attestEx=ep.ex.map(e=>{ const sr=planSR(ep.prog,e[0]); return {name:e[0], sets:e[1], reps:(sr?sr.reps:''), checked:true, added:false}; });
+  document.getElementById('attestTitle').textContent='Log attendance · Player '+(+n);
+  renderAttestBody(n);
+  document.getElementById('attestScrim').classList.add('open');
+  document.getElementById('attestModal').classList.add('open');
+  icons();
+}
+function closeAttest(){ document.getElementById('attestScrim').classList.remove('open'); document.getElementById('attestModal').classList.remove('open'); }
+function confirmAttest(n){
+  const p=PLAYERS.find(x=>x.n===n), ep=EXPLAYERS.find(x=>x.n===n); if(!p||!ep) return;
+  syncAttestChecks();
+  ep.ex = attestEx.map(it=>[it.name, it.sets, it.checked ? it.sets : 0]);
+  const allDone = ep.ex.length>0 && ep.ex.every(e=>e[2]>=e[1]);
+  p.st = allDone ? 'plan' : 'partial';
+  p.ex = ep.ex.length ? ep.ex.map(e=> e[2]>=e[1]?'o':(e[2]>0?'p':'n')) : ['n'];
+  p.det = allDone ? 'Present · all prescribed work logged by staff' : 'Present · partial work logged by staff';
+  delete ep.flag;
+  closeAttest(); closeDrawer();
+  renderStats(); renderTable(); renderRail();
+  toast('Logged · Player '+(+n)+(allDone?' · plan met':' · partial'));
 }
 
 /* ============ TOAST ============ */
@@ -1162,6 +1295,9 @@ function renderPlanModal(){
 function openPlanModal(){ document.getElementById('planScrim').classList.add('open'); document.getElementById('planModal').classList.add('open'); }
 function closePlanModal(){ document.getElementById('planScrim').classList.remove('open'); document.getElementById('planModal').classList.remove('open'); }
 document.getElementById('planScrim').onclick=closePlanModal;
+document.getElementById('attestScrim').onclick=closeAttest;
+document.getElementById('attestClose').onclick=closeAttest;
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeAttest(); });
 document.getElementById('planClose').onclick=closePlanModal;
 document.getElementById('pmGrid').addEventListener('click',function(e){ const c=e.target.closest('.pm-card'); if(!c)return; const m=PLAN_METHODS[+c.dataset.i]; closePlanModal(); toast(m.label+' · coming soon'); });
 document.addEventListener('click',function(e){ if(e.target.closest('.sidecta')) openPlanModal(); });
