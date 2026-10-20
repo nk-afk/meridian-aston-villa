@@ -383,9 +383,9 @@ body.nav-collapsed .profile .pname{display:none}
 .notif-foot a{font-size:12.5px;color:var(--color-primary-text);font-weight:600;cursor:pointer}
 .topsearch{position:relative;display:flex;align-items:center;gap:8px;height:38px;width:200px;max-width:42vw;border:1px solid var(--color-border);border-radius:var(--r-lg);background:var(--color-surface-subtle);padding:0 12px;transition:width .2s ease}
 .topsearch:focus-within{width:330px;background:var(--color-surface);border-color:var(--color-primary-border);box-shadow:0 0 0 3px var(--color-primary-soft)}
-.topsearch > svg{width:16px;height:16px;color:var(--color-text-disabled);flex:none}
+.topsearch > svg{width:16px;height:16px;color:var(--color-text-soft);flex:none}
 .topsearch input{flex:1;border:0;background:none;outline:none;font-family:inherit;font-size:13.5px;color:var(--color-text);min-width:0}
-.topsearch input::placeholder{color:var(--color-text-disabled)}
+.topsearch input::placeholder{color:var(--color-text-soft)}
 .topsearch-results{position:absolute;top:calc(100% + 7px);left:0;right:0;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);padding:5px;display:none;z-index:70;max-height:320px;overflow:auto}
 .topsearch-results.open{display:block}
 .ts-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r-md);cursor:pointer;text-decoration:none}
@@ -507,53 +507,17 @@ function yFor(min){return (min-GSTART)/60*HOURPX;}
 function fmtDur(m){return m<60?('In '+m+' min'):('In '+Math.round(m/60)+' hour'+(Math.round(m/60)===1?'':'s'));}
 
 const REVIEW=[
-  {num:13,type:'pitch',when:'Today',ctx:'1v1 transition',title:'Braking above usual load',badge:'Context missing',poster:'clips_zoomed/poster_13_chest_fly.jpg',
-   meta:[['Observed','Stop from 23.7 km/h'],['Compared','Above his usual braking load'],['Drill','1v1 to goal'],['Clip window','00:18–00:31']],
-   frames:[['Approach','00:21.40','00:18–00:31'],['Stop','00:24.80','00:18–00:31']],
-   shows:'One braking action is visible. The clip does not show the sprint that led into it.',
-   coach:'Compare with his usual pattern before using.'},
-  {num:7,type:'gym',when:'Today',ctx:'Upper push',title:'Full set needs confirmation',badge:'Set unconfirmed',
-   meta:[['Prescribed','3 × 5 reps'],['Load','92.5 kg top set'],['Recorded','2 / ? sets, unconfirmed'],['Clip window','00:24–00:43']],
-   frames:[['Rep start','00:30.67','00:24–00:43'],['Movement','00:33.33','00:24–00:43']],
-   shows:'One complete rep is visible. The clip does not show the full set.',
-   coach:'Confirm the full set: 3 × 5 reps.'},
-  {num:18,type:'gym',when:'9 Oct',ctx:'Lower body',
-   meta:[['Prescribed','4 × 8 reps'],['Load','60 kg'],['Recorded','1 / 4 sets, unconfirmed'],['Clip window','01:02–01:18']],
-   frames:[['Last frame','01:10.20','01:02–01:18'],['Cut','01:12.00','01:02–01:18']],
-   shows:'The capture ends mid-set. The last two reps were not recorded.',
-   coach:'Confirm whether the set was completed.'},
-  {num:4,type:'pitch',when:'9 Oct',ctx:'Rondo',
-   meta:[['Observed','1 shoulder check'],['Compared','Fewer than his usual'],['Drill','Rondo'],['Clip window','00:40–00:55']],
-   frames:[['Before pass','00:44.10','00:40–00:55'],['Receive','00:46.70','00:40–00:55']],
-   shows:'One receiving action is visible. The clip does not show the full passage of play.',
-   coach:'Confirm whether this is representative.'},
-  {num:22,type:'pitch',when:'8 Oct',ctx:'Pressing block',
-   meta:[['Observed','Stepped out +0.6 s'],['Compared','Later than the line'],['Drill','11v11 press'],['Clip window','02:05–02:20']],
-   frames:[['Trigger','02:09.30','02:05–02:20'],['Step out','02:10.90','02:05–02:20']],
-   shows:'One pressing cue is visible. The clip does not show the full defensive shape.',
-   coach:'Check against the pressing plan before using.'},
-  {num:9,type:'gym',when:'8 Oct',ctx:'Posterior chain',
-   meta:[['Prescribed','5 × 3 reps'],['Load','140 kg'],['Recorded','5 / 5 sets'],['Clip window','00:12–00:29']],
-   frames:[['Top','00:16.50','00:12–00:29'],['Bottom','00:18.20','00:12–00:29']],
-   shows:'The final set is partly off camera. Depth cannot be confirmed from this angle.',
-   coach:'Confirm depth or mark for a side-on capture.'},
-  {num:16,type:'pitch',when:'7 Oct',ctx:'Corners',
-   meta:[['Observed','Started +0.4 s early'],['Compared','Ahead of the delivery'],['Drill','Corners'],['Clip window','03:10–03:24']],
-   frames:[['Run start','03:14.00','03:10–03:24'],['Delivery','03:15.60','03:10–03:24']],
-   shows:'One run is visible. The clip does not show the delivery it was timed to.',
-   coach:'For a coach to confirm the run timing.'},
+  {num:2,type:'gym',when:'Today',ctx:'Upper push',title:'Seated row · set 1 capture half-obscured',badge:'Needs review',
+   meta:[['Exercise','Seated row'],['Prescribed','4 sets'],['Recorded','Set 1 · 12 reps'],['Clip window','01:04–01:36']],
+   frames:[['Rep start','01:10.0','01:04–01:36'],['Mid-set','01:22.0','01:04–01:36']],
+   shows:'The right half of the frame is blacked out. The rep count can\'t be confirmed from this capture.',
+   coach:'Confirm the reps before it counts toward the session totals.'},
 ];
 
 /* Placeholder footage per card (prototype) — files live in clips_zoomed/ */
 const CLIPDIR='clips_zoomed/';
 const MEDIA={
-  13:['poster_13_chest_fly.jpg','player13_chest_fly_set1_108.0s-130.0s_14reps.mp4'],
-  7 :['poster_08_triceps_pushdown.jpg','player08_triceps_pushdown_set1_175.9s-183.9s_7reps.mp4'],
-  18:['poster_03_squat.jpg','player03_squat_set1_000.0s-028.3s_6reps.mp4'],
-  4 :['poster_01_seated_row.jpg','player01_seated_row_set1_023.1s-042.1s_12reps.mp4'],
-  22:['poster_20_leg_curl.jpg','player20_leg_curl_set1_164.7s-167.9s_3reps.mp4'],
-  9 :['poster_20_leg_curl.jpg','player20_leg_curl_set1_164.7s-167.9s_3reps.mp4'],
-  16:['poster_01_seated_row.jpg','player01_seated_row_set1_023.1s-042.1s_12reps.mp4'],
+  2 :['poster_02_seated_row_error.jpg','player02_seated_row_set1_064.0s-096.0s_12reps_ERROR.mp4'],
 };
 
 let wkFilter='all', rvFilter='all', tcIndex=0;
@@ -759,7 +723,7 @@ function revCardHTML(r){
         <div class="rv-dn">${r.coach}</div>
         <button class="rv-review" data-v="Review"><i data-lucide="play"></i>Review clip</button>
         <div class="rv-actions">
-          <button class="rv-act" data-v="Correct"><i data-lucide="pencil"></i>Correct</button>
+          <button class="rv-act" data-v="Modify"><i data-lucide="pencil"></i>Modify</button>
           <span class="rv-asep"></span>
           <button class="rv-act" data-v="Dismiss"><i data-lucide="x"></i>Dismiss</button>
         </div>
@@ -1005,7 +969,7 @@ document.getElementById('todayGrid').addEventListener('click',function(e){
 MeridianShell({active:'home',badge:7,club:'Northbank FC',actions:[{label:'Plan a session',icon:'plus',primary:true}]});
 /* ============ TOP SEARCH BAR ============ */
 (function(){
-  var SP=[{num:7,pos:'Midfielder'},{num:13,pos:'Defender'},{num:22,pos:'Forward'}];
+  var SP=[{num:1,pos:'Midfielder'},{num:2,pos:'Forward'},{num:3,pos:'Defender'},{num:8,pos:'Forward'},{num:12,pos:'Midfielder'},{num:13,pos:'Defender'},{num:16,pos:'Midfielder'},{num:20,pos:'Defender'},{num:24,pos:'Defender'}];
   function pad(n){return String(n).padStart(2,'0');}
   function href(n){return 'Meridian%20%E2%80%94%20Player%20detail%20v1.html?p='+n;}
   var tb=document.querySelector('.topbar'); if(!tb || tb.querySelector('.topsearch')) return;
