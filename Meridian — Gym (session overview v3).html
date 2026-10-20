@@ -270,8 +270,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 /* exercises view: per-player breakdown */
 .exlegend{margin-left:auto;display:flex;align-items:center;gap:16px;padding-bottom:6px}
 .exlegend span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-muted)}
-.exlegend .lgi{width:18px;height:18px;display:inline-grid;place-items:center}
-.exlegend .lgi svg{width:18px;height:18px}
+.exlegend .lgi{width:20px;height:20px;display:inline-grid;place-items:center}
 .extable{table-layout:fixed}
 .extable th.ex-c,.extable td.ex-c{text-align:center}
 .extable col.c-presc,.extable col.c-done{width:150px}
@@ -372,6 +371,53 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .vd-legend b{flex:none;min-width:58px;color:var(--color-text-muted);font-weight:650}
 .vd-card{border:1px solid var(--color-border);border-radius:var(--r-lg);padding:14px 16px;background:var(--color-surface)}
 .vd-sub{font-size:13.5px;line-height:1.5;color:var(--color-text);margin-bottom:14px}
+/* ---- per-set review drawer (review + partial) ---- */
+.rv2-av{position:relative;display:inline-flex}
+.rv2-avnum{position:absolute;left:-3px;bottom:-4px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:5px;font-size:10px;font-weight:700;color:var(--color-text-muted);padding:0 4px;line-height:15px}
+.rv2-head-txt{min-width:0}
+.rv2-head-sub{display:flex;align-items:center;gap:9px;margin-top:3px}
+.rv2-pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;color:var(--c-partial-ink);background:var(--c-partial-soft)}
+.rv2-pill-review{color:var(--c-review);background:var(--c-review-soft)}
+.rv2-pdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.rv2-body{gap:16px}
+.rv2-body>.thumb{margin:0}
+.rv2-nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rv2-title{display:flex;align-items:center;gap:11px;min-width:0}
+.rv2-title b{font-size:16px;font-weight:600;color:var(--color-text)}
+.rv2-vsep{flex:none;width:1px;height:16px;background:var(--color-border)}
+.rv2-set{font-size:14px;color:var(--color-text-soft)}
+.rv2-pager{display:flex;align-items:center;gap:8px;flex:none}
+.rv2-count{font-size:13px;color:var(--color-text-soft);margin-right:2px}
+.rv2-arrow{width:34px;height:32px;display:grid;place-items:center;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--r-md);cursor:pointer;color:var(--color-text-muted)}
+.rv2-arrow:hover:not(:disabled){background:var(--color-surface-subtle)}
+.rv2-arrow:disabled{opacity:.4;cursor:default}
+.rv2-arrow svg{width:17px;height:17px}
+.rv2-issue{display:flex;gap:10px;align-items:flex-start}
+.rv2-issue-ic{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--c-review-soft);color:var(--c-review);font-size:14px;font-weight:800;line-height:1;margin-top:1px} /* same as the "Needs attention" red chip (.rc-ic) */
+.rv2-issue.is-partial .rv2-issue-ic{background:var(--c-partial-soft);color:var(--c-partial-ink)}
+.rv2-issue-ic svg{width:15px;height:15px}
+.rv2-issue-t{font-size:14px;font-weight:600;color:var(--color-text)}
+.rv2-issue-d{font-size:13px;color:var(--color-text-soft);line-height:1.45;margin-top:1px}
+.rv2-card{border-top:1px solid var(--color-border);padding-top:16px}
+.rv2-rtitle{font-size:16px;font-weight:600;color:var(--color-text)}
+.rv2-rsub{font-size:13px;color:var(--color-text-soft);margin-top:2px}
+.rv2-stats{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:14px 0 16px}
+.rv2-stats-one{grid-template-columns:1fr}
+.rv2-vline{width:1px;height:38px;background:var(--color-border)}
+.rv2-stat-l{font-size:12.5px;color:var(--color-text-soft);margin-bottom:5px}
+.rv2-stat-v{font-size:17px;font-weight:600;color:var(--color-text)}
+.rv2-amber{display:flex;align-items:center;gap:7px;color:var(--c-partial-ink)}
+.rv2-dot{width:9px;height:9px;border-radius:50%;background:var(--c-partial)}
+.rv2-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rv2-actions .btn{height:40px;width:100%;justify-content:center} /* match the session-planner buttons */
+.rv2-actions .btn.rv2-confirm{background:var(--color-primary-tint);border-color:var(--color-primary-text);color:var(--color-primary-text);font-weight:700} /* tint secondary CTA, like "Plan a session" (.sidecta), without its click handler */
+.rv2-actions .btn.rv2-confirm:hover{background:#DCEAFF}
+.rv2-actions .btn.rv2-confirm svg{stroke-width:2.2} /* thicker tick */
+.rv2-actions .btn:not(.rv2-confirm) svg{width:14px;height:14px} /* smaller pencil */
+.rv2-dismiss-wrap{text-align:right;margin-top:12px}
+.rv2-dismiss{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--color-text-soft);background:none;border:0;padding:0;cursor:pointer;font-family:inherit}
+.rv2-dismiss:hover{color:var(--color-text-muted)}
+.rv2-dismiss svg{width:15px;height:15px}
 .dw-note{font-size:12px;color:var(--color-text-soft);text-align:center}
 /* session plan drawer */
 .dw-plan-name{font-size:18px;font-weight:700;color:var(--color-text);margin-top:3px}
@@ -399,7 +445,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .plan-foot{font-size:11.5px;color:var(--color-text-disabled);padding-top:2px}
 /* drawer: assigned-exercise breakdown */
 .dw-exc-head{display:flex;align-items:center;justify-content:space-between}
-.dw-exc-count{text-transform:none;letter-spacing:0;font-weight:600;color:var(--color-text-soft);font-size:12px}
+.dw-exc-count{text-transform:none;letter-spacing:0;font-weight:500;color:var(--color-text-soft);font-size:12px}
 .dw-exlist{border:1px solid var(--color-border);border-radius:var(--r-md);overflow:hidden}
 .dw-exrow{display:flex;align-items:center;gap:12px;padding:11px 13px;border-bottom:1px solid var(--color-border-subtle)}
 .dw-exrow:last-child{border-bottom:0}
@@ -409,8 +455,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .dw-exrow .sti{flex:none}
 .dw-exleg{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px}
 .dw-exleg span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--color-text-muted)}
-.dw-exleg .lgi{width:18px;height:18px;display:inline-grid;place-items:center;flex:none}
-.dw-exleg .lgi svg{width:18px;height:18px}
+.dw-exleg .lgi{width:20px;height:20px;display:inline-grid;place-items:center;flex:none}
 /* per-exercise video thumbnail (YouTube-style) */
 .dw-ex-thumbs{display:flex;gap:6px;flex:none}
 .dw-ex-thumb{position:relative;width:76px;height:46px;border-radius:7px;overflow:hidden;flex:none;background:var(--color-surface-muted);cursor:pointer}
@@ -857,9 +902,9 @@ function setStats(n){
   return {confirmed,prescribed,review};
 }
 function stIcon(s){
-  if(s==='complete') return '<span class="sti"><svg viewBox="0 0 20 20"><path d="M4.5 10.6l3.3 3.3 7.7-7.8" fill="none" stroke="#5CA423" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
-  if(s==='partial') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#E58600" stroke-width="2"/><path d="M10 2.2a7.8 7.8 0 0 0 0 15.6z" fill="#E58600"/></svg></span>';
-  if(s==='review') return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#E50C00"/><rect x="9" y="4.8" width="2" height="7" rx="1" fill="#fff"/><circle cx="10" cy="14.6" r="1.2" fill="#fff"/></svg></span>';
+  if(s==='complete') return excMark('o'); // reuse the exercise-checks complete chip (.exc.o)
+  if(s==='partial') return excMark('p'); // reuse the exercise-checks partial chip (.exc.p)
+  if(s==='review') return excMark('f'); // reuse the exercise-checks review chip (.exc.f), not a separate icon
   return '<span class="sti"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#CBD2D9" stroke-width="2"/></svg></span>';
 }
 function legIcon(){ return '<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#5CA423"/><path d="M5.8 10.4l2.6 2.6 5.8-5.9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
@@ -942,6 +987,8 @@ const PLAY_TRI='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11
 const VIDEO_SVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h8A1.5 1.5 0 0 1 15 6.5v11A1.5 1.5 0 0 1 13.5 19h-8A1.5 1.5 0 0 1 4 17.5zM16.5 9.6l3.3-2.2a.8.8 0 0 1 1.2.7v7.8a.8.8 0 0 1-1.2.7l-3.3-2.2z"/></svg>';
 const VIDEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="M10 6h4a2 2 0 0 1 2 2v2"/><path d="m22 8-5 4 5 4V8z"/><path d="M2 2l20 20"/></svg>';
 function exThumbNo(){ return '<div class="dw-ex-thumb nofoot" title="No footage captured">'+VIDEOFF_SVG+'</div>'; }
+/* clip length as M:SS, taken from the start–end range encoded in the filename */
+function clipDur(c){ if(c&&c.dur) return c.dur; const m=c&&c.src&&c.src.match(/_(\d+(?:\.\d+)?)s-(\d+(?:\.\d+)?)s_/); if(!m) return ''; const secs=Math.max(0,Math.round(parseFloat(m[2])-parseFloat(m[1]))); return Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0'); }
 function exThumb(n,i,name,status){
   if(status==='notstarted') return exThumbNo();
   const arr=(typeof CLIPS!=='undefined')?CLIPS[n+'|'+name]:null;
@@ -949,7 +996,7 @@ function exThumb(n,i,name,status){
     return '<div class="dw-ex-thumbs">'+arr.map(function(c,si){
       return '<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+name+'" data-set="'+si+'">'
         +'<img src="'+c.poster+'" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span>'
-        +'<span class="dur">'+(c.label||('Set '+(si+1)))+'</span></div>';
+        +'<span class="dur">'+clipDur(c)+'</span></div>';
     }).join('')+'</div>';
   }
   return '<div class="dw-ex-thumb blank"></div>';
@@ -972,7 +1019,7 @@ function exerciseSection(n,notObserved){
         const lbl=c.label||('Set '+(si+1)), playable=!!c.src;
         const meta=lbl+(c.reps!=null?' · '+c.reps+' reps':(playable?'':' · not captured'));
         const thumb=playable
-          ? '<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+e[0]+'" data-set="'+si+'"><img src="'+c.poster+'" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+lbl+'</span></div>'
+          ? '<div class="dw-ex-thumb" data-exp="'+n+'" data-exn="'+e[0]+'" data-set="'+si+'"><img src="'+c.poster+'" alt="" loading="lazy"><span class="pl"><span>'+PLAY_TRI+'</span></span><span class="dur">'+clipDur(c)+'</span></div>'
           : exThumbNo();
         items.push({name:e[0],meta,status:c.status||'complete',thumb});
       });
@@ -981,8 +1028,10 @@ function exerciseSection(n,notObserved){
     }
   });
   const done=items.filter(r=>r.status==='complete').length;
+  const rank=s=>(s==='review'?0:s==='partial'?1:2); // surface the sets needing attention first
+  items.sort((a,b)=>rank(a.status)-rank(b.status)); // stable: keeps original order within each group
   const rows=items.map(r=>`<div class="dw-exrow">${r.thumb}<div class="dw-ex-main"><div class="dw-ex-name">${r.name}</div><div class="dw-ex-meta num">${r.meta}</div></div>${stIcon(r.status)}</div>`).join('');
-  let leg=`<span><span class="lgi">${legIcon()}</span>Complete</span><span><span class="lgi">${stIcon('partial')}</span>Partial</span>`;
+  let leg=`<span><span class="lgi">${stIcon('complete')}</span>Complete</span><span><span class="lgi">${stIcon('partial')}</span>Partial</span>`;
   if(items.some(r=>r.status==='review')) leg+=`<span><span class="lgi">${stIcon('review')}</span>Needs review</span>`;
   leg+=`<span><span class="lgi">${stIcon('notstarted')}</span>Not started</span>`;
   const ss=setStats(n);
@@ -991,6 +1040,7 @@ function exerciseSection(n,notObserved){
 }
 function openClip(n){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
+  if(p.st==='review'||p.st==='partial'){ openReview(n); return; }
   const isRev=p.st==='review', isNot=p.st==='notobs';
   const dw=document.getElementById('drawer');
   const obs = isRev ? (p.clip?p.clip.note:'Clip needs review')
@@ -1033,6 +1083,61 @@ function openClip(n){
   icons();
 }
 function closeDrawer(){ document.getElementById('scrim').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
+/* ===== Per-set review drawer (review + partial): paginate through just the flagged sets ===== */
+function reviewSets(n){
+  const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return [];
+  const out=[];
+  ep.ex.forEach(e=>{ const arr=CLIPS[n+'|'+e[0]]||[]; arr.forEach((c,si)=>{ const st=c.status||'complete'; if(st==='review'||st==='partial') out.push({exn:e[0],setN:si+1,ci:si,clip:c,status:st}); }); });
+  return out;
+}
+let RVSTATE=null;
+function openReview(n){
+  const p=PLAYERS.find(x=>x.n===n); if(!p) return;
+  const sets=reviewSets(n); if(!sets.length) return;
+  RVSTATE={n,sets,i:0};
+  const dw=document.getElementById('drawer');
+  dw.innerHTML=`
+    <div class="dw-head">${pAvatar(p.n)}
+      <div class="rv2-head-txt"><div class="cc-name">Player ${+p.n}</div><div class="cc-prog">${p.prog}</div></div>
+      <button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
+    <div class="dw-body rv2-body" id="rvBody"></div>`;
+  document.getElementById('scrim').classList.add('open');
+  dw.classList.add('open');
+  document.getElementById('dwClose').onclick=closeDrawer;
+  renderReviewSet();
+}
+function renderReviewSet(){
+  if(!RVSTATE) return;
+  const {n,sets,i}=RVSTATE, s=sets[i], c=s.clip, total=sets.length;
+  const isRev=s.status==='review';
+  const rx=c.rx!=null?c.rx:c.reps;
+  const recorded=isRev?'Unverified':(c.reps+' reps');
+  const confirmReps=isRev?rx:c.reps;
+  const issueT=c.issueTitle||(isRev?'Capture partially obscured':'Set cut short');
+  const issueD=c.issueDesc||(isRev?'Rep count is unverified.':'The set was cut short.');
+  const body=document.getElementById('rvBody'); if(!body) return;
+  body.innerHTML=`
+    <div class="rv2-nav">
+      <div class="rv2-title"><b>${s.exn}</b><span class="rv2-vsep"></span><span class="rv2-set">Set ${s.setN}</span></div>
+      ${total>1?`<div class="rv2-pager"><span class="rv2-count num">${i+1} of ${total}</span><button class="rv2-arrow" id="rvPrev"${i<=0?' disabled':''}><i data-lucide="chevron-left"></i></button><button class="rv2-arrow" id="rvNext"${i>=total-1?' disabled':''}><i data-lucide="chevron-right"></i></button></div>`:''}
+    </div>
+    <div class="thumb rv2-video" data-exp="${n}" data-exn="${s.exn}" data-set="${s.ci}" style="cursor:pointer"><img src="${c.poster}" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">${clipDur(c)}</span></div>
+    <div class="rv2-issue ${isRev?'is-review':'is-partial'}"><span class="rv2-issue-ic">!</span><div><div class="rv2-issue-t">${issueT}</div><div class="rv2-issue-d">${issueD}</div></div></div>
+    <div class="rv2-card">
+      <div class="rv2-rtitle">Review this set</div><div class="rv2-rsub">Not included in session totals</div>
+      ${isRev
+        ? `<div class="rv2-stats rv2-stats-one"><div class="rv2-stat"><div class="rv2-stat-l">Prescribed</div><div class="rv2-stat-v">${rx} reps</div></div></div>`
+        : `<div class="rv2-stats"><div class="rv2-stat"><div class="rv2-stat-l">Prescribed</div><div class="rv2-stat-v">${rx} reps</div></div><div class="rv2-vline"></div><div class="rv2-stat"><div class="rv2-stat-l">Recorded</div><div class="rv2-stat-v rv2-amber"><span class="rv2-dot"></span>${recorded}</div></div></div>`}
+      <div class="rv2-actions"><button class="btn rv2-confirm" data-v="Confirmed"><i data-lucide="check"></i>Confirm ${confirmReps} reps</button><button class="btn" data-v="Modified"><i data-lucide="pencil"></i>Modify</button></div>
+      <div class="rv2-dismiss-wrap"><button class="rv2-dismiss" data-v="Dismissed"><i data-lucide="x"></i>Dismiss, keep ${isRev?'unverified':'partial'}</button></div>
+    </div>
+    ${exerciseSection(n)}`;
+  const prev=document.getElementById('rvPrev'), next=document.getElementById('rvNext');
+  if(prev) prev.onclick=()=>{ if(RVSTATE.i>0){RVSTATE.i--; renderReviewSet();} };
+  if(next) next.onclick=()=>{ if(RVSTATE.i<total-1){RVSTATE.i++; renderReviewSet();} };
+  body.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{ if(b.dataset.v==='Modified') openModify(n); else decide(n,b.dataset.v); });
+  icons();
+}
 function openSessionPlan(){
   const s=SESSIONS[sessIdx];
   const [sh,sm]=s.start.split(':').map(Number), [eh,em]=s.end.split(':').map(Number);
@@ -1436,7 +1541,7 @@ const CLIPS={
   '13|Chest fly':[{src:'clips_zoomed/player13_chest_fly_set1_108.0s-130.0s_14reps.mp4',poster:'clips_zoomed/poster_13_chest_fly.jpg',note:'Set 1 · 14 reps · 01:48–02:10',label:'Set 1',reps:14,status:'complete'}],
   '20|Leg curl':[{src:'clips_zoomed/player20_leg_curl_set1_164.7s-167.9s_3reps.mp4',poster:'clips_zoomed/poster_20_leg_curl.jpg',note:'Set 1 · 3 reps · 02:44–02:48',label:'Set 1',reps:3,status:'complete'}],
   '02|Seated row':[
-    {src:'clips_zoomed/player02_seated_row_set1_064.0s-096.0s_12reps_ERROR.mp4',poster:'clips_zoomed/poster_02_seated_row_error.jpg',note:'Set 1 · 12 reps · 01:04–01:36 · capture half-obscured',label:'Set 1',reps:12,status:'review'},
+    {src:'clips_zoomed/player02_seated_row_set1_064.0s-096.0s_12reps_ERROR.mp4',poster:'clips_zoomed/poster_02_seated_row_error.jpg',note:'Set 1 · 12 reps · 01:04–01:36 · capture half-obscured',label:'Set 1',reps:12,status:'review',rx:12,issueTitle:'Capture partially obscured',issueDesc:'Right side is blacked out. Rep count is unverified.'},
     {src:'clips_zoomed/player02_seated_row_set2_164.0s-198.0s_8reps.mp4',poster:'clips_zoomed/poster_02_seated_row.jpg',note:'Set 2 · 8 reps · 02:44–03:18',label:'Set 2',reps:8,status:'complete'},
     {src:'clips_zoomed/player02_seated_row_set3_286.0s-322.0s_13reps.mp4',poster:'clips_zoomed/poster_02_seated_row.jpg',note:'Set 3 · 13 reps · 04:46–05:22',label:'Set 3',reps:13,status:'complete'},
     {src:'clips_zoomed/player02_seated_row_set4_485.0s-514.0s_9reps.mp4',poster:'clips_zoomed/poster_02_seated_row.jpg',note:'Set 4 · 9 reps · 08:05–08:34',label:'Set 4',reps:9,status:'complete'},
@@ -1455,7 +1560,7 @@ const CLIPS={
   '12|Cable biceps curl':[
     {src:'clips_zoomed/player12_cable_biceps_curl_set1_553.0s-575.0s_11reps.mp4',poster:'clips_zoomed/poster_12_cable_biceps_curl.jpg',note:'Set 1 · 11 reps · 09:13–09:35',label:'Set 1',reps:11,status:'complete'},
     {src:'clips_zoomed/player12_cable_biceps_curl_set2_581.0s-601.0s_10reps.mp4',poster:'clips_zoomed/poster_12_cable_biceps_curl.jpg',note:'Set 2 · 10 reps · 09:41–10:01',label:'Set 2',reps:10,status:'complete'},
-    {src:'clips_zoomed/player12_cable_biceps_curl_set3_553.0s-564.0s_4reps.mp4',poster:'clips_zoomed/poster_12_cable_biceps_curl.jpg',note:'Set 3 · 4 reps · partial — set cut short',label:'Set 3',reps:4,status:'partial'},
+    {src:'clips_zoomed/player12_cable_biceps_curl_set3_553.0s-564.0s_4reps.mp4',poster:'clips_zoomed/poster_12_cable_biceps_curl.jpg',note:'Set 3 · 4 reps · partial — set cut short',label:'Set 3',reps:4,status:'partial',rx:12,issueTitle:'Set cut short',issueDesc:'Only 4 of the prescribed reps were captured.'},
   ],
   '24|Overhead triceps extension':[{src:'clips_zoomed/player24_overhead_triceps_extension_set1_063.0s-093.0s_11reps.mp4',poster:'clips_zoomed/poster_24_overhead_triceps_extension.jpg',note:'Set 1 · 11 reps · 01:03–01:33',label:'Set 1',reps:11,status:'complete'}],
 };
