@@ -1472,6 +1472,7 @@ const MONTHS_FULL=['January','February','March','April','May','June','July','Aug
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DOW1=['S','M','T','W','T','F','S'];
 const SESSION_DAYS={'2026-10-01':true,'2026-10-02':true,'2026-10-03':true,'2026-10-04':true,'2026-10-06':true,'2026-10-07':true,'2026-10-08':true,'2026-10-09':true,'2026-10-10':true,'2026-10-11':true,'2026-10-12':true,'2026-10-14':true};
+const REST_DAYS=new Set(['2026-10-05','2026-10-13']); // designated rest days (matches the Home page)
 const TODAY=new Date(2026,9,7); TODAY.setHours(0,0,0,0); // Wed 7 Oct 2026
 let selected=new Date(2026,9,7);
 /* sessions for the day; supports any count (2, 3, 4…) */
@@ -1540,7 +1541,7 @@ function applySessionState(){
   var hb=document.getElementById('highlightBox'); if(hb) hb.style.display=pastMode?'none':''; // no video → no highlights for past
   // ready = the full 7 Oct UI (stats + table + drawer). pastMode uses the same UI with the day's logged data.
   var state;
-  if(noSess) state='none';
+  if(noSess) state = REST_DAYS.has(isoDay(selected)) ? 'rest' : 'none';
   else if(pastMode) state = pastEmpty ? 'recovery' : '';
   else state = s.processing ? 'processing' : (s.upcoming ? 'upcoming' : '');
   var empty = !!state;
@@ -1550,14 +1551,15 @@ function applySessionState(){
   if(!empty){ renderStats(); renderTable(); renderRail(); }  // re-render against the current dataset
   var ps=document.getElementById('procState'); if(!ps) return;
   ps.hidden=!empty;
-  ps.classList.toggle('full', state==='none'||state==='recovery');
+  ps.classList.toggle('full', state==='none'||state==='recovery'||state==='rest');
   if(empty){
     var cfg;
     if(state==='none') cfg={icon:'calendar-x', nospin:' nospin', title:'No gym sessions scheduled', sub:'There are no gym sessions on this day.'};
+    else if(state==='rest') cfg={icon:'bed', nospin:' nospin', title:'Rest day', sub:''};
     else if(state==='recovery') cfg={icon:'waves', nospin:' nospin', title:(s?s.name:'Recovery session'), sub:'Recovery day — no gym exercises were logged for this session.'};
     else if(state==='processing') cfg={icon:'loader', nospin:'', title:'Session video is still processing', sub:'This usually takes a little while after the session ends.'};
     else cfg={icon:'clock', nospin:' nospin', title:"This session hasn't started yet", sub:"It's scheduled for "+s.start+"–"+s.end+"."};
-    ps.innerHTML='<div class="proc-ic'+cfg.nospin+'"><i data-lucide="'+cfg.icon+'"></i></div><div class="proc-title">'+cfg.title+'</div><div class="proc-sub">'+cfg.sub+'</div>';
+    ps.innerHTML='<div class="proc-ic'+cfg.nospin+'"><i data-lucide="'+cfg.icon+'"></i></div><div class="proc-title">'+cfg.title+'</div>'+(cfg.sub?'<div class="proc-sub">'+cfg.sub+'</div>':'');
     icons();
   }
 }
