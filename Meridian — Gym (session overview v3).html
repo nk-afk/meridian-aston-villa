@@ -1546,7 +1546,7 @@ function applySessionState(){
   else state = s.processing ? 'processing' : (s.upcoming ? 'upcoming' : '');
   var empty = !!state;
   var cols=document.querySelector('.cols'); if(cols) cols.style.display=empty?'none':'';
-  var phead=document.querySelector('.phead'); if(phead) phead.style.display=(state==='none')?'none':'';
+  var phead=document.querySelector('.phead'); if(phead) phead.style.display=(state==='none'||state==='rest')?'none':''; // rest day: blank page, just the centered card
   var ha=document.querySelector('.headacts'); if(ha) ha.style.display=empty?'none':'';
   if(!empty){ renderStats(); renderTable(); renderRail(); }  // re-render against the current dataset
   var ps=document.getElementById('procState'); if(!ps) return;
