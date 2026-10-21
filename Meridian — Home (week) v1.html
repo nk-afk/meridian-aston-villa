@@ -484,20 +484,36 @@ const GYM_HREF="Meridian%20%E2%80%94%20Gym%20(session%20overview%20v3).html";
 const PLAYERS_HREF="../Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
 const TODAY=new Date(2026,9,7); // Wed 7 Oct 2026 (matches Gym session page week)
 
-// sessions by weekday index (0=Mon ... 6=Sun); week of Mon 5 – Sun 11 Oct 2026
-const SESS=[
-  [], // Mon 5 Oct = rest
-  [ {t:'09:00 – 10:50',type:'gym',title:'Lower strength + upper pull',loc:'Gym 1',status:'ready'},
-    {t:'11:00 – 12:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:'ready'} ],
-  [ {t:'12:30 – 14:00',type:'gym',title:'Upper push + trunk',loc:'Gym 1',status:'ready'} ],
-  [ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:null} ],
-  [ {t:'09:30 – 09:50',type:'gym',title:'Activation / primer',loc:'Gym 1',status:null} ],
-  [ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:null},
-    {t:'15:00 – 17:00',type:'match',title:'Premier League (H)',loc:'Villa Park',status:null} ],
-  [ {t:'10:00 – 11:00',type:'gym',title:'Recovery · pool + mobility',loc:'Gym 1',status:null},
-    {t:'11:15 – 12:05',type:'gym',title:'Non-starter top-up',loc:'Gym 1',status:null} ],
-];
-const REST_IDX=0;
+// sessions keyed by ISO date — the real 2-week plan, 6–19 Oct 2026 (Wed 7 Oct kept as the demo day)
+const SESS_BY_DATE={
+  '2026-10-01':[ {t:'09:00 – 10:30',type:'gym',title:'Upper push + trunk',loc:'Gym 1',status:'ready'},
+                 {t:'11:00 – 12:00',type:'gym',title:'Hamstring rehab · stage 1',loc:'Gym 1',status:'ready'} ],
+  '2026-10-02':[ {t:'09:30 – 09:50',type:'gym',title:'Activation / primer',loc:'Gym 1',status:'ready'} ],
+  '2026-10-03':[ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 1',loc:'Gym 1',status:'ready'} ],
+  '2026-10-04':[ {t:'10:00 – 11:00',type:'gym',title:'Recovery · pool + mobility',loc:'Gym 1',status:'ready'} ],
+  '2026-10-05':[],
+  '2026-10-06':[ {t:'09:00 – 10:50',type:'gym',title:'Lower strength + upper pull',loc:'Gym 1',status:'ready'},
+                 {t:'11:00 – 12:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:'ready'} ],
+  '2026-10-07':[ {t:'09:00 – 10:05',type:'gym',title:'Strength',loc:'Gym 1',status:'ready'},
+                 {t:'12:30 – 13:20',type:'gym',title:'Rehab',loc:'Gym 1',status:'ready'},
+                 {t:'15:00 – 16:05',type:'gym',title:'Mobility',loc:'Gym 1',status:'ready'} ],
+  '2026-10-08':[ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:null} ],
+  '2026-10-09':[ {t:'09:30 – 09:50',type:'gym',title:'Activation / primer',loc:'Gym 1',status:null} ],
+  '2026-10-10':[ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:null},
+                 {t:'15:00 – 17:00',type:'match',title:'Premier League (H)',loc:'Villa Park',status:null} ],
+  '2026-10-11':[ {t:'10:00 – 11:00',type:'gym',title:'Recovery · pool + mobility',loc:'Gym 1',status:null},
+                 {t:'11:15 – 12:05',type:'gym',title:'Non-starter top-up',loc:'Gym 1',status:null} ],
+  '2026-10-12':[ {t:'09:00 – 10:35',type:'gym',title:'Full body (reduced)',loc:'Gym 1',status:null},
+                 {t:'11:00 – 12:00',type:'gym',title:'Hamstring rehab · stage 3',loc:'Gym 1',status:null} ],
+  '2026-10-13':[],
+  '2026-10-14':[ {t:'09:00 – 09:20',type:'gym',title:'Activation / primer',loc:'Gym 1',status:null},
+                 {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 3',loc:'Gym 1',status:null} ],
+};
+function isoOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function evFor(d){return SESS_BY_DATE[isoOf(d)]||[];}
+// designated rest days only (not every blank day); other empty days render as plain empty columns
+const REST_DAYS=new Set(['2026-10-05','2026-10-13']);
+function isRestDay(d){return REST_DAYS.has(isoOf(d));}
 const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const NOW_MIN=13*60+30;           // 13:30 "current time"
 const GSTART=9*60, HOURPX=58;     // grid starts 09:00, 58px/hour
@@ -541,7 +557,7 @@ function toast(msg){const el=document.getElementById('toast');el.textContent=msg
 
 /* ============ TODAY'S AGENDA ============ */
 function renderToday(){
-  const list=SESS[(TODAY.getDay()+6)%7];
+  const list=evFor(TODAY);
   let done=0,up=0,nextItem=null,earliest=1e9;
   const info=list.map((s)=>{const [a,e]=parseT(s.t);return {s,a,e,isDone:e<=NOW_MIN};});
   info.forEach(o=>{ if(o.isDone){done++;} else {up++; if(o.a<earliest){earliest=o.a;nextItem=o;}} });
@@ -554,7 +570,7 @@ function renderToday(){
       : (isNext ? '<span class="ac-badge next"><span class="ac-dot"></span>Up next</span>'
                 : '');
     const pill=o.isDone
-      ? (s.title==='Upper push + trunk' ? '' : '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>')
+      ? (s.title==='Strength' ? '' : '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>')
       : (s.status==='needed'?'<span class="ac-pill needed">'+ALERT_SVG+'Plan needed</span>':'');
     const link=o.isDone?'View session':'View plan';
     const planMode = !o.isDone && s.type==='gym';
@@ -598,16 +614,16 @@ function evPast(date,endMin){ const td=new Date(TODAY); td.setHours(0,0,0,0); co
 function renderWeek(){
   const thisWeek=sameDay(baseMon,mondayOf(TODAY));
   let total=0,pitch=0,gym=0,match=0;
-  if(thisWeek) SESS.forEach(day=>day.forEach(s=>{total++;if(s.type==='pitch')pitch++;else if(s.type==='gym')gym++;else if(s.type==='match')match++;}));
+  for(let i=0;i<7;i++){ evFor(addDays(baseMon,i)).forEach(s=>{total++;if(s.type==='pitch')pitch++;else if(s.type==='gym')gym++;else if(s.type==='match')match++;}); }
   document.getElementById('cnt-all').textContent='('+total+')';
   document.getElementById('cnt-pitch').textContent='('+pitch+')';
   document.getElementById('cnt-gym').textContent='('+gym+')';
   document.getElementById('cnt-match').textContent='('+match+')';
   let head='<div></div>';
   for(let i=0;i<7;i++){
-    const date=addDays(baseMon,i), isToday=sameDay(date,TODAY);
-    const adev = (thisWeek&&i===REST_IDX) ? `<div class="wc-adev"><i data-lucide="bed"></i>Rest day</div>` : '';
-    head+=`<div class="wc-dayh${(thisWeek&&i===REST_IDX)?' hasadev':''}"><span class="wc-dow">${DOW[i]}</span><span class="wc-date${isToday?' today':''}">${date.getDate()}</span>${adev}</div>`;
+    const date=addDays(baseMon,i), isToday=sameDay(date,TODAY), isRest=isRestDay(date);
+    const adev = isRest ? `<div class="wc-adev"><i data-lucide="bed"></i>Rest day</div>` : '';
+    head+=`<div class="wc-dayh${isRest?' hasadev':''}"><span class="wc-dow">${DOW[i]}</span><span class="wc-date${isToday?' today':''}">${date.getDate()}</span>${adev}</div>`;
   }
   let gut='';
   for(let h=9;h<=17;h++){ gut+=`<div class="wc-hr" style="top:${yFor(h*60)+2}px">${String(h).padStart(2,'0')}:00</div>`; }
@@ -615,8 +631,10 @@ function renderWeek(){
   for(let i=0;i<7;i++){
     const date=addDays(baseMon,i), isToday=sameDay(date,TODAY);
     let evs='';
-    if(thisWeek) SESS[i].filter(s=>wkFilter==='all'||s.type===wkFilter).forEach(s=>{
-      const [a,e]=parseT(s.t), top=yFor(a), hgt=Math.max((e-a)/60*HOURPX,30);
+    evFor(date).filter(s=>wkFilter==='all'||s.type===wkFilter).forEach(s=>{
+      const GBOT=17*60; const [a,e]=parseT(s.t);
+      const top=yFor(Math.min(a,GBOT-24)); // clamp late events (e.g. an evening match) into the grid
+      const hgt=Math.min(Math.max((e-a)/60*HOURPX,30), yFor(GBOT)-top+6);
       const cls=s.type==='gym'?'ev-gym':(s.type==='match'?'ev-match':'ev-pitch');
       const _iso=date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');
       const tag=s.type==='match'?'div':'a', href=s.type==='match'?'':(s.type==='gym'?` href="${GYM_HREF}?session=${encodeURIComponent(s.title)}&date=${_iso}"`:` href="${hrefFor(s.type)}"`);
@@ -625,7 +643,7 @@ function renderWeek(){
         +`<div class="ev-title">${s.title}</div><div class="ev-time">${s.t}</div><div class="ev-loc">${s.loc}</div>${ic}</${tag}>`;
     });
     const now=(thisWeek&&isToday)?`<div class="wc-now" style="top:${yFor(NOW_MIN)}px"></div>`:'';
-    cols+=`<div class="wc-day${isToday?' today':''}${(thisWeek&&i===REST_IDX)?' rest':''}">${evs}${now}</div>`;
+    cols+=`<div class="wc-day${isToday?' today':''}${isRestDay(date)?' rest':''}">${evs}${now}</div>`;
   }
   document.getElementById('weekgrid').innerHTML=
     `<div class="wc-head wc-row">${head}</div>`
@@ -905,7 +923,7 @@ document.getElementById('todayGrid').addEventListener('click',function(e){
   var NOTIFS=[
     {type:'proc',   icon:'loader',         t:'Rehab session is processing',          s:'Attendance & highlights will appear once it finishes.', time:'2m',  unread:true},
     {type:'review', icon:'alert-circle',   t:'Player 07 — full set needs confirmation', s:'Upper push · 2 of ? sets recorded',                time:'18m', unread:true},
-    {type:'ok',     icon:'check-circle-2', t:'Upper push + trunk session processed',  s:'Ready to review · 9 players',                          time:'1h',  unread:false},
+    {type:'ok',     icon:'check-circle-2', t:'Strength session processed',           s:'Ready to review · 21 players',                          time:'1h',  unread:false},
     {type:'review', icon:'alert-circle',   t:'Player 18 — set left unconfirmed',     s:'Lower body · capture ended mid-set',                    time:'3h',  unread:false}
   ];
   var panel=null;

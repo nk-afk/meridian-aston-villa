@@ -524,6 +524,21 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 .attest-main{flex:1;min-width:0}
 .attest-name{font-size:14px;font-weight:600;color:var(--color-text)}
 .attest-rx{font-size:13px;color:var(--color-text);margin-top:2px}
+.attest-ex{border-bottom:1px solid var(--color-border-subtle)}
+.attest-ex:last-child{border-bottom:0}
+.attest-exrow{border-bottom:0;padding-bottom:7px}
+.attest-sets{margin:0 0 9px 36px;display:flex;flex-direction:column;border-left:2px solid var(--color-border-subtle);padding-left:13px}
+.attest-setrow{display:flex;align-items:center;gap:11px;padding:6px 2px}
+.attest-setname{flex:1;font-size:13px;color:var(--color-text-muted)}
+.attest-setedit{display:grid;place-items:center;width:26px;height:26px;border:0;background:none;color:var(--color-text-soft);cursor:pointer;border-radius:6px;font-family:inherit}
+.attest-setedit:hover{background:var(--color-surface-subtle);color:var(--color-text)}
+.attest-setedit svg{width:15px;height:15px}
+.attest-seteditwrap{flex:1;display:flex;align-items:center;gap:8px}
+.attest-setlbl{font-size:13px;color:var(--color-text-muted);flex:none}
+.se-reps{width:72px;text-align:center;border:1px solid var(--color-border);border-radius:var(--r-md);padding:6px 8px;font-family:inherit;font-size:13px;background:var(--color-surface);color:var(--color-text);outline:none}
+.se-reps:focus{border-color:var(--color-primary-border);box-shadow:0 0 0 3px var(--color-primary-soft)}
+.se-save,.se-cancel{font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:var(--r-md);cursor:pointer;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text)}
+.se-save{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
 .attest-extra{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c-plan);background:var(--c-plan-soft);border-radius:var(--r-pill);padding:2px 8px;margin-left:8px;vertical-align:middle}
 .attest-del{border:0;background:none;color:var(--color-text-disabled);cursor:pointer;padding:5px;display:grid;place-items:center;flex:none}
 .attest-del:hover{color:var(--c-review)}
@@ -621,7 +636,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
         <span class="sesscount num" id="sessCount">3 of 3</span>
       </div>
       <div class="sublinerow">
-        <div class="subline" id="subline">Wed 07 Oct · 12:30–13:15 · 4 ceiling cameras</div>
+        <div class="subline" id="subline">Wed 07 Oct · 09:00–10:05 · 4 ceiling cameras</div>
         <div class="gymloc"><i data-lucide="map-pin"></i>Bodymoor Heath Training Ground</div>
       </div>
     </div>
@@ -1139,7 +1154,7 @@ function renderReviewSet(){
   const prev=document.getElementById('rvPrev'), next=document.getElementById('rvNext');
   if(prev) prev.onclick=()=>{ if(RVSTATE.i>0){RVSTATE.i--; renderReviewSet();} };
   if(next) next.onclick=()=>{ if(RVSTATE.i<total-1){RVSTATE.i++; renderReviewSet();} };
-  body.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{ if(b.dataset.v==='Modified') openModify(n); else decide(n,b.dataset.v); });
+  body.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{ if(b.dataset.v==='Modified') openModify(n); else if(b.dataset.v==='Dismissed') dismissKeep(n); else decide(n,b.dataset.v); });
   icons();
 }
 /* ===== Not-observed drawer: same design language as the review/partial reviewer ===== */
@@ -1200,6 +1215,12 @@ function openSessionPlan(){
   document.getElementById('dwClose').onclick=closeDrawer;
   icons();
 }
+function dismissKeep(n){
+  // Dismiss leaves the player exactly as they are — review stays review, partial stays partial
+  const p=PLAYERS.find(x=>x.n===n); if(!p) return;
+  closeDrawer();
+  toast('Dismissed · Player '+(+n)+' kept as '+(p.st==='partial'?'partial':'needs review'));
+}
 function decide(n,action){
   const p=PLAYERS.find(x=>x.n===n); if(!p) return;
   p.st = action==='Confirmed'?'plan' : action==='Modified'?'partial' : 'notobs';
@@ -1220,23 +1241,36 @@ function markPresence(n,present){
 }
 
 /* ===== manual attendance attestation (not-observed players) ===== */
-let attestEx=[], attestEditIdx=-1;
+let attestEx=[], attestEditIdx=-1, attestEditSet=null;
 function planSR(prog,name){ const pp=PLAN_PROGRAMMES.find(x=>x.prog===prog); if(pp){ const e=pp.ex.find(x=>x.name===name); if(e) return {sets:e.sets, reps:e.reps}; } return null; }
 function rxOf(it){ return (it.reps!=null && it.reps!=='') ? (it.sets+' × '+it.reps) : (it.sets+' set'+(it.sets===1?'':'s')); }
 function escAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function syncAttestChecks(){ document.querySelectorAll('#attestBody .attest-cb:not([disabled])').forEach(c=>{ const j=+c.dataset.j; if(attestEx[j]) attestEx[j].checked=c.checked; }); }
+function syncAttestChecks(){ document.querySelectorAll('#attestBody .attest-cb-set:not([disabled])').forEach(c=>{ const j=+c.dataset.j, s=+c.dataset.s; if(attestEx[j]&&attestEx[j].setChecks) attestEx[j].setChecks[s]=c.checked; }); }
 function renderAttestBody(n){
   const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return;
   const rows=attestEx.map((it,j)=>{
+    let head;
     if(j===attestEditIdx){
-      return `<div class="attest-row"><input type="checkbox" class="attest-cb" data-j="${j}" ${it.checked?'checked':''} disabled>
+      head=`<div class="attest-row"><input type="checkbox" class="attest-cb attest-cb-ex" data-j="${j}" ${it.setChecks.every(Boolean)?'checked':''} disabled>
         <div class="attest-editwrap">
           <input class="ae-name" type="text" value="${escAttr(it.name)}" placeholder="Exercise name">
           <input class="ae-num ae-sets" type="number" min="1" value="${it.sets}" aria-label="Sets"><span class="af-x">×</span><input class="ae-num ae-reps" type="text" value="${escAttr(it.reps)}" placeholder="reps" aria-label="Reps">
           <button class="ae-save" data-save="${j}">Save</button><button class="ae-cancel">Cancel</button>
         </div></div>`;
+    } else {
+      head=`<div class="attest-row attest-exrow"><input type="checkbox" class="attest-cb attest-cb-ex" data-j="${j}" ${it.setChecks.every(Boolean)?'checked':''}><div class="attest-main"><div class="attest-name">${it.name}${it.added?'<span class="attest-extra">Added</span>':''}</div><div class="attest-rx">${rxOf(it)}</div></div><div class="attest-acts"><button class="attest-edit" data-edit="${j}" aria-label="Edit exercise"><i data-lucide="pencil"></i></button><span class="attest-sep"></span><button class="attest-del" data-del="${j}" aria-label="Remove exercise"><i data-lucide="trash-2"></i></button></div></div>`;
     }
-    return `<div class="attest-row"><input type="checkbox" class="attest-cb" data-j="${j}" ${it.checked?'checked':''}><div class="attest-main"><div class="attest-name">${it.name}${it.added?'<span class="attest-extra">Added</span>':''}</div><div class="attest-rx">${rxOf(it)}</div></div><div class="attest-acts"><button class="attest-edit" data-edit="${j}" aria-label="Edit exercise"><i data-lucide="pencil"></i></button><span class="attest-sep"></span><button class="attest-del" data-del="${j}" aria-label="Remove exercise"><i data-lucide="trash-2"></i></button></div></div>`;
+    let setsHtml='';
+    if(j!==attestEditIdx){
+      setsHtml='<div class="attest-sets">'+it.setChecks.map((chk,si)=>{
+        if(attestEditSet===j+'_'+si){
+          return `<div class="attest-setrow"><input type="checkbox" class="attest-cb attest-cb-set" data-j="${j}" data-s="${si}" ${chk?'checked':''} disabled><div class="attest-seteditwrap"><span class="attest-setlbl">Set ${si+1}</span><input class="se-reps" type="text" value="${escAttr(it.setReps[si])}" placeholder="reps" aria-label="Reps"><button class="se-save" data-ssave="${j}_${si}">Save</button><button class="se-cancel">Cancel</button></div></div>`;
+        }
+        const r=it.setReps[si]; const rlbl=(r!=null&&r!=='')?' · '+r+' reps':'';
+        return `<div class="attest-setrow"><input type="checkbox" class="attest-cb attest-cb-set" data-j="${j}" data-s="${si}" ${chk?'checked':''}><span class="attest-setname">Set ${si+1}${rlbl}</span><button class="attest-setedit" data-sedit="${j}_${si}" aria-label="Edit set"><i data-lucide="pencil"></i></button></div>`;
+      }).join('')+'</div>';
+    }
+    return `<div class="attest-ex">${head}${setsHtml}</div>`;
   }).join('');
   document.getElementById('attestBody').innerHTML=`
     <div class="attest-l">Prescribed · ${ep.prog}</div>
@@ -1249,10 +1283,10 @@ function renderAttestBody(n){
     </div>
     <div class="attest-foot"><button class="attest-cancel" id="attestCancel">Cancel</button><button class="attest-confirm" id="attestConfirm">Confirm present</button></div>`;
   document.getElementById('attestAddBtn').onclick=function(){ const f=document.getElementById('attestForm'); f.classList.toggle('open'); if(f.classList.contains('open')) document.getElementById('afName').focus(); };
-  document.getElementById('afAdd').onclick=function(){ const nm=document.getElementById('afName').value.trim(); if(!nm){document.getElementById('afName').focus();return;} const st=Math.max(1,parseInt(document.getElementById('afSets').value,10)||1), rp=Math.max(1,parseInt(document.getElementById('afReps').value,10)||1); syncAttestChecks(); attestEx.push({name:nm,sets:st,reps:rp,checked:true,added:true}); renderAttestBody(n); };
+  document.getElementById('afAdd').onclick=function(){ const nm=document.getElementById('afName').value.trim(); if(!nm){document.getElementById('afName').focus();return;} const st=Math.max(1,parseInt(document.getElementById('afSets').value,10)||1), rp=Math.max(1,parseInt(document.getElementById('afReps').value,10)||1); syncAttestChecks(); attestEx.push({name:nm,sets:st,reps:rp,checked:true,added:true,setChecks:Array(st).fill(true),setReps:Array(st).fill(rp)}); renderAttestBody(n); };
   document.getElementById('attestForm').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); document.getElementById('afAdd').click(); } });
-  document.querySelectorAll('#attestBody [data-edit]').forEach(b=>b.onclick=function(){ syncAttestChecks(); attestEditIdx=+b.dataset.edit; renderAttestBody(n); setTimeout(function(){ var el=document.querySelector('#attestBody .ae-name'); if(el){ el.focus(); if(el.select) el.select(); } },0); });
-  document.querySelectorAll('#attestBody [data-save]').forEach(b=>b.onclick=function(){ const j=+b.dataset.save, row=b.closest('.attest-row'); const nm=row.querySelector('.ae-name').value.trim(); if(!nm){ row.querySelector('.ae-name').focus(); return; } const st=Math.max(1,parseInt(row.querySelector('.ae-sets').value,10)||1); const rp=row.querySelector('.ae-reps').value.trim(); if(attestEx[j]){ attestEx[j].name=nm; attestEx[j].sets=st; attestEx[j].reps=rp; } attestEditIdx=-1; renderAttestBody(n); });
+  document.querySelectorAll('#attestBody [data-edit]').forEach(b=>b.onclick=function(){ syncAttestChecks(); attestEditSet=null; attestEditIdx=+b.dataset.edit; renderAttestBody(n); setTimeout(function(){ var el=document.querySelector('#attestBody .ae-name'); if(el){ el.focus(); if(el.select) el.select(); } },0); });
+  document.querySelectorAll('#attestBody [data-save]').forEach(b=>b.onclick=function(){ const j=+b.dataset.save, row=b.closest('.attest-row'); const nm=row.querySelector('.ae-name').value.trim(); if(!nm){ row.querySelector('.ae-name').focus(); return; } const st=Math.max(1,parseInt(row.querySelector('.ae-sets').value,10)||1); const rp=row.querySelector('.ae-reps').value.trim(); if(attestEx[j]){ attestEx[j].name=nm; attestEx[j].sets=st; attestEx[j].reps=rp; const oC=attestEx[j].setChecks||[], oR=attestEx[j].setReps||[]; attestEx[j].setChecks=Array.from({length:st},(_,i)=> i<oC.length?oC[i]:true); attestEx[j].setReps=Array.from({length:st},(_,i)=> (i<oR.length&&oR[i]!=null&&oR[i]!=='')?oR[i]:rp); } attestEditIdx=-1; renderAttestBody(n); });
   document.querySelectorAll('#attestBody .ae-cancel').forEach(b=>b.onclick=function(){ attestEditIdx=-1; renderAttestBody(n); });
   document.querySelectorAll('#attestBody .attest-editwrap').forEach(w=>w.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); const s=w.querySelector('.ae-save'); if(s) s.click(); } else if(e.key==='Escape'){ e.preventDefault(); attestEditIdx=-1; renderAttestBody(n); } }));
   document.querySelectorAll('#attestBody [data-del]').forEach(b=>b.onclick=function(){
@@ -1263,14 +1297,20 @@ function renderAttestBody(n){
     row.querySelector('.acd-yes').onclick=function(){ syncAttestChecks(); attestEx.splice(j,1); renderAttestBody(n); };
     row.querySelector('.acd-no').onclick=function(){ syncAttestChecks(); renderAttestBody(n); };
   });
+  document.querySelectorAll('#attestBody .attest-cb-ex:not([disabled])').forEach(c=>c.onchange=function(){ const j=+c.dataset.j; if(attestEx[j]) attestEx[j].setChecks=attestEx[j].setChecks.map(()=>c.checked); document.querySelectorAll('#attestBody .attest-cb-set[data-j="'+j+'"]').forEach(sc=>{ sc.checked=c.checked; sc.indeterminate=false; }); c.indeterminate=false; });
+  document.querySelectorAll('#attestBody .attest-cb-set:not([disabled])').forEach(c=>c.onchange=function(){ const j=+c.dataset.j, s=+c.dataset.s; if(attestEx[j]&&attestEx[j].setChecks) attestEx[j].setChecks[s]=c.checked; const all=attestEx[j].setChecks.every(Boolean); const ex=document.querySelector('#attestBody .attest-cb-ex[data-j="'+j+'"]'); if(ex){ ex.checked=all; ex.indeterminate=false; } });
+  document.querySelectorAll('#attestBody [data-sedit]').forEach(b=>b.onclick=function(){ syncAttestChecks(); attestEditIdx=-1; attestEditSet=b.dataset.sedit; renderAttestBody(n); setTimeout(function(){ var el=document.querySelector('#attestBody .se-reps'); if(el){ el.focus(); if(el.select) el.select(); } },0); });
+  document.querySelectorAll('#attestBody [data-ssave]').forEach(b=>b.onclick=function(){ const pr=b.dataset.ssave.split('_'), j=+pr[0], si=+pr[1], row=b.closest('.attest-setrow'); const rp=row.querySelector('.se-reps').value.trim(); if(attestEx[j]&&attestEx[j].setReps){ attestEx[j].setReps[si]=rp; } attestEditSet=null; renderAttestBody(n); });
+  document.querySelectorAll('#attestBody .se-cancel').forEach(b=>b.onclick=function(){ attestEditSet=null; renderAttestBody(n); });
+  document.querySelectorAll('#attestBody .attest-seteditwrap').forEach(w=>w.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); const s=w.querySelector('.se-save'); if(s) s.click(); } else if(e.key==='Escape'){ e.preventDefault(); attestEditSet=null; renderAttestBody(n); } }));
   document.getElementById('attestCancel').onclick=closeAttest;
   document.getElementById('attestConfirm').onclick=function(){ confirmAttest(n); };
   icons();
 }
 function openAttest(n){
   const ep=EXPLAYERS.find(x=>x.n===n); if(!ep) return;
-  attestEditIdx=-1;
-  attestEx=ep.ex.map(e=>{ const sr=planSR(ep.prog,e[0]); return {name:e[0], sets:e[1], reps:(sr?sr.reps:''), checked:true, added:false}; });
+  attestEditIdx=-1; attestEditSet=null;
+  attestEx=ep.ex.map(e=>{ const sr=planSR(ep.prog,e[0]); const reps=(sr?sr.reps:''); const sets=e[1]; return {name:e[0], sets, reps, checked:true, added:false, setChecks:Array(sets).fill(true), setReps:Array(sets).fill(reps)}; });
   document.getElementById('attestTitle').textContent='Log attendance · Player '+(+n);
   document.querySelector('#attestModal .pm-sub').textContent='Select each prescribed exercise the player completed, and add exercise if needed.';
   renderAttestBody(n);
@@ -1282,7 +1322,7 @@ function closeAttest(){ document.getElementById('attestScrim').classList.remove(
 function confirmAttest(n){
   const p=PLAYERS.find(x=>x.n===n), ep=EXPLAYERS.find(x=>x.n===n); if(!p||!ep) return;
   syncAttestChecks();
-  ep.ex = attestEx.map(it=>[it.name, it.sets, it.checked ? it.sets : 0]);
+  ep.ex = attestEx.map(it=>{ const done=it.setChecks.filter(Boolean).length; return [it.name, it.sets, done]; });
   const allDone = ep.ex.length>0 && ep.ex.every(e=>e[2]>=e[1]);
   p.st = allDone ? 'plan' : 'partial';
   p.ex = ep.ex.length ? ep.ex.map(e=> e[2]>=e[1]?'o':(e[2]>0?'p':'n')) : ['n'];
@@ -1383,23 +1423,24 @@ const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov',
 const MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DOW1=['S','M','T','W','T','F','S'];
-const SESSION_DAYS={'2026-10-06':true,'2026-10-07':true,'2026-10-08':true,'2026-10-09':true,'2026-10-10':true,'2026-10-11':true,'2026-10-12':true,'2026-10-14':true,'2026-10-16':true,'2026-10-17':true,'2026-10-19':true};
+const SESSION_DAYS={'2026-10-01':true,'2026-10-02':true,'2026-10-03':true,'2026-10-04':true,'2026-10-06':true,'2026-10-07':true,'2026-10-08':true,'2026-10-09':true,'2026-10-10':true,'2026-10-11':true,'2026-10-12':true,'2026-10-14':true};
 const TODAY=new Date(2026,9,7); TODAY.setHours(0,0,0,0); // Wed 7 Oct 2026
 let selected=new Date(2026,9,7);
 /* sessions for the day; supports any count (2, 3, 4…) */
 /* Gym schedule per day — matches the Home page. Days not listed have no gym sessions. */
 const GYM_SCHEDULE={
-  '2026-10-06':[{name:'Lower strength + upper pull · Grp A',start:'09:00',end:'09:50',cams:4,upcoming:true},{name:'Lower strength + upper pull · Grp B',start:'10:00',end:'10:50',cams:4,upcoming:true},{name:'Hamstring rehab · stage 2',start:'11:00',end:'12:00',cams:4,upcoming:true}],
-  '2026-10-07':[{name:'Upper push + trunk · Grp A',start:'12:30',end:'13:15',cams:4},{name:'Upper push + trunk · Grp B',start:'13:15',end:'14:00',cams:4,processing:true}],
+  '2026-10-01':[{name:'Upper push + trunk',start:'09:00',end:'10:30',cams:4},{name:'Hamstring rehab · stage 1',start:'11:00',end:'12:00',cams:4,processing:true}],
+  '2026-10-02':[{name:'Activation / primer',start:'09:30',end:'09:50',cams:4,processing:true}],
+  '2026-10-03':[{name:'Hamstring rehab · stage 1',start:'10:00',end:'11:00',cams:4,processing:true}],
+  '2026-10-04':[{name:'Recovery · pool + mobility',start:'10:00',end:'11:00',cams:4,processing:true}],
+  '2026-10-06':[{name:'Lower strength + upper pull',start:'09:00',end:'10:50',cams:4},{name:'Hamstring rehab · stage 2',start:'11:00',end:'12:00',cams:4,processing:true}],
+  '2026-10-07':[{name:'Strength',start:'09:00',end:'10:05',cams:4},{name:'Rehab',start:'12:30',end:'13:20',cams:4,processing:true},{name:'Mobility',start:'15:00',end:'16:05',cams:4,upcoming:true}],
   '2026-10-08':[{name:'Hamstring rehab · stage 2',start:'10:00',end:'11:00',cams:4,upcoming:true}],
   '2026-10-09':[{name:'Activation / primer',start:'09:30',end:'09:50',cams:4,upcoming:true}],
   '2026-10-10':[{name:'Hamstring rehab · stage 2',start:'10:00',end:'11:00',cams:4,upcoming:true}],
-  '2026-10-11':[{name:'Non-starter top-up',start:'10:00',end:'10:50',cams:4,upcoming:true},{name:'Recovery · pool + mobility',start:'10:00',end:'11:00',cams:4,upcoming:true}],
-  '2026-10-12':[{name:'Full body (reduced) · Grp A',start:'09:00',end:'09:45',cams:4,upcoming:true},{name:'Full body (reduced) · Grp B',start:'09:50',end:'10:35',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'11:00',end:'12:00',cams:4,upcoming:true}],
-  '2026-10-14':[{name:'Activation / primer',start:'09:00',end:'09:20',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'10:00',end:'11:00',cams:4,upcoming:true}],
-  '2026-10-16':[{name:'Hamstring rehab · stage 3',start:'10:00',end:'11:00',cams:4,upcoming:true},{name:'Recovery · pool + mobility',start:'11:00',end:'12:00',cams:4,upcoming:true},{name:'Non-starter top-up',start:'14:00',end:'14:50',cams:4,upcoming:true}],
-  '2026-10-17':[{name:'Activation / primer',start:'10:00',end:'10:20',cams:4,upcoming:true}],
-  '2026-10-19':[{name:'Upper push (MD+1, low volume)',start:'10:30',end:'11:15',cams:4,upcoming:true},{name:'Unused-sub lower top-up',start:'10:30',end:'11:20',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'11:30',end:'12:30',cams:4,upcoming:true}]
+  '2026-10-11':[{name:'Recovery · pool + mobility',start:'10:00',end:'11:00',cams:4,upcoming:true},{name:'Non-starter top-up',start:'11:15',end:'12:05',cams:4,upcoming:true}],
+  '2026-10-12':[{name:'Full body (reduced)',start:'09:00',end:'10:35',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'11:00',end:'12:00',cams:4,upcoming:true}],
+  '2026-10-14':[{name:'Activation / primer',start:'09:00',end:'09:20',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'10:00',end:'11:00',cams:4,upcoming:true}]
 };
 let SESSIONS=[];
 let sessIdx=0;
