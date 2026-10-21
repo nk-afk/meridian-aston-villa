@@ -846,6 +846,7 @@ function renderStats(){
   const row=r=>`<div class="sgrow"><span class="sg-lab">${r[0]}</span><div class="sg-track"><i style="width:${Math.round(r[1]/max*100)}%;background:${r[2]}"></i></div><span class="sg-val num">${r[1]}</span></div>`;
   document.getElementById('attRows').innerHTML=att.map(row).join('');
   document.getElementById('compRows').innerHTML=comp.map(row).join('');
+  var rb=document.getElementById('reviewBtn'); if(rb) rb.style.display=c.review>0?'':'none'; // only show the CTA when players actually need review
   renderTabs();
 }
 function renderTabs(){
