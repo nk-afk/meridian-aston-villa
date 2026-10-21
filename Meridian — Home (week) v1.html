@@ -410,7 +410,7 @@ body.nav-collapsed .profile .pname{display:none}
       <div class="sec-head" style="margin:4px 0 0">
         <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-soft);font-weight:600">Today&rsquo;s agenda</div>
       </div>
-      <div id="todayDate" style="font-size:24px;line-height:30px;font-weight:700;letter-spacing:-.01em;color:var(--color-text);margin:4px 0 14px">Tue, 8 Sep 2026</div>
+      <div id="todayDate" style="font-size:24px;line-height:30px;font-weight:700;letter-spacing:-.01em;color:var(--color-text);margin:4px 0 14px">Wed, 7 Oct 2026</div>
       <div id="todayGrid"></div>
 
       <!-- This week -->
@@ -482,22 +482,22 @@ function typeLabel(t){return t==='gym'?'Gym':'Pitch';}
 /* ============ DATA ============ */
 const GYM_HREF="Meridian%20%E2%80%94%20Gym%20(session%20overview%20v3).html";
 const PLAYERS_HREF="../Meridian%20%E2%80%94%20Players%20(report-led%20v1).html";
-const TODAY=new Date(2026,8,8); // Tue 8 Sep 2026 (matches Gym session page week)
+const TODAY=new Date(2026,9,7); // Wed 7 Oct 2026 (matches Gym session page week)
 
-// sessions by weekday index (0=Mon ... 6=Sun); repeats each displayed week
+// sessions by weekday index (0=Mon ... 6=Sun); week of Mon 5 – Sun 11 Oct 2026
 const SESS=[
-  [ {t:'10:30 – 11:45',type:'pitch',title:'AM pitch',loc:'Training pitch 1',status:'ready'} ],
-  [ {t:'09:00 – 10:05',type:'gym',title:'Strength',loc:'Gym 1',status:'ready'},
-    {t:'12:30 – 13:20',type:'gym',title:'Rehab',loc:'Gym 1',status:'ready'},
-    {t:'15:00 – 16:05',type:'gym',title:'Mobility',loc:'Gym 1',status:'ready'} ],
-  [ {t:'10:30 – 11:45',type:'pitch',title:'AM pitch',loc:'Training pitch 1',status:'ready'},
-    {t:'15:00 – 16:00',type:'gym',title:'Mobility',loc:'Gym 1',status:'ready'} ],
-  [ {t:'10:30 – 11:45',type:'pitch',title:'Team shape',loc:'Training pitch 1',status:'needed',planFlag:true} ],
-  [ {t:'10:00 – 11:15',type:'pitch',title:'Match prep',loc:'Training pitch 1',status:null} ],
-  [], // Sat = rest
-  [ {t:'15:00 – 17:00',type:'match',title:'Home match',loc:'Main pitch',status:null} ],
+  [], // Mon 5 Oct = rest
+  [ {t:'09:00 – 10:50',type:'gym',title:'Lower strength + upper pull',loc:'Gym 1',status:'ready'},
+    {t:'11:00 – 12:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:'ready'} ],
+  [ {t:'12:30 – 14:00',type:'gym',title:'Upper push + trunk',loc:'Gym 1',status:'ready'} ],
+  [ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:null} ],
+  [ {t:'09:30 – 09:50',type:'gym',title:'Activation / primer',loc:'Gym 1',status:null} ],
+  [ {t:'10:00 – 11:00',type:'gym',title:'Hamstring rehab · stage 2',loc:'Gym 1',status:null},
+    {t:'15:00 – 17:00',type:'match',title:'Premier League (H)',loc:'Villa Park',status:null} ],
+  [ {t:'10:00 – 11:00',type:'gym',title:'Recovery · pool + mobility',loc:'Gym 1',status:null},
+    {t:'11:15 – 12:05',type:'gym',title:'Non-starter top-up',loc:'Gym 1',status:null} ],
 ];
-const REST_IDX=5;
+const REST_IDX=0;
 const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const NOW_MIN=13*60+30;           // 13:30 "current time"
 const GSTART=9*60, HOURPX=58;     // grid starts 09:00, 58px/hour
@@ -554,7 +554,7 @@ function renderToday(){
       : (isNext ? '<span class="ac-badge next"><span class="ac-dot"></span>Up next</span>'
                 : '');
     const pill=o.isDone
-      ? (s.title==='Strength' ? '' : '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>')
+      ? (s.title==='Upper push + trunk' ? '' : '<span class="ac-pill vid">'+VIDEO_SVG+'Video processing</span>')
       : (s.status==='needed'?'<span class="ac-pill needed">'+ALERT_SVG+'Plan needed</span>':'');
     const link=o.isDone?'View session':'View plan';
     const planMode = !o.isDone && s.type==='gym';
@@ -905,7 +905,7 @@ document.getElementById('todayGrid').addEventListener('click',function(e){
   var NOTIFS=[
     {type:'proc',   icon:'loader',         t:'Rehab session is processing',          s:'Attendance & highlights will appear once it finishes.', time:'2m',  unread:true},
     {type:'review', icon:'alert-circle',   t:'Player 07 — full set needs confirmation', s:'Upper push · 2 of ? sets recorded',                time:'18m', unread:true},
-    {type:'ok',     icon:'check-circle-2', t:'Strength session processed',           s:'Ready to review · 21 players',                          time:'1h',  unread:false},
+    {type:'ok',     icon:'check-circle-2', t:'Upper push + trunk session processed',  s:'Ready to review · 9 players',                          time:'1h',  unread:false},
     {type:'review', icon:'alert-circle',   t:'Player 18 — set left unconfirmed',     s:'Lower body · capture ended mid-set',                    time:'3h',  unread:false}
   ];
   var panel=null;

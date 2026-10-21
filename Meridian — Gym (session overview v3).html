@@ -621,7 +621,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
         <span class="sesscount num" id="sessCount">3 of 3</span>
       </div>
       <div class="sublinerow">
-        <div class="subline" id="subline">Tue 08 Sep · 15:00–16:05 · 4 ceiling cameras</div>
+        <div class="subline" id="subline">Wed 07 Oct · 12:30–13:15 · 4 ceiling cameras</div>
         <div class="gymloc"><i data-lucide="map-pin"></i>Bodymoor Heath Training Ground</div>
       </div>
     </div>
@@ -1383,14 +1383,23 @@ const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov',
 const MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DOW1=['S','M','T','W','T','F','S'];
-const SESSION_DAYS={'2026-09-08':true,'2026-09-09':true,'2026-09-10':true};
-const TODAY=new Date(2026,8,8); TODAY.setHours(0,0,0,0);
-let selected=new Date(2026,8,8);
+const SESSION_DAYS={'2026-10-06':true,'2026-10-07':true,'2026-10-08':true,'2026-10-09':true,'2026-10-10':true,'2026-10-11':true,'2026-10-12':true,'2026-10-14':true,'2026-10-16':true,'2026-10-17':true,'2026-10-19':true};
+const TODAY=new Date(2026,9,7); TODAY.setHours(0,0,0,0); // Wed 7 Oct 2026
+let selected=new Date(2026,9,7);
 /* sessions for the day; supports any count (2, 3, 4…) */
 /* Gym schedule per day — matches the Home page. Days not listed have no gym sessions. */
 const GYM_SCHEDULE={
-  '2026-09-08':[{name:'Strength',start:'09:00',end:'10:05',cams:4},{name:'Rehab',start:'12:30',end:'13:20',cams:4,processing:true},{name:'Mobility',start:'15:00',end:'16:05',cams:4,upcoming:true}],
-  '2026-09-09':[{name:'Mobility',start:'15:00',end:'16:00',cams:4,upcoming:true}]
+  '2026-10-06':[{name:'Lower strength + upper pull · Grp A',start:'09:00',end:'09:50',cams:4,upcoming:true},{name:'Lower strength + upper pull · Grp B',start:'10:00',end:'10:50',cams:4,upcoming:true},{name:'Hamstring rehab · stage 2',start:'11:00',end:'12:00',cams:4,upcoming:true}],
+  '2026-10-07':[{name:'Upper push + trunk · Grp A',start:'12:30',end:'13:15',cams:4},{name:'Upper push + trunk · Grp B',start:'13:15',end:'14:00',cams:4,processing:true}],
+  '2026-10-08':[{name:'Hamstring rehab · stage 2',start:'10:00',end:'11:00',cams:4,upcoming:true}],
+  '2026-10-09':[{name:'Activation / primer',start:'09:30',end:'09:50',cams:4,upcoming:true}],
+  '2026-10-10':[{name:'Hamstring rehab · stage 2',start:'10:00',end:'11:00',cams:4,upcoming:true}],
+  '2026-10-11':[{name:'Non-starter top-up',start:'10:00',end:'10:50',cams:4,upcoming:true},{name:'Recovery · pool + mobility',start:'10:00',end:'11:00',cams:4,upcoming:true}],
+  '2026-10-12':[{name:'Full body (reduced) · Grp A',start:'09:00',end:'09:45',cams:4,upcoming:true},{name:'Full body (reduced) · Grp B',start:'09:50',end:'10:35',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'11:00',end:'12:00',cams:4,upcoming:true}],
+  '2026-10-14':[{name:'Activation / primer',start:'09:00',end:'09:20',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'10:00',end:'11:00',cams:4,upcoming:true}],
+  '2026-10-16':[{name:'Hamstring rehab · stage 3',start:'10:00',end:'11:00',cams:4,upcoming:true},{name:'Recovery · pool + mobility',start:'11:00',end:'12:00',cams:4,upcoming:true},{name:'Non-starter top-up',start:'14:00',end:'14:50',cams:4,upcoming:true}],
+  '2026-10-17':[{name:'Activation / primer',start:'10:00',end:'10:20',cams:4,upcoming:true}],
+  '2026-10-19':[{name:'Upper push (MD+1, low volume)',start:'10:30',end:'11:15',cams:4,upcoming:true},{name:'Unused-sub lower top-up',start:'10:30',end:'11:20',cams:4,upcoming:true},{name:'Hamstring rehab · stage 3',start:'11:30',end:'12:30',cams:4,upcoming:true}]
 };
 let SESSIONS=[];
 let sessIdx=0;

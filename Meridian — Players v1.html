@@ -260,15 +260,15 @@ body.nav-collapsed .profile .pname{display:none}
 <script>
 /* ============ DATA ============ */
 const PLAYERS=[
-  {num:1,  pos:'Midfielder', session:'Upper push',      date:'08 Sep 2026', loc:'Gym 1', att:10, total:11, pending:0},
-  {num:2,  pos:'Forward',    session:'Upper push',      date:'08 Sep 2026', loc:'Gym 1', att:10, total:11, pending:1},
-  {num:3,  pos:'Defender',   session:'Lower body',      date:'08 Sep 2026', loc:'Gym 2', att:9,  total:11, pending:0},
-  {num:8,  pos:'Forward',    session:'Upper push',      date:'08 Sep 2026', loc:'Gym 1', att:11, total:11, pending:0},
-  {num:12, pos:'Midfielder', session:'Upper push',      date:'08 Sep 2026', loc:'Gym 1', att:11, total:11, pending:0},
-  {num:13, pos:'Defender',   session:'Upper push',      date:'08 Sep 2026', loc:'Gym 1', att:11, total:11, pending:0},
-  {num:16, pos:'Midfielder', session:'Upper push',      date:'29 Aug 2026', loc:'Gym 1', att:6,  total:11, pending:0},
-  {num:20, pos:'Defender',   session:'Posterior chain', date:'08 Sep 2026', loc:'Gym 2', att:10, total:11, pending:0},
-  {num:24, pos:'Defender',   session:'Upper push',      date:'08 Sep 2026', loc:'Gym 1', att:9,  total:11, pending:0},
+  {num:1,  pos:'Midfielder', session:'Upper push',      date:'07 Oct 2026', loc:'Gym 1', att:10, total:11, pending:0},
+  {num:2,  pos:'Forward',    session:'Upper push',      date:'07 Oct 2026', loc:'Gym 1', att:10, total:11, pending:1},
+  {num:3,  pos:'Defender',   session:'Lower body',      date:'07 Oct 2026', loc:'Gym 2', att:9,  total:11, pending:0},
+  {num:8,  pos:'Forward',    session:'Upper push',      date:'07 Oct 2026', loc:'Gym 1', att:11, total:11, pending:0},
+  {num:12, pos:'Midfielder', session:'Upper push',      date:'07 Oct 2026', loc:'Gym 1', att:11, total:11, pending:0},
+  {num:13, pos:'Defender',   session:'Upper push',      date:'07 Oct 2026', loc:'Gym 1', att:11, total:11, pending:0},
+  {num:16, pos:'Midfielder', session:'Upper push',      date:'27 Sep 2026', loc:'Gym 1', att:6,  total:11, pending:0},
+  {num:20, pos:'Defender',   session:'Posterior chain', date:'07 Oct 2026', loc:'Gym 2', att:10, total:11, pending:0},
+  {num:24, pos:'Defender',   session:'Upper push',      date:'07 Oct 2026', loc:'Gym 1', att:9,  total:11, pending:0},
 ];
 const POSITIONS=['All positions','Goalkeeper','Defender','Midfielder','Forward'];
 const REVIEWS=['All review states','Needs review','Up to date'];
@@ -353,7 +353,7 @@ renderPlanModal();
   var NOTIFS=[
     {type:'proc',   icon:'loader',         t:'Rehab session is processing',          s:'Attendance & highlights will appear once it finishes.', time:'2m',  unread:true},
     {type:'review', icon:'alert-circle',   t:'Player 07 — full set needs confirmation', s:'Upper push · 2 of ? sets recorded',                time:'18m', unread:true},
-    {type:'ok',     icon:'check-circle-2', t:'Strength session processed',           s:'Ready to review · 21 players',                          time:'1h',  unread:false},
+    {type:'ok',     icon:'check-circle-2', t:'Upper push + trunk session processed',  s:'Ready to review · 9 players',                          time:'1h',  unread:false},
     {type:'review', icon:'alert-circle',   t:'Player 18 — set left unconfirmed',     s:'Lower body · capture ended mid-set',                    time:'3h',  unread:false}
   ];
   var panel=null;

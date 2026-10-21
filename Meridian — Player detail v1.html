@@ -304,7 +304,7 @@ body.nav-collapsed .profile .pname{display:none}
       </div>
       <div class="range">
         <button class="rnav" aria-label="Previous range"><i data-lucide="chevron-left"></i></button>
-        <button class="rpill"><i data-lucide="calendar"></i><span id="rangeLbl">12 Aug – 08 Sep 2026</span><i data-lucide="chevron-down" class="dl-chev"></i></button>
+        <button class="rpill"><i data-lucide="calendar"></i><span id="rangeLbl">10 Sep – 07 Oct 2026</span><i data-lucide="chevron-down" class="dl-chev"></i></button>
         <button class="rnav" aria-label="Next range"><i data-lucide="chevron-right"></i></button>
       </div>
     </div>
@@ -345,13 +345,13 @@ body.nav-collapsed .profile .pname{display:none}
 
 <script>
 /* ============ DATA ============ */
-const DAYS=['26','27','28','29','30','31','01','02','03','04','05','06','07','08'];
-const D1=['12 Aug','18 Aug','22 Aug','28 Aug','02 Sep','08 Sep'];
-const D2=['11 Aug','17 Aug','21 Aug','27 Aug','01 Sep','07 Sep'];
+const DAYS=['24','25','26','27','28','29','30','01','02','03','04','05','06','07'];
+const D1=['10 Sep','16 Sep','20 Sep','26 Sep','01 Oct','07 Oct'];
+const D2=['09 Sep','15 Sep','19 Sep','25 Sep','30 Sep','06 Oct'];
 function mk(dates,vals){return dates.map((d,i)=>[d,vals[i]]);}
 
 const PLAYERS={
-  1:{ num:1, pos:'Midfielder', height:'183 cm', weight:'77.5 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:6,
+  1:{ num:1, pos:'Midfielder', height:'183 cm', weight:'77.5 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:6,
       gym:  ['g','_','g','_','_','g','_','g','_','_','g','_','_','g'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -359,16 +359,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:21, delta:'+23.5%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[17,18,19,19,20,21])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:2200, delta:'+25.7%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:1400, yMax:2400, step:200, pts:mk(D1,[1750,1850,1900,2000,2100,2200])},
         body:{
-          weight:{latest:77.5, delta:'-0.3 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:76, yMax:79, step:1, pts:[['12 Aug',77.8],['08 Sep',77.5]]},
-          bodyfat:{latest:11.8, delta:'-0.3 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:10, yMax:13, step:1, pts:[['12 Aug',12.1],['08 Sep',11.8]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:77.5, delta:'-0.3 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:76, yMax:79, step:1, pts:[['10 Sep',77.8],['07 Oct',77.5]]},
+          bodyfat:{latest:11.8, delta:'-0.3 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:10, yMax:13, step:1, pts:[['10 Sep',12.1],['07 Oct',11.8]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 14.6% across six gym sessions.','Seated row is the captured lift, trending up.','6 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Seated row', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Upper push', date:'07 Oct', loc:'Gym 1', ex:'Seated row', reviews:0}
   },
-  13:{ num:13, pos:'Defender', height:'188 cm', weight:'82.1 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:11,
+  13:{ num:13, pos:'Defender', height:'188 cm', weight:'82.1 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:11,
       gym:  ['g','_','g','_','_','_','g','_','_','g','_','g','_','g'],
       pitch:['_','p','_','p','_','p','_','p','_','_','p','_','_','_'],
       metrics:{
@@ -376,16 +376,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:96, delta:'+10.3%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[87,90,88,92,94,96])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:7100, delta:'+10.9%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:5000, yMax:8000, step:1000, pts:mk(D1,[6400,6600,6500,6900,6800,7100])},
         body:{
-          weight:{latest:82.1, delta:'-0.3 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:81, yMax:84, step:1, pts:[['12 Aug',82.4],['08 Sep',82.1]]},
-          bodyfat:{latest:10.5, delta:'-0.4 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:9, yMax:12, step:1, pts:[['12 Aug',10.9],['08 Sep',10.5]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:82.1, delta:'-0.3 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:81, yMax:84, step:1, pts:[['10 Sep',82.4],['07 Oct',82.1]]},
+          bodyfat:{latest:10.5, delta:'-0.4 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:9, yMax:12, step:1, pts:[['10 Sep',10.9],['07 Oct',10.5]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 8.5% across six gym sessions.','Progression is steady with no session-to-session dips.','6 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Chest fly', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Upper push', date:'07 Oct', loc:'Gym 1', ex:'Chest fly', reviews:0}
   },
-  3:{ num:3, pos:'Defender', height:'186 cm', weight:'83.0 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:5,
+  3:{ num:3, pos:'Defender', height:'186 cm', weight:'83.0 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:5,
       gym:  ['g','_','g','_','_','_','g','_','_','g','_','_','g','_'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -393,16 +393,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:11, delta:'+22.2%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[9,9,10,10,11,11])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:7400, delta:'+15.6%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:5000, yMax:8000, step:1000, pts:mk(D1,[6400,6700,6800,7000,7200,7400])},
         body:{
-          weight:{latest:83.0, delta:'-0.4 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:82, yMax:85, step:1, pts:[['12 Aug',83.4],['08 Sep',83.0]]},
-          bodyfat:{latest:11.0, delta:'-0.3 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:9, yMax:12, step:1, pts:[['12 Aug',11.3],['08 Sep',11.0]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:83.0, delta:'-0.4 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:82, yMax:85, step:1, pts:[['10 Sep',83.4],['07 Oct',83.0]]},
+          bodyfat:{latest:11.0, delta:'-0.3 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:9, yMax:12, step:1, pts:[['10 Sep',11.3],['07 Oct',11.0]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 14.4% across six gym sessions.','Squat is the captured lift, progressing steadily.','5 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Lower body', date:'08 Sep', loc:'Gym 2', ex:'Squat', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Lower body', date:'07 Oct', loc:'Gym 2', ex:'Squat', reviews:0}
   },
-  2:{ num:2, pos:'Forward', height:'180 cm', weight:'76.2 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:6,
+  2:{ num:2, pos:'Forward', height:'180 cm', weight:'76.2 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:6,
       gym:  ['g','_','g','_','_','g','_','g','_','_','g','_','_','g'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -410,16 +410,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:73, delta:'+14.1%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[64,66,68,70,72,73])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:5200, delta:'+13.0%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:3000, yMax:6000, step:1000, pts:mk(D1,[4600,4750,4800,4950,5050,5200])},
         body:{
-          weight:{latest:76.2, delta:'-0.3 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:75, yMax:78, step:1, pts:[['12 Aug',76.5],['08 Sep',76.2]]},
-          bodyfat:{latest:11.4, delta:'-0.4 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:10, yMax:13, step:1, pts:[['12 Aug',11.8],['08 Sep',11.4]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:76.2, delta:'-0.3 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:75, yMax:78, step:1, pts:[['10 Sep',76.5],['07 Oct',76.2]]},
+          bodyfat:{latest:11.4, delta:'-0.4 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:10, yMax:13, step:1, pts:[['10 Sep',11.8],['07 Oct',11.4]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 14.0% across six gym sessions.','Seated row set 1 capture is half-obscured and needs a coach review.','6 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Seated row / Lateral raise', reviews:1}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Upper push', date:'07 Oct', loc:'Gym 1', ex:'Seated row / Lateral raise', reviews:1}
   },
-  12:{ num:12, pos:'Midfielder', height:'177 cm', weight:'73.8 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:5,
+  12:{ num:12, pos:'Midfielder', height:'177 cm', weight:'73.8 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:5,
       gym:  ['g','_','g','_','_','_','g','_','_','g','_','_','g','_'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -427,16 +427,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:70, delta:'+20.7%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[58,61,64,66,68,70])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:3900, delta:'+21.9%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:2000, yMax:5000, step:1000, pts:mk(D1,[3200,3400,3500,3700,3800,3900])},
         body:{
-          weight:{latest:73.8, delta:'-0.4 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:72, yMax:75, step:1, pts:[['12 Aug',74.2],['08 Sep',73.8]]},
-          bodyfat:{latest:10.9, delta:'-0.3 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:9, yMax:12, step:1, pts:[['12 Aug',11.2],['08 Sep',10.9]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:73.8, delta:'-0.4 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:72, yMax:75, step:1, pts:[['10 Sep',74.2],['07 Oct',73.8]]},
+          bodyfat:{latest:10.9, delta:'-0.3 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:9, yMax:12, step:1, pts:[['10 Sep',11.2],['07 Oct',10.9]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 15.2% across six gym sessions.','A seventeen-rep second set on seated row stands out.','5 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Seated row / Cable biceps curl', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Upper push', date:'07 Oct', loc:'Gym 1', ex:'Seated row / Cable biceps curl', reviews:0}
   },
-  24:{ num:24, pos:'Defender', height:'185 cm', weight:'80.5 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:4,
+  24:{ num:24, pos:'Defender', height:'185 cm', weight:'80.5 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:4,
       gym:  ['g','_','_','_','g','_','_','g','_','_','_','_','_','g'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -444,16 +444,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:11, delta:'+37.5%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[8,9,9,10,10,11])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:880, delta:'+25.7%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:400, yMax:1200, step:200, pts:mk(D1,[700,740,760,800,840,880])},
         body:{
-          weight:{latest:80.5, delta:'-0.2 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:79, yMax:82, step:1, pts:[['12 Aug',80.7],['08 Sep',80.5]]},
-          bodyfat:{latest:13.2, delta:'-0.2 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:12, yMax:15, step:1, pts:[['12 Aug',13.4],['08 Sep',13.2]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:80.5, delta:'-0.2 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:79, yMax:82, step:1, pts:[['10 Sep',80.7],['07 Oct',80.5]]},
+          bodyfat:{latest:13.2, delta:'-0.2 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:12, yMax:15, step:1, pts:[['10 Sep',13.4],['07 Oct',13.2]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 14.8% across six gym sessions.','Overhead triceps extension is the one captured lift so far.','4 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Overhead triceps extension', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Upper push', date:'07 Oct', loc:'Gym 1', ex:'Overhead triceps extension', reviews:0}
   },
-  8:{ num:8, pos:'Forward', height:'181 cm', weight:'76.8 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:6,
+  8:{ num:8, pos:'Forward', height:'181 cm', weight:'76.8 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:6,
       gym:  ['g','_','g','_','g','_','_','g','_','_','g','_','_','g'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -461,16 +461,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:7, delta:'+40.0%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[5,6,6,7,7,7])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:760, delta:'+26.7%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:400, yMax:1000, step:200, pts:mk(D1,[600,630,660,690,720,760])},
         body:{
-          weight:{latest:76.8, delta:'-0.2 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:75, yMax:78, step:1, pts:[['12 Aug',77.0],['08 Sep',76.8]]},
-          bodyfat:{latest:12.3, delta:'-0.2 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:11, yMax:14, step:1, pts:[['12 Aug',12.5],['08 Sep',12.3]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:76.8, delta:'-0.2 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:75, yMax:78, step:1, pts:[['10 Sep',77.0],['07 Oct',76.8]]},
+          bodyfat:{latest:12.3, delta:'-0.2 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:11, yMax:14, step:1, pts:[['10 Sep',12.5],['07 Oct',12.3]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 14.9% across six gym sessions.','Triceps pushdown is the captured lift.','6 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Upper push', date:'08 Sep', loc:'Gym 1', ex:'Triceps pushdown', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Upper push', date:'07 Oct', loc:'Gym 1', ex:'Triceps pushdown', reviews:0}
   },
-  20:{ num:20, pos:'Defender', height:'184 cm', weight:'79.4 kg', latest:'08 Sep 2026', range:'12 Aug – 08 Sep 2026', att:5,
+  20:{ num:20, pos:'Defender', height:'184 cm', weight:'79.4 kg', latest:'07 Oct 2026', range:'10 Sep – 07 Oct 2026', att:5,
       gym:  ['g','_','_','g','_','_','g','_','_','g','_','_','g','_'],
       pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'],
       metrics:{
@@ -478,16 +478,16 @@ const PLAYERS={
         reps:  {title:'Total reps', unit:'reps', latest:3, delta:'+50.0%', deltaLabel:'vs first session', caption:'Completed repetitions across confirmed working sets.', note:'', axis:'Reps', foot:'6 gym sessions · Confirmed records', pts:mk(D1,[2,2,3,3,3,3])},
         volume:{title:'Total volume', type:'line', unit:'kg·reps', latest:420, delta:'+31.3%', deltaLabel:'vs first session', caption:'Sum of weight × completed reps across working sets', note:'', axis:'Volume (kg·reps)', foot:'6 gym sessions · Confirmed records', yMin:200, yMax:600, step:100, pts:mk(D1,[320,350,360,380,400,420])},
         body:{
-          weight:{latest:79.4, delta:'-0.3 kg', since:'since 12 Aug', unit:'kg', color:'blue', yMin:78, yMax:81, step:1, pts:[['12 Aug',79.7],['08 Sep',79.4]]},
-          bodyfat:{latest:12.6, delta:'-0.2 percentage points', since:'since 12 Aug', unit:'%', color:'green', yMin:11, yMax:14, step:1, pts:[['12 Aug',12.8],['08 Sep',12.6]]},
-          measurements:2, latestDate:'08 Sep 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
+          weight:{latest:79.4, delta:'-0.3 kg', since:'since 10 Sep', unit:'kg', color:'blue', yMin:78, yMax:81, step:1, pts:[['10 Sep',79.7],['07 Oct',79.4]]},
+          bodyfat:{latest:12.6, delta:'-0.2 percentage points', since:'since 10 Sep', unit:'%', color:'green', yMin:11, yMax:14, step:1, pts:[['10 Sep',12.8],['07 Oct',12.6]]},
+          measurements:2, latestDate:'07 Oct 2026', xlabels:D1, note:'Insufficient readings to establish a trend.'
         }
       },
       ai:['Total load rose 14.8% across six gym sessions.','Leg curl is the single captured set so far.','5 gym sessions attended in this period.','Body composition has two recorded measurements.'],
-      aiUpd:'Updated 08 Sep 2026',
-      session:{name:'Posterior chain', date:'08 Sep', loc:'Gym 2', ex:'Leg curl', reviews:0}
+      aiUpd:'Updated 07 Oct 2026',
+      session:{name:'Posterior chain', date:'07 Oct', loc:'Gym 2', ex:'Leg curl', reviews:0}
   },
-  16:{ num:16, pos:'Midfielder', height:'182 cm', weight:'78.0 kg', latest:'29 Aug 2026', range:'—', att:0, notObserved:true,
+  16:{ num:16, pos:'Midfielder', height:'182 cm', weight:'78.0 kg', latest:'27 Sep 2026', range:'—', att:0, notObserved:true,
       gym:['_','_','_','_','_','_','_','_','_','_','_','_','_','_'], pitch:['_','_','_','_','_','_','_','_','_','_','_','_','_','_']
   }
 };
@@ -699,7 +699,7 @@ renderPlanModal();
   var NOTIFS=[
     {type:'proc',   icon:'loader',         t:'Rehab session is processing',          s:'Attendance & highlights will appear once it finishes.', time:'2m',  unread:true},
     {type:'review', icon:'alert-circle',   t:'Player 07 — full set needs confirmation', s:'Upper push · 2 of ? sets recorded',                time:'18m', unread:true},
-    {type:'ok',     icon:'check-circle-2', t:'Strength session processed',           s:'Ready to review · 21 players',                          time:'1h',  unread:false},
+    {type:'ok',     icon:'check-circle-2', t:'Upper push + trunk session processed',  s:'Ready to review · 9 players',                          time:'1h',  unread:false},
     {type:'review', icon:'alert-circle',   t:'Player 18 — set left unconfirmed',     s:'Lower body · capture ended mid-set',                    time:'3h',  unread:false}
   ];
   var panel=null;
