@@ -597,6 +597,25 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 @keyframes procspin{to{transform:rotate(360deg)}}
 .proc-title{font-size:19px;font-weight:700;color:var(--color-text)}
 .proc-sub{font-size:14px;color:var(--color-text-soft);line-height:1.6;max-width:420px}
+/* ---- past session (read-only, no video) ---- */
+.past-state{padding:4px 2px 24px}
+.past-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;min-height:50vh;padding:24px}
+.past-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px 14px;flex-wrap:wrap}
+.past-head-l{font-size:14px;font-weight:600;color:var(--color-text)}
+.past-novid{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--color-text-soft);background:var(--color-surface-muted);border-radius:999px;padding:4px 11px}
+.past-novid svg{width:15px;height:15px}
+.past-players{display:grid;gap:12px}
+.past-player{border:1px solid var(--color-border);border-radius:var(--r-lg);background:var(--color-surface);overflow:hidden}
+.past-pl-head{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--color-border-subtle)}
+.past-pl-meta{flex:1;min-width:0}
+.past-pl-name{font-size:14px;font-weight:600;color:var(--color-text)}
+.past-pl-pos{font-size:12.5px;color:var(--color-text-soft);margin-top:1px}
+.past-pl-count{font-size:12.5px;color:var(--color-text-soft)}
+.past-exlist{padding:4px 14px 8px}
+.past-exrow{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--color-border-subtle)}
+.past-exrow:last-child{border-bottom:0}
+.pe-name{font-size:13.5px;color:var(--color-text)}
+.pe-rx{font-size:13px;color:var(--color-text-soft);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -703,6 +722,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
     <div class="proc-title">Session video is still processing</div>
     <div class="proc-sub">Attendance, completion and session highlights will appear here once the capture has finished processing. This usually takes a little while after the session ends.</div>
   </div>
+  <div class="past-state" id="pastState" hidden></div>
 </div>
 </main>
 
@@ -742,7 +762,7 @@ h1{font-size:30px;line-height:36px;font-weight:700;letter-spacing:-.01em}
 
 <script>
 /* ============ DATA ============ */
-const PLAYERS=[
+let PLAYERS=[
  {n:'02',prog:'Upper push',st:'review',ex:['f','o'],det:'Seated row set 1 flagged — capture half-obscured',clip:{title:'Seated row',note:'Set 1 capture is half-obscured (right side blacked out). Confirm the reps before it counts.',seed:'seated02',exn:'Seated row',poster:'clips_zoomed/poster_02_seated_row_error.jpg'}},
  {n:'12',prog:'Upper push',st:'partial',ex:['o','p'],det:'Cable biceps curl · 2 of 3 sets observed'},
  {n:'01',prog:'Upper push',st:'plan',ex:['o'],det:'Seated row recorded in full'},
@@ -754,7 +774,7 @@ const PLAYERS=[
  {n:'16',prog:'Upper push',st:'notobs',ex:['n','n'],det:'No activity observed'},
 ];
 /* per-player assigned exercises; ex:[name, prescribed sets, done sets] */
-const EXPLAYERS=[
+let EXPLAYERS=[
  {n:'02',prog:'Upper push',flag:true,ex:[['Seated row',4,4],['Lateral raise',3,3]]},
  {n:'12',prog:'Upper push',ex:[['Seated row',4,4],['Cable biceps curl',3,2]]},
  {n:'01',prog:'Upper push',ex:[['Seated row',2,2]]},
@@ -814,9 +834,15 @@ function counts(){ const c={expected:PLAYERS.length,plan:0,partial:0,review:0,no
 function renderStats(){
   const c=counts();
   const max=c.expected||1;
-  const att=[['Expected',c.expected,'var(--sb-steel)'],['Observed',c.observed,'var(--sb-steel2)'],['Not observed',c.notobs-c.absent,'var(--sb-grey)']];
-  if(c.absent>0) att.push(['Absent',c.absent,'var(--sb-grey)']);
-  const comp=[['Plan met',c.plan,'var(--sb-green)'],['Partial',c.partial,'var(--sb-gold)'],['Requires review',c.review,'var(--sb-clay)']];
+  let att, comp;
+  if(pastMode){
+    att=[['Expected',c.expected,'var(--sb-steel)'],['Present',c.observed,'var(--sb-steel2)']];
+    comp=[['Plan met',c.plan,'var(--sb-green)']];
+  } else {
+    att=[['Expected',c.expected,'var(--sb-steel)'],['Observed',c.observed,'var(--sb-steel2)'],['Not observed',c.notobs-c.absent,'var(--sb-grey)']];
+    if(c.absent>0) att.push(['Absent',c.absent,'var(--sb-grey)']);
+    comp=[['Plan met',c.plan,'var(--sb-green)'],['Partial',c.partial,'var(--sb-gold)'],['Requires review',c.review,'var(--sb-clay)']];
+  }
   const row=r=>`<div class="sgrow"><span class="sg-lab">${r[0]}</span><div class="sg-track"><i style="width:${Math.round(r[1]/max*100)}%;background:${r[2]}"></i></div><span class="sg-val num">${r[1]}</span></div>`;
   document.getElementById('attRows').innerHTML=att.map(row).join('');
   document.getElementById('compRows').innerHTML=comp.map(row).join('');
@@ -971,6 +997,22 @@ function renderExercises(host,foot){
 /* ============ RIGHT RAIL ============ */
 function renderRail(){
   const c=counts();
+  if(pastMode){
+    document.getElementById('rail').innerHTML=`
+      <div class="panel railcard">
+        <div class="rc-head"><span class="rc-title"><span class="lgi" style="width:22px;height:22px">${stIcon('complete')}</span>All logged</span><span class="rc-count" style="color:var(--color-text)">${c.plan}</span></div>
+        <div style="font-size:13px;color:var(--color-text-soft)">Every player was logged from the session plan, so nothing is waiting on a staff decision.</div>
+      </div>
+      <div class="panel railcard">
+        <div class="rc-head">Session</div>
+        <div class="camgrid">
+          <div class="camrow"><b>Players</b><span class="camzone num">${c.expected}</span></div>
+          <div class="camrow"><b>Exercises logged</b><span class="camzone num">${EXPLAYERS.reduce((s,p)=>s+p.ex.length,0)}</span></div>
+        </div>
+      </div>`;
+    icons();
+    return;
+  }
   const clips=PLAYERS.filter(p=>p.st==='review');
   let cc=clips.map(p=>`
     <div class="clipcard">
@@ -1022,6 +1064,11 @@ function exThumb(n,i,name,status){
 function exerciseSection(n,notObserved){
   const ep=EXPLAYERS.find(x=>x.n===n);
   if(!ep) return '';
+  if(pastMode){
+    const det=ep.detail||{};
+    const rows=ep.ex.map(e=>`<div class="dw-exrow dw-exrow-past"><div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">${det[e[0]]||('Prescribed '+e[1]+' set'+(e[1]===1?'':'s'))}</div></div>${stIcon('complete')}</div>`).join('');
+    return `<div class="dw-sec"><div class="l dw-exc-head">Logged exercises <span class="dw-exc-count num">${ep.ex.length} exercise${ep.ex.length===1?'':'s'}</span></div><div class="dw-exlist">${rows}</div></div>`;
+  }
   if(notObserved){
     const rows=ep.ex.map((e,i)=>`
       <div class="dw-exrow">${exThumbNo()}<div class="dw-ex-main"><div class="dw-ex-name">${e[0]}</div><div class="dw-ex-meta num">Prescribed ${e[1]} set${e[1]===1?'':'s'} · not observed</div></div>${stIcon('notstarted')}</div>`).join('');
@@ -1090,7 +1137,7 @@ function openClip(n){
     <div class="dw-head">${pAvatar(p.n)}<div><div class="cc-name">Player ${+p.n}</div><div class="cc-prog">${p.prog} · ${LABEL[p.st]}</div></div><button class="dw-close" id="dwClose"><i data-lucide="x"></i></button></div>
     <div class="dw-body">
       ${isRev&&p.clip&&p.clip.poster?`<div class="thumb"${p.clip.exn?` data-exp="${p.n}" data-exn="${p.clip.exn}" style="cursor:pointer"`:''}><img src="${p.clip.poster}" alt=""><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="dur">00:12</span></div>`:''}
-      <div class="dw-sec"><div class="l">What the capture shows</div><p>${obs}</p></div>
+      ${pastMode?'':`<div class="dw-sec"><div class="l">What the capture shows</div><p>${obs}</p></div>`}
       ${tail}
     </div>`;
   document.getElementById('scrim').classList.add('open');
@@ -1468,20 +1515,45 @@ function renderSessPop(){
     `<button class="sessrow${i===sessIdx?' active':''}" data-i="${i}"><span class="sr-time num">${s.start}</span><span class="sr-name">${s.name}</span><span class="sr-check"><i data-lucide="check"></i></span></button>`).join('');
   icons();
 }
+/* ===== Past sessions (before today): real programme exercises, no video ===== */
+const _PS_LOWER=[{n:"01",pos:"Midfielder",ex:[["Trap bar deadlift",4,"4","175"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","26 each hand"],["Weighted pull-up",3,"5","BW + 10.0"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"02",pos:"Forward",ex:[["Trap bar deadlift",4,"4","147.5"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","22 each hand"],["Weighted pull-up",3,"5","BW + 10.0"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"08",pos:"Forward",ex:[["Trap bar deadlift",4,"4","145"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","22 each hand"],["Weighted pull-up",3,"5","BW + 10.0"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"13",pos:"Defender",ex:[["Trap bar deadlift",4,"4","172.5"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","28 each hand"],["Weighted pull-up",3,"5","BW + 10.0"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"24",pos:"Defender",ex:[["Trap bar deadlift",4,"4","172.5"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","26 each hand"],["Weighted pull-up",3,"5","BW + 10.0"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"03",pos:"Defender",ex:[["Back squat",4,"5","95"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","22 each hand"],["Weighted pull-up",3,"5","BW + 7.5"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"12",pos:"Midfielder",ex:[["Trap bar deadlift",4,"4","167.5"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","24 each hand"],["Weighted pull-up",3,"5","BW + 10.0"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]},{n:"16",pos:"Midfielder",ex:[["Trap bar deadlift",4,"4","135"],["Countermovement jump (contrast)",4,"3","BW"],["Rear-foot elevated split squat (DB)",3,"6 each side","22 each hand"],["Weighted pull-up",3,"5","BW + 7.5"],["Copenhagen plank",2,"20s each side","BW"],["Nordic hamstring curl",2,"4","BW"]]}];
+const _PS_UPPER=[{n:"01",pos:"Midfielder",ex:[["Barbell bench press",4,"5","90"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","25"],["Chest-supported DB row",3,"10","30 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"02",pos:"Forward",ex:[["Barbell bench press",4,"5","75"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","20"],["Chest-supported DB row",3,"10","28 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"08",pos:"Forward",ex:[["Barbell bench press",4,"5","70"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","20"],["Chest-supported DB row",3,"10","28 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"13",pos:"Defender",ex:[["Barbell bench press",4,"5","92.5"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","25"],["Chest-supported DB row",3,"10","34 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"],["Overhead plate carry (GK)",2,"30 m","20"]]},{n:"24",pos:"Defender",ex:[["Barbell bench press",4,"5","87.5"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","25"],["Chest-supported DB row",3,"10","32 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"03",pos:"Defender",ex:[["Barbell bench press",4,"5","62.5"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","20"],["Chest-supported DB row",3,"10","26 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"12",pos:"Midfielder",ex:[["Barbell bench press",4,"5","85"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","25"],["Chest-supported DB row",3,"10","30 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"16",pos:"Midfielder",ex:[["Barbell bench press",4,"5","65"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","20"],["Chest-supported DB row",3,"10","26 each hand"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]},{n:"20",pos:"Defender",ex:[["Barbell bench press",4,"5","72.5"],["Med ball chest pass (4 kg)",4,"4","4"],["Half-kneeling landmine press",3,"8 each side","20"],["Seated cable row",3,"10","55"],["Pallof press",3,"10 each side","15"],["Cable face pull",2,"15","20"]]}];
+const _PS_ACTIV=[{n:"01",pos:"Midfielder",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"02",pos:"Forward",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"08",pos:"Forward",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"13",pos:"Defender",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"24",pos:"Defender",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"03",pos:"Defender",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"12",pos:"Midfielder",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]},{n:"16",pos:"Midfielder",ex:[["Mini-band lateral walk",2,"10 each side","Band"],["Pogo hops",2,"10","BW"],["Med ball rotational throw (4 kg)",2,"5 each side","4"],["Single-leg glute bridge iso",2,"20s each side","BW"]]}];
+const _PS_REHAB=[{n:"20",pos:"Defender",ex:[["Long-length hamstring isometric (slider)",4,"30s each side","BW"],["Single-leg RDL (KB)",3,"8 each side","16"],["Band-assisted Nordic",3,"4","Heavy band"],["Barbell hip thrust",3,"8","80"],["Prone leg curl isometric (5s hold)",3,"5","25"]]}];
+const PAST_SESSIONS={'2026-10-01':[_PS_UPPER,_PS_REHAB],'2026-10-02':[_PS_ACTIV],'2026-10-03':[_PS_REHAB],'2026-10-04':[null],'2026-10-06':[_PS_LOWER,_PS_REHAB]};
+function _psWt(w){ w=String(w); return /^[0-9.]+$/.test(w)? w+" kg" : w; }
+function _psRx(e){ return e[1]+" × "+e[2]+" · "+_psWt(e[3]); }
+function renderPastSession(iso, idx){
+  var el=document.getElementById("pastState"); if(!el) return;
+  var day=PAST_SESSIONS[iso], players=day?day[idx]:null;
+  var sName=(SESSIONS[idx]&&SESSIONS[idx].name)||"";
+  if(!players||!players.length){ el.innerHTML="<div class=\"past-empty\"><div class=\"proc-ic nospin\"><i data-lucide=\"waves\"></i></div><div class=\"proc-title\">"+(sName||"Recovery")+"</div><div class=\"proc-sub\">Recovery session — no gym exercises to log. No video captured.</div></div>"; icons(); return; }
+  var head="<div class=\"past-head\"><div class=\"past-head-l\">"+players.length+" player"+(players.length===1?"":"s")+" · logged from the plan</div><span class=\"past-novid\"><i data-lucide=\"video-off\"></i>No video captured</span></div>";
+  var cards=players.map(function(pl){ var ex=pl.ex.map(function(e){ return "<div class=\"past-exrow\"><span class=\"pe-name\">"+e[0]+"</span><span class=\"pe-rx num\">"+_psRx(e)+"</span></div>"; }).join(""); return "<div class=\"past-player\"><div class=\"past-pl-head\">"+pAvatar(pl.n)+"<div class=\"past-pl-meta\"><div class=\"past-pl-name\">Player "+(+pl.n)+"</div><div class=\"past-pl-pos\">"+pl.pos+"</div></div><div class=\"past-pl-count num\">"+pl.ex.length+" exercises</div></div><div class=\"past-exlist\">"+ex+"</div></div>"; }).join("");
+  el.innerHTML=head+"<div class=\"past-players\">"+cards+"</div>"; icons();
+}
 function applySessionState(){
   var noSess=!SESSIONS.length;
   var s=noSess?null:SESSIONS[sessIdx];
-  var state = noSess ? 'none' : (s.processing ? 'processing' : (s.upcoming ? 'upcoming' : ''));
+  loadSessionData();                                   // swaps in past-session data (or restores the 7 Oct demo)
+  var hb=document.getElementById('highlightBox'); if(hb) hb.style.display=pastMode?'none':''; // no video → no highlights for past
+  // ready = the full 7 Oct UI (stats + table + drawer). pastMode uses the same UI with the day's logged data.
+  var state;
+  if(noSess) state='none';
+  else if(pastMode) state = pastEmpty ? 'recovery' : '';
+  else state = s.processing ? 'processing' : (s.upcoming ? 'upcoming' : '');
   var empty = !!state;
   var cols=document.querySelector('.cols'); if(cols) cols.style.display=empty?'none':'';
   var phead=document.querySelector('.phead'); if(phead) phead.style.display=(state==='none')?'none':'';
   var ha=document.querySelector('.headacts'); if(ha) ha.style.display=empty?'none':'';
+  if(!empty){ renderStats(); renderTable(); renderRail(); }  // re-render against the current dataset
   var ps=document.getElementById('procState'); if(!ps) return;
   ps.hidden=!empty;
-  ps.classList.toggle('full', state==='none');
+  ps.classList.toggle('full', state==='none'||state==='recovery');
   if(empty){
     var cfg;
     if(state==='none') cfg={icon:'calendar-x', nospin:' nospin', title:'No gym sessions scheduled', sub:'There are no gym sessions on this day.'};
+    else if(state==='recovery') cfg={icon:'waves', nospin:' nospin', title:(s?s.name:'Recovery session'), sub:'Recovery day — no gym exercises were logged for this session.'};
     else if(state==='processing') cfg={icon:'loader', nospin:'', title:'Session video is still processing', sub:'This usually takes a little while after the session ends.'};
     else cfg={icon:'clock', nospin:' nospin', title:"This session hasn't started yet", sub:"It's scheduled for "+s.start+"–"+s.end+"."};
     ps.innerHTML='<div class="proc-ic'+cfg.nospin+'"><i data-lucide="'+cfg.icon+'"></i></div><div class="proc-title">'+cfg.title+'</div><div class="proc-sub">'+cfg.sub+'</div>';
@@ -1508,7 +1580,10 @@ function updateTitle(){
   if(chev) chev.style.display='';
   const s=SESSIONS[sessIdx];
   document.getElementById('sessTitle').textContent=s.name;
-  document.getElementById('subline').textContent=fmtLong(selected)+' · '+s.start+'–'+s.end+' · '+s.cams+' ceiling cameras';
+  var _pday=(selected.getTime()<TODAY.getTime()) ? PAST_SESSIONS[isoDay(selected)] : null;
+  var _parr=_pday?_pday[sessIdx]:null;
+  var tail = _pday ? (_parr&&_parr.length ? _parr.length+' players · logged from the plan' : 'logged from the plan') : (s.cams+' ceiling cameras');
+  document.getElementById('subline').textContent=fmtLong(selected)+' · '+s.start+'–'+s.end+' · '+tail;
   document.getElementById('sessCount').textContent=(sessIdx+1)+' of '+SESSIONS.length;
   document.getElementById('sessPrev').disabled=sessIdx===0;
   document.getElementById('sessNext').disabled=sessIdx===SESSIONS.length-1;
@@ -1522,8 +1597,18 @@ document.getElementById('sessPrev').onclick=function(){ if(sessIdx>0){ sessIdx--
 document.getElementById('sessNext').onclick=function(){ if(sessIdx<SESSIONS.length-1){ sessIdx++; closeSessPop(); updateTitle(); icons(); } };
 document.getElementById('sessPop').addEventListener('click',function(e){ const r=e.target.closest('.sessrow'); if(!r)return; sessIdx=+r.dataset.i; closeSessPop(); updateTitle(); icons(); });
 document.addEventListener('click',function(e){ const p=document.getElementById('sessPop'); if(p && !p.hidden && !e.target.closest('.sesstitle-wrap')) closeSessPop(); });
-document.getElementById('prevWk').onclick=function(){viewStart.setDate(viewStart.getDate()-7);renderWeek();icons();};
-document.getElementById('nextWk').onclick=function(){viewStart.setDate(viewStart.getDate()+7);renderWeek();icons();};
+/* chevrons step the SELECTED day by one; the week strip slides only when the new day leaves the visible Sun–Sat row */
+function stepDay(delta){
+  var d=new Date(selected); d.setDate(d.getDate()+delta);
+  if(delta>0 && d.getTime()>TODAY.getTime()) return; // don't move into the future
+  selected=d;
+  var end=new Date(viewStart); end.setDate(viewStart.getDate()+6);
+  if(selected.getTime()<viewStart.getTime() || selected.getTime()>end.getTime()) viewStart=weekStartSun(selected);
+  sessIdx=0;
+  renderWeek(); updateTitle(); icons();
+}
+document.getElementById('prevWk').onclick=function(){ stepDay(-1); };
+document.getElementById('nextWk').onclick=function(){ stepDay(1); };
 document.getElementById('todayBtn').onclick=function(){selected=new Date(TODAY);viewStart=weekStartSun(selected);renderWeek();updateTitle();icons();};
 // ---- custom date-picker popup ----
 let popY, popM;
@@ -1604,7 +1689,7 @@ renderPlanModal();
 
 /* ---- per-exercise clip lightbox ---- */
 /* real captured clips (hosted in the repo at Gym v3/clips/), keyed by player|exercise */
-const CLIPS={
+let CLIPS={
   '01|Seated row':[
     {src:'clips_zoomed/player01_seated_row_set1_023.1s-042.1s_12reps.mp4',poster:'clips_zoomed/poster_01_seated_row.jpg',note:'Set 1 · 12 reps · 00:23–00:42',label:'Set 1',reps:12,status:'complete'},
     {src:'clips_zoomed/player01_seated_row_set2_098.7s-116.8s_9reps.mp4',poster:'clips_zoomed/poster_01_seated_row_set2.jpg',note:'Set 2 · 9 reps · 01:38–01:57',label:'Set 2',reps:9,status:'complete'},
@@ -1640,6 +1725,27 @@ const CLIPS={
   ],
   '24|Overhead triceps extension':[{src:'clips_zoomed/player24_overhead_triceps_extension_set1_063.0s-093.0s_11reps.mp4',poster:'clips_zoomed/poster_24_overhead_triceps_extension.jpg',note:'Set 1 · 11 reps · 01:03–01:33',label:'Set 1',reps:11,status:'complete'}],
 };
+/* the 7 Oct demo session is the default dataset; past sessions swap these out (see loadSessionData) */
+const DEMO_PLAYERS=PLAYERS, DEMO_EXPLAYERS=EXPLAYERS, DEMO_CLIPS=CLIPS;
+let pastMode=false, pastEmpty=false;
+/* for a past date, feed that day's logged-from-plan programme into the same render path as 7 Oct
+   (no clips → no video anywhere). pastEmpty flags a recovery day with nothing to log. */
+function loadSessionData(){
+  var iso=isoDay(selected);
+  var day=(selected.getTime()<TODAY.getTime()) ? PAST_SESSIONS[iso] : null;
+  if(day){
+    var arr=day[sessIdx];
+    if(!arr || !arr.length){ pastMode=true; pastEmpty=true; PLAYERS=[]; EXPLAYERS=[]; CLIPS={}; return; }
+    pastMode=true; pastEmpty=false;
+    var sName=(SESSIONS[sessIdx]&&SESSIONS[sessIdx].name)||'';
+    PLAYERS=arr.map(function(pl){ return {n:pl.n, prog:sName, pos:pl.pos, st:'plan', ex:pl.ex.map(function(){return 'o';}), det:'Logged from the session plan.'}; });
+    EXPLAYERS=arr.map(function(pl){ var det={}; pl.ex.forEach(function(e){ det[e[0]]=_psRx(e); }); return {n:pl.n, prog:sName, pos:pl.pos, ex:pl.ex.map(function(e){ return [e[0], e[1], e[1]]; }), detail:det}; });
+    CLIPS={};
+  } else {
+    pastMode=false; pastEmpty=false;
+    PLAYERS=DEMO_PLAYERS; EXPLAYERS=DEMO_EXPLAYERS; CLIPS=DEMO_CLIPS;
+  }
+}
 const FULL_SESSION_SRC='clips/Full%20session%20video.mp4';
 function lbEls(){ return {v:document.getElementById('exlbVideo'),img:document.getElementById('exlbImg'),play:document.getElementById('exlbPlay'),note:document.getElementById('exlbNote'),cap:document.getElementById('exlbCap')}; }
 function lbPlayVideo(src,note){ const e=lbEls(); e.img.style.display='none'; e.play.style.display='none'; e.v.style.display='block'; e.v.src=src; try{e.v.currentTime=0;}catch(_){ } e.v.play().catch(()=>{}); e.note.textContent=note; }
